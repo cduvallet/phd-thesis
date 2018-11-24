@@ -7,29 +7,51 @@
 
 \chapter{Introduction}
 
-\section{Human-associated microbial communities are essential for health and implicated in disease}
+\section{The human microbiome in health and disease}
 
-Intro paragraph about the human microbiome relevance in health and disease. Make sure this paragraph is site-agnostic.
+The human microbiome, made up of the microbes that live in and on our bodies, is essential for health and has been implicated in many diseases.
+Almost all human body sites are colonized by microbial communities, ranging from the gut, the largest human-associated microbial community, to the lungs, which were for many years considered sterile (citation needed).
+In health, these communities fight off or prevent infections, interact with and regulate host immune responses and metabolism, and metabolize xenobiotics or other compounds which are indigestible by the host, among other functions.
+Microbes can also cause or exacerbate disease, as well as impact how we metabolize the drugs we take.
+Perturbations in the composition or function of these communities have been implicated in many diseases, including metabolic, autoimmune, neurological, and respiratory conditions.
+<Maybe a sentence about therapies?>
+Although humans known about the human microbiome for thousands of years, recent academic research into this field has expanded significantly (citation needed).
+Emerging research has been driven in part by the increasing accessibility of DNA sequencing technology, which can provide a detailed view of the bacteria in these communities without the need for time-consuming and difficult culturing experiments.
 
-Motivate why we're excited about using the microbiome for therapeutic applications - written out version of my usual talk intro.
+Excitement in this field from scientists, engineers, clinicians, and entrepreneurs has also been driven by the non-invasiveness of the research, large range and accessibility of potential interventions, and the increasing potential for clinical impact.
+Many human-associated communities can be sampled non-invasively, facilitating research that is performed with real human patient populations rather than model organisms.
+Interventions which can change the composition of microbial communities already exist and are accessible to patients: lifestyle changes such as diet can have large effects on the microbiome, and commonly used drugs like antibiotics and probiotics are already in wide usage.
+Thus, identifying ways to repurpose existing interventions for targeted outcomes is attractive and exciting because the potential to implement them quickly is high.
+Finally, the potential clinical impact of microbiome-based interventions is vast and growing.
+Fecal microbiota transplants (FMT) for recurrent Clostridium infection have already proven themselves as an effective treatment: over 80% of patients with recurrent C. diff are cured after FMT.
+Furthermore, many of the diseases in which the microbiome may play a role are associated with industrialization and are increasing in incidence worldwide.
 
-Discuss big data aspect of microbiome research: sequencing provides opportunities and challenges. In this thesis, we present three projects which overcome these challenges to provide useful clinical insight from mining microbiome data.
+Despite the increasing accessibility of microbiome research and potential for clinical impact, identifying clinically-relevant associations in microbiome studies remains challenging.
+Microbiome datasets are high-dimensional, containing hundreds to thousands of bacterial species but frequently only sampling tens to hundreds of patients.
+Microbial communities are also highly variable across people, and identifying  individual bacterial biomarkers that can distinguish health and disease across many patients is difficult.
+Finally, microbiome datasets provide a window into associations but not causal relationships.
+Researchers must perform follow-up mechanistic studies or FMT clinical trials to confirm the clinical relevance of associations.
+In this thesis, we present three projects which overcome various data analysis challenges to provide useful clinical insight from mining microbiome datasets.
+The following chapters each present a unique analysis of microbiome data, each highlighting a different perspective on harnessing microbiome data to move beyond statistical significance and identify clinically meaningful associations.
 
-From Sarah's: "In this thesis, I present three studies of bacterial functional and spatial structure that highlight innovative new molecular biology techniques and methods to increase throughput by reducing reaction volume. The following chapters each contain a unique application in environmental or human microbial communities that show the critical need to link genes to hosts, and link hosts to local community members and microenvironments."
+\section{Leveraging multi-site sampling to overcome variability in the aerodigestive microbiome}
 
-\section{Multi-site sampling of the aerodigestive microbiome allows for the identification of clinical associations}
+
+The aerodigestive tract is comprised of the respiratory and upper gastrointestinal tracts and includes the oropharynx, lungs, and stomach.
+Unlike other human body sites, the aerodigestive tract is unique in that all sites are connected and exchange material through bidirectional flow.
+
 
 Introduce aerodigestive microbiome. Discuss challenges: sampling is invasive so it's not very well-studied. Lungs communities especially are very variable, making it difficult to identify specific biomarkers.
 
 However, identifying microbial biomarkers would be useful: these patients are already undergoing invasive tests, and reducing radiation would be good.
 
-In Chapter 2, we present an analysis that leverages simultaneous sampling of patients to identify clinically-relevant characteristics distinguishing patients with swallowing dysfunction from those with normal swallow.
+In Chapter 2, we present an analysis that leverages simultaneous sampling of patients to identify clinically-relevant microbiome characteristics distinguishing patients with swallowing dysfunction from those with normal swallow.
 
 Mention that this patient population is already undergoing these invasive tests, so a microbiome-based alternative would actually be useful.
 
 We overcome the challenge presented by huge variability between lungs by looking within patients.
 
-Suggest new avenues for approaches to treating aspiration.
+Suggest new avenues for approaches to treating aspiration and for analyzin future lung microbiome studies.
 
 \section{Re-analyzing data across many diseases identifies disease-specific and shared patterns of associations between the gut microbiome and disease}
 
@@ -48,6 +70,29 @@ As our understanding of microbiome associations with diseases increases, FMTs wi
 In Chapter 4, I present a framework for rational donor selection in FMT clinical trials, where the hypothesized type of microbiome association drives the way you do your trial.
 
 This chapter talks about what to do once you have figured out how your disease is being mediated by the microbiome.
+
+\section{More words}
+
+Identifying modifications in these drugs
+
+Interventions which can change the composition of microbial communities are also relatively accessible: diet and lifestyle are known to have large effects on the human microbiome, and existing drugs like antibiotics and probiotics are already in wide usage.
+
+Many possible ways to intervene to improve microbiome: lifestyle changes, antibiotics, probiotics
+
+There is also an exciting possibility of repurposing existing interventions like antibiotics and probiotics for greater or novel therapeutic effects.
+
+There is also strong precedent for microbial-based therapies, and the
+
+allowing for studies to iterate between real human patients and model organisms
+
+Motivate why we're excited about using the microbiome for therapeutic applications - written out version of my usual talk intro.
+
+with the motivating goal
+
+Discuss big data aspect of microbiome research: sequencing provides opportunities and challenges.
+
+From Sarah's: "In this thesis, I present three studies of bacterial functional and spatial structure that highlight innovative new molecular biology techniques and methods to increase throughput by reducing reaction volume. The following chapters each contain a unique application in environmental or human microbial communities that show the critical need to link genes to hosts, and link hosts to local community members and microenvironments."
+
 
 \begin{singlespace}
 \bibliography{main}
