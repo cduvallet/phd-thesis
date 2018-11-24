@@ -34,26 +34,23 @@ Researchers must perform follow-up mechanistic studies or FMT clinical trials to
 In this thesis, we present three projects which overcome various data analysis challenges to provide useful clinical insight from mining microbiome datasets.
 The following chapters each present a unique analysis of microbiome data, each highlighting a different perspective on harnessing microbiome data to move beyond statistical significance and identify clinically meaningful associations.
 
-\section{Leveraging multi-site sampling to overcome variability in the aerodigestive microbiome}
+\section{Multi-site sampling to identify clinical associations in the aerodigestive microbiome}
 
+In Chapter 2, we present an analysis that leverages simultaneous sampling within patients to identify clinically-relevant aerodigestive microbiome characteristics distinguishing patients with swallowing dysfunction from those with normal swallow.
+Currently, diagnosing aspiration resulting from impaired swallow function involves imaging a patient as they ingest barium-labeled food or liquid.
+Identifying lung microbial biomarkers would provide a useful non-radioactive alternative to this diagnosis.
+Additionally, patients with impaired swallow function are at higher risk for respiratory infections, but the extent to which the lung microbiome is perturbed by aspiration and thus potentially involved in mediating this risk is unknown.
+Finally, clinical interventions to treat respiratory symptoms in patients with impaired swallow focus on preventing material transfer from the stomach into the lungs, for example via anti-reflux medication or fundoplication surgery.
+However, the clinical utility of these interventions in pediatric populations is not fully established, and the extent to which the gastric vs. mouth microbiome mediates respiratory complications is also not known.
 
-The aerodigestive tract is comprised of the respiratory and upper gastrointestinal tracts and includes the oropharynx, lungs, and stomach.
-Unlike other human body sites, the aerodigestive tract is unique in that all sites are connected and exchange material through bidirectional flow.
+In this study, I analyze a set of aerodigestive microbiome samples collected from over 200 patients at Boston Children's Hospital.
+I first show that lung and stomach microbiomes are highly variable across people and driven primarily by person rather than body site, thus complicating the search for a reliable microbial biomarker of aspiration across people.
+I overcome this challenge by leveraging the fact that we have multiple samples per patient, analyzing differences in the within-patient _relationships_ between microbial communities across the aerodigestive tract.
+Using this approach, I show that aspiration shifts lung microbial communities toward the oropharyngeal but not the stomach microbiome, suggesting that the mouth is likely an important source of microbes and perturbations in the lung communities of these patients.
+Thus, approaches for treating aspiration-related respiratory symptoms should target microbial transfer from the mouth into the lungs in addition to focusing on the gastric-lung axis as most current interventions do.
+This study also illustrates the ability of multi-site within-patient sampling to overcome variability across people to identify clinically meaningful microbiome-base biomarkers.
 
-
-Introduce aerodigestive microbiome. Discuss challenges: sampling is invasive so it's not very well-studied. Lungs communities especially are very variable, making it difficult to identify specific biomarkers.
-
-However, identifying microbial biomarkers would be useful: these patients are already undergoing invasive tests, and reducing radiation would be good.
-
-In Chapter 2, we present an analysis that leverages simultaneous sampling of patients to identify clinically-relevant microbiome characteristics distinguishing patients with swallowing dysfunction from those with normal swallow.
-
-Mention that this patient population is already undergoing these invasive tests, so a microbiome-based alternative would actually be useful.
-
-We overcome the challenge presented by huge variability between lungs by looking within patients.
-
-Suggest new avenues for approaches to treating aspiration and for analyzin future lung microbiome studies.
-
-\section{Re-analyzing data across many diseases identifies disease-specific and shared patterns of associations between the gut microbiome and disease}
+\section{Re-analyzing datasets identifies consistent patterns of associations between the gut microbiome and disease}
 
 In contrast to aerodigestive, gut microbiome has been extensively studied. Many diseases associated with gut microbiome, and healthy functioning is essential for host health. However, lots of research but little consensus on which associations are clinically meangingful.
 
@@ -92,6 +89,46 @@ with the motivating goal
 Discuss big data aspect of microbiome research: sequencing provides opportunities and challenges.
 
 From Sarah's: "In this thesis, I present three studies of bacterial functional and spatial structure that highlight innovative new molecular biology techniques and methods to increase throughput by reducing reaction volume. The following chapters each contain a unique application in environmental or human microbial communities that show the critical need to link genes to hosts, and link hosts to local community members and microenvironments."
+
+-----
+
+Furthermore, this analysis suggests that future studies investigating clinical associations in lung and stomach microbiomes
+
+Suggest new avenues for approaches to treating aspiration and for analyzin future lung microbiome studies.
+
+Mention that this patient population is already undergoing these invasive tests, so a microbiome-based alternative would actually be useful.
+
+We overcome the challenge presented by huge variability between lungs by looking within patients.
+
+Patients with impaired swallow function are at higher risk for respiratory infections, but the mechanism by which these infections are mediated is unknown.
+Clinical interventions like fundoplication surgery and anti-reflux medication attempt to reduce transfer of material and bacteria from the stomach to the lungs, which is thought to drive respiratory complications, but often do not show clinical benefit.
+
+Additionally, the extent to which the microbiome is perturbed by and perhaps implicated in aspiration-related respiratory complications is unknown.
+
+Further complicating this is that we lack a comprehensive understanding of hte lung and stomach microbial communities: these samples require invasive sampling procedures and are thus difficult to acquire, especially in health people.
+In fact, neither the lung nor stomach were included in the first iteration of the Human Microbiome Project, and the lung was thought to be sterile for many years.
+
+The aerodigestive tract is comprised of the upper and lower respiratory tracts and the upper gastrointestinal tract, including body sites such as the oropharynx, lungs, and stomach.
+Unlike most other body systems, material in the aerodigestive tract flows between body sites bidirectionally.
+For example, swallowing carries material from the mouth into the stomach, but vomiting or reflux can also lead to exchange in the opposite direction.
+Thus, microbial communities in this body system are shaped by a balance of immigration, elimination, and growth (Dickson Lancet 2014).
+However, compared to other human-associated communities like the gut and skin microbiome, relatively little is known about the communities in the lung and stomach.
+In fact, the lungs were long thought to be sterile and neither the lung nor stomach were included in the first iteration of the Human Microbiome Project.
+Despite the emerging recognition that these sites are also characterized by microbial communities which perform important functions, it remains difficult to study these in part because acquiring lung and gastric microbiome samples requires invasive procedures such as bronchoscopies and upper endoscopies.
+Thus, we lack a baseline understanding of these communities in health.
+
+Introduce aerodigestive microbiome. Discuss challenges: sampling is invasive so it's not very well-studied. Lungs communities especially are very variable, making it difficult to identify specific biomarkers.
+
+However, identifying microbial biomarkers would be useful: these patients are already undergoing invasive tests, and reducing radiation would be good.
+
+In Chapter 2, we present an analysis that leverages simultaneous sampling of patients to identify clinically-relevant microbiome characteristics distinguishing patients with swallowing dysfunction from those with normal swallow.
+
+Mention that this patient population is already undergoing these invasive tests, so a microbiome-based alternative would actually be useful.
+
+We overcome the challenge presented by huge variability between lungs by looking within patients.
+
+Suggest new avenues for approaches to treating aspiration and for analyzin future lung microbiome studies.
+
 
 
 \begin{singlespace}
