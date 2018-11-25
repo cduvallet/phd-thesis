@@ -69,7 +69,7 @@ Second, the bronchoscopy and bronchoalveolar lavage (BAL) was performed through 
 Finally, gastric sampling was performed during the EGD.
 The endoscope was advanced, without suctioning, immediately into the stomach where the gastric fluid was suctioned into a sterile leukitrap.
 A minimum of 1 cc of gastric and lung fluid were collected and transferred to -80˚C.
-Each patient had a triad of samples collected: oropharynx, gastric fluid, and BAL (Tables 1 and 2) \cite{rosen2015ppi}.
+Each patient had a triad of samples collected: oropharynx, gastric fluid, and BAL (Tables \ref{tab1} and \ref{tab2}) \cite{rosen2015ppi}.
 
 \subsection{Multichannel intraluminal impedance with pH (pH-MII)}
 
@@ -118,7 +118,7 @@ The 16S sequencing data used in this study are available in the SRA repository a
 
 \section{Results}
 
-Two hundred and twenty two patients were included in the analysis (Tables 1 and 2).
+Two hundred and twenty two patients were included in the analysis (Tables ref{tab1} and \ref{tab2}).
 The mean age of the patients was 7.1 $\pm$ 5.4 years.
 One hundred out of 222 patients were taking proton pump inhibitors at the time of sampling.
 One hundred and four patients had a videoflouroscopic swallow study of which 47 (45\%) had evidence of aspiration or penetration and 57 (55\%) had normal swallow function.
@@ -128,10 +128,10 @@ Thirty one patients had pH-MII testing for gastroesophageal reflux at the time o
 
 %To \textbf{characterize the baseline composition of aerodigestive communities}, we examined patients who had all three sites (oropharyngeal swab, lung, and gastric fluid) sequenced (Table \ref{tab:intra_samples}).
 %Similarly to the adult aerodigestive microbiome,
-At the genus level, pediatric aerodigestive communities share many predominant members, including \textit{Streptococcus}, \textit{Prevotella}, \textit{Haemophilus}, \textit{Veillonella}, and \textit{Neisseria} (Figure 1).
+At the genus level, pediatric aerodigestive communities share many predominant members, including \textit{Streptococcus}, \textit{Prevotella}, \textit{Haemophilus}, \textit{Veillonella}, and \textit{Neisseria} (Figure \ref{fig1}).
 Despite genus-level similarities, OTU-level aerodigestive communities are distinct and highly variable across people.
-The overall community composition was significantly different between sites (PERMANOVA on JSD, p $<$ 0.001, Figure 2B).
-Furthermore, lung communities were very different across people (median lung-lung JSD $=$ 0.88) while oropharyngeal communities tended to be more similar (median oropharyngeal-oropharyngeal JSD $=$ 0.59, Figure 2A).
+The overall community composition was significantly different between sites (PERMANOVA on JSD, p $<$ 0.001, Figure \ref{fig2}B).
+Furthermore, lung communities were very different across people (median lung-lung JSD $=$ 0.88) while oropharyngeal communities tended to be more similar (median oropharyngeal-oropharyngeal JSD $=$ 0.59, Figure \ref{fig2}A).
 
 %These findings point to a lack of an OTU-level ``core'' lung microbiome, and complicate the search for reliable non-pathogenic microbial biomarkers in the lung microbiome, since most patients will have few lung OTUs in common with other patients.
 
@@ -144,22 +144,22 @@ Furthermore, lung communities were very different across people (median lung-lun
 
 \subsection{Aerodigestive microbiome within people}
 
-We compared aerodigestive communities within patients who had multiple sites sequenced (Table 2, Figure 3).
+We compared aerodigestive communities within patients who had multiple sites sequenced (Table \ref{tab2}, Figure \ref{fig3}).
 Oropharyngeal and gastric fluid communities are similar within patients (median JSD $=$ 0.56), reflecting that the mouth seeds the gastric microbiome \cite{Bassis2015source,Charlson2011topographical}.
-The majority of patients had very different lung and oropharyngeal communities (median JSD $=$ 0.90), and these differences were significantly higher than either the lung-gastric fluid or gastric fluid-oropharyngeal beta diversities (p $< 1 \times 10^{-8}$, Figure 3A).
+The majority of patients had very different lung and oropharyngeal communities (median JSD $=$ 0.90), and these differences were significantly higher than either the lung-gastric fluid or gastric fluid-oropharyngeal beta diversities (p $< 1 \times 10^{-8}$, Figure \ref{fig3}A).
 Surprisingly, lung and stomach communities were as similar to each other as stomach and oropharyngeal communities (median JSD $=$ 0.55 versus median JSD $=$ 0.56, respectively, p $=$ 0.6).
 %One possible explanation for these similar gastric and lung communities is that they are both being seeded by the oropharynx, resulting in similar compositional profiles \cite{Bassis2015source,venkataraman-2015-dispersal}.
 %Alternatively, as our data has previously suggested, the lungs and stomach may directly exchange bacteria through microaspiration of gastric contents or coughing and subsequent swallowing \cite{rosen2011culture}.
 %Finally, both the lungs and stomach have low biomass and harsh selective pressures, which may lead to similar community taxonomic profiles without necessarily requiring direct exchange of individual bacteria \cite{Bassis2015source,venkataraman-2015-dispersal,Dickson2014}.
 
-To identify specific microbes exchanging between sites, we reasoned that an actively exchanging microbe's abundances in two sites should be correlated across patients (Supplementary Figure 1 and Methods).
+To identify specific microbes exchanging between sites, we reasoned that an actively exchanging microbe's abundances in two sites should be correlated across patients (Supplementary Figure \ref{figs1} and Methods).
 We identified 12 OTUs exchanged between lung and oropharyngeal, 74 between gastric fluid and lung, and 118 between oropharyngeal and gastric fluid communities.
 These results were statistically significant: we found a maximum of 2 exchanged OTUs between sites in our null analysis.
 The low number of directly exchanged OTUs between the oropharynx and lungs supports the finding that these sites are more distinct than others in the aerodigestive tract.
 The lungs and stomach exchange fewer OTUs than the oropharynx and stomach even though they have comparable intra-patient similarities, suggesting that factors other than specific bacterial exchange contributes to the similarity between lungs and stomachs within patients.
 
-Random Forest classifiers trained to distinguish between sites (ensuring that samples from the same patient were in the same train/test set) were able to identify a generalizable oropharyngeal microbial signature that distinguishes the oropharynx from other sites across people (AUC $=$ 0.95 for both gastric fluid and lung comparisons, Figure 3B).
-Surprisingly, when we compared within-patient similarities across sites to across-patient similarites for the same sites, we found that lung and stomach communities within patients were more similar than lungs across patients and than stomachs across patients (Table 3, p $< 1 \times 10^{-8}$).
+Random Forest classifiers trained to distinguish between sites (ensuring that samples from the same patient were in the same train/test set) were able to identify a generalizable oropharyngeal microbial signature that distinguishes the oropharynx from other sites across people (AUC $=$ 0.95 for both gastric fluid and lung comparisons, Figure \ref{fig3}B).
+Surprisingly, when we compared within-patient similarities across sites to across-patient similarites for the same sites, we found that lung and stomach communities within patients were more similar than lungs across patients and than stomachs across patients (Table \ref{tab3}, p $< 1 \times 10^{-8}$).
 Thus, while there exists a ``core'' oropharyngeal microbiome across people, lung and gastric communities are more variable and driven primarily by the person rather than body site.
 These results challenge the prevailing hypothesis that human-associated microbial communities are primarily driven by body habitat and instead suggest that patient-specific relationships may be equally, if not more, important in determining community structure in the aerodigestive microbiome \cite{costello2009bodysites,huttenhower2012hmp,lozupone2013bodysites}.
 
@@ -168,16 +168,16 @@ These results challenge the prevailing hypothesis that human-associated microbia
 \subsection{Aspiration modulates the relationship between lung and oropharyngeal microbiomes but not the lung and stomach}
 
 Next, we investigated the impact of oropharyngeal dysphagia and aspiration on the relationships between aerodigestive microbiomes.
-Aspirators had significantly more similar lung and oropharyngeal communities than non-aspirators (Figure 4A, p $=$ 0.04) and were much more likely to have the pre-defined oropharyngeal-lung microbes in both their oropharynx and lungs than non-aspirators (p $= 2 \times 10^{-5}$) (Figure 4B).
+Aspirators had significantly more similar lung and oropharyngeal communities than non-aspirators (Figure \ref{fig4}A, p $=$ 0.04) and were much more likely to have the pre-defined oropharyngeal-lung microbes in both their oropharynx and lungs than non-aspirators (p $= 2 \times 10^{-5}$) (Figure \ref{fig4}B).
 Lung-oropharynx exchanged OTUs co-occurred in a median of 42\% of aspirators' lung and oropharyngeal communities but only 20\% of non-aspirators'.
-Aspirators were not more likely to have stomach-lung microbes present in both the lungs and gastric fluid than non-aspirators (Figure 4B, p $>$ 0.5), and lung and gastric communities of aspirating patients were not necessarily more similar to each other than those of non-aspirating patients (Figure 4A, p $=$ 0.5).
+Aspirators were not more likely to have stomach-lung microbes present in both the lungs and gastric fluid than non-aspirators (Figure \ref{fig4}B, p $>$ 0.5), and lung and gastric communities of aspirating patients were not necessarily more similar to each other than those of non-aspirating patients (Figure \ref{fig4}A, p $=$ 0.5).
 
 To identify potential microbial biomarkers of aspiration, we looked at the exchanged OTUs which were most frequently present in the lung and oropharyngeal communities of aspirators relative to non-aspirators.
-In the oropharyngeal-lung exchanged OTUs, these were an unknown OTU in the \textit{Flavobacteriaceae} family, OTUs in the \textit{Fusobacterium}, \textit{Rothia}, \textit{Veillonella} genera, and an unknown OTU in the \textit{Prevotellaceae} family, among others (Table 4, gastric-lung OTUs in Supplementary Table 1).
+In the oropharyngeal-lung exchanged OTUs, these were an unknown OTU in the \textit{Flavobacteriaceae} family, OTUs in the \textit{Fusobacterium}, \textit{Rothia}, \textit{Veillonella} genera, and an unknown OTU in the \textit{Prevotellaceae} family, among others (Table \ref{tab4}, gastric-lung OTUs in Supplementary Table \ref{tabs1}).
 
 We used Random Forest classifiers trained on the presence of exchanged OTUs in different sites to test their potential as biomarkers.
-The concordant presence or absence of exchanged OTUs in the two sites improved classifiers based on the oropharyngeal-lung OTUs but not the ones based on the lung-gastric OTUs, relative to classifiers based on the presence of the exchanged OTUs in either site alone (Table 5).
-Using Random Forest classifiers trained on the entire microbiomes, we found that combining the oropharynx and lung communities resulted in a better classifier than either community alone (Table 6).
+The concordant presence or absence of exchanged OTUs in the two sites improved classifiers based on the oropharyngeal-lung OTUs but not the ones based on the lung-gastric OTUs, relative to classifiers based on the presence of the exchanged OTUs in either site alone (Table \ref{tab5}).
+Using Random Forest classifiers trained on the entire microbiomes, we found that combining the oropharynx and lung communities resulted in a better classifier than either community alone (Table \ref{tab6}).
 Surprisingly, the classifiers trained on oropharyngeal and gastric communities performed well, despite our expectation that aspiration-induced changes in the microbiome would manifest in the lungs rather than the oropharynx or stomach.
 We confirmed that the patients' aspiration status was not confounded with proton pump inhibitor usage (Fisher exact p-value $>$ 0.2), but there may be other co-morbidities or unmeasured confounders that could be driving the differences detected in these communities.
 However, taken together, these results suggest that identifying a biomarker for aspiration based on bacteria in both the lungs and oropharynx may be possible, and that these two sites together contain more information about a patient’s aspiration status than either site alone.
@@ -186,8 +186,8 @@ However, taken together, these results suggest that identifying a biomarker for 
 
 \subsection{Reflux may impact the relationship between lung and stomach microbiomes}
 
-Reflux profiles for the 31 patients are shown in Table 7.
-The percent of full column, distal, and proximal reflux were slightly negatively correlated with gastric-lung JSD, indicating that patients with more frequent reflux may have more similar gastric and lung microbial communities (Figure 5).
+Reflux profiles for the 31 patients are shown in Table \ref{tab7}.
+The percent of full column, distal, and proximal reflux were slightly negatively correlated with gastric-lung JSD, indicating that patients with more frequent reflux may have more similar gastric and lung microbial communities (Figure \ref{fig5}).
 However, the large range of gastric-lung JSDs across all patients and relatively weak correlation suggests that other non-reflux factors likely contribute more to the similarities between gastric and lung communities that are observed across all people.
 
 %Due to insufficient patients with both pH-MII and VFSS testing, we were unable to determine whether the relationship between reflux and lung-gastric similarity was more pronounced in patients with impaired airway protective mechanisms.
@@ -275,9 +275,6 @@ AUC: area under the ROC (receiver operating characteristic) curve \\
 
 \section{Tables}
 
-\newpage
-\FloatBarrier
-
 \begin{table}
 \begin{center}
 \begin{tabular}{ccccc}
@@ -289,7 +286,7 @@ Gastric fluid & 48 & 41 & 58 & 147 \\
 Stool & & & 20 & 20 \\
 \bottomrule
 \end{tabular}
-\caption{Number of patient samples for each body site.}\label{tab:samples}
+\caption{Number of patient samples for each body site.}\label{tab1}
 \end{center}
 \end{table}
 
@@ -304,7 +301,7 @@ Gastric fluid and oropharyngeal swab & 35 & 32 & 45 & 112 \\
 Stool and oropharyngeal swab & & & 20 & 20 \\
 \bottomrule
 \end{tabular}
-\caption{Number of patients with multiple body sites sequenced.}\label{tab:intra_samples}
+\caption{Number of patients with multiple body sites sequenced.}\label{tab2}
 \end{center}
 \end{table}
 
@@ -324,7 +321,7 @@ Stool and oropharyngeal swab & & & 20 & 20 \\
 	& not significant & oropharyngeal & 0.07 \\
 	\bottomrule
 \end{tabular}
-\caption{\textbf{Lung and gastric microbial communities are driven primarily by person rather than body site.} For each patient and each aerodigestive site, we compared the average JSD between that patient's site and all other patients' communities of that same site with the JSD between that patient's site and their other two aerodigestive sites. For example, the top row shows the comparisons between (1) the average JSD between a patient's oropharyngeal community and all other oropharyngeal communities and (2) the JSD between that patient's own oropharyngeal and lung communities. We subtracted each patient's between-sites JSD from their average between-patient JSD and calculated Wilcoxon signed-rank p-values using Python's \texttt{scipy.stats.wilcoxon} function.}\label{tab:site-comps}
+\caption{\textbf{Lung and gastric microbial communities are driven primarily by person rather than body site.} For each patient and each aerodigestive site, we compared the average JSD between that patient's site and all other patients' communities of that same site with the JSD between that patient's site and their other two aerodigestive sites. For example, the top row shows the comparisons between (1) the average JSD between a patient's oropharyngeal community and all other oropharyngeal communities and (2) the JSD between that patient's own oropharyngeal and lung communities. We subtracted each patient's between-sites JSD from their average between-patient JSD and calculated Wilcoxon signed-rank p-values using Python's \texttt{scipy.stats.wilcoxon} function.}\label{tab3}
 \end{center}
 \end{table}
 
@@ -347,7 +344,7 @@ Stool and oropharyngeal swab & & & 20 & 20 \\
 	Aerococcaceae & Abiotrophia & 21.7 & 28.0 & 6.3 \\
 	\bottomrule
 \end{tabular}
-\caption{\textbf{Prevalence of lung-oropharynx exchanged OTUs.} Prevalence is calculated as the percentage of patients who have the OTU present in both their lungs and oropharynx, calculated separately among aspirators (N $=$ 25) and non-aspirators (N $=$ 23). OTUs are ordered by their differential prevalence in aspirators relative to non-aspirators, and are labeled with their family- and genus-level taxonomies. Blank genus names indicate OTUs which were not annotated at the genus level. A similar table for the lung-gastric exchange OTUs can be found in Supplementary Table 1.}\label{tab:bal-throat-exchanged}
+\caption{\textbf{Prevalence of lung-oropharynx exchanged OTUs.} Prevalence is calculated as the percentage of patients who have the OTU present in both their lungs and oropharynx, calculated separately among aspirators (N $=$ 25) and non-aspirators (N $=$ 23). OTUs are ordered by their differential prevalence in aspirators relative to non-aspirators, and are labeled with their family- and genus-level taxonomies. Blank genus names indicate OTUs which were not annotated at the genus level. A similar table for the lung-gastric exchange OTUs can be found in Supplementary Table 1.}\label{tab4}
 \end{center}
 \end{table}
 
@@ -377,7 +374,7 @@ Concordance & 0.56 & 0.71 & 28/29 \\
 \end{tabular}
 %\end{tabular}
 
-\caption{\textbf{Classifiers based on the presence of exchanged OTUs.} (Top) Classifiers built from the presence of lung-oropharynx exchanged OTUs. (Bottom) Classifiers built from the presence of lung-gastric exchanged OTUs. Rows indicate which microbial community was used to train each classifier. In the ``concordance'' classifiers, OTUs which were either present or absent in both sites were coded as 1 and OTUs which were present in one site but absent in the other were coded as 0. AUCs are calculated as the area under the average ROC curve from five-fold cross validation. Fisher's exact p values are calculated on the predictions on the hold-out data for all cross validation folds. Each classifier was built 100 times with random patient splits and classifier initializations, and mean values are reported here. Similar classifiers built from the abundance of exchanged OTUs are shown in Supplementary Table 2. AUCs and Fisher p-values from all 100 repetitions for all classifiers are shown in Supplementary Figures 2 and 3.) }\label{tab:exchange-classifiers}
+\caption{\textbf{Classifiers based on the presence of exchanged OTUs.} (Top) Classifiers built from the presence of lung-oropharynx exchanged OTUs. (Bottom) Classifiers built from the presence of lung-gastric exchanged OTUs. Rows indicate which microbial community was used to train each classifier. In the ``concordance'' classifiers, OTUs which were either present or absent in both sites were coded as 1 and OTUs which were present in one site but absent in the other were coded as 0. AUCs are calculated as the area under the average ROC curve from five-fold cross validation. Fisher's exact p values are calculated on the predictions on the hold-out data for all cross validation folds. Each classifier was built 100 times with random patient splits and classifier initializations, and mean values are reported here. Similar classifiers built from the abundance of exchanged OTUs are shown in Supplementary Table 2. AUCs and Fisher p-values from all 100 repetitions for all classifiers are shown in Supplementary Figures \ref{asp_figs2} and \ref{asp_figs3}.) }\label{tab5}
 \end{center}
 \end{table}
 
@@ -396,7 +393,7 @@ Oropharyngeal swab and gastric fluid & 0.76 & 0.02 & 35/32 \\
 All three sites & 0.83 & 0.01 & 19/23 \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Classifiers based on perturbed relationship between lung and oropharyngeal microbiota can distinguish aspirators from non-aspirators.} Areas under the ROC curve (AUC) and Fisher p-values calculated from classifiers trained on the entire microbial communities. Each row is a different classifier based on different combinations of aerodigestive communities, indicated in the ``Sites'' column. In the multi-site classifiers, the abundances of OTUs in different sites were used as separate features. For each classifier type, 100 classifiers were built, with random patient splits and classifier initializations. Mean values are reported. The distribution of AUCs and Fisher p-values from all 100 repetitions are shown in Supplementary Figure 4.}\label{tab:aspiration_aucs}
+\caption{\textbf{Classifiers based on perturbed relationship between lung and oropharyngeal microbiota can distinguish aspirators from non-aspirators.} Areas under the ROC curve (AUC) and Fisher p-values calculated from classifiers trained on the entire microbial communities. Each row is a different classifier based on different combinations of aerodigestive communities, indicated in the ``Sites'' column. In the multi-site classifiers, the abundances of OTUs in different sites were used as separate features. For each classifier type, 100 classifiers were built, with random patient splits and classifier initializations. Mean values are reported. The distribution of AUCs and Fisher p-values from all 100 repetitions are shown in Supplementary Figure \ref{figs4}.}\label{tab6}
 \end{center}
 \end{table}
 
@@ -417,14 +414,58 @@ Number abnormal by pH-metry & 9 \\
 Number abnormal by MII & 4 \\
 \bottomrule
 \end{tabular}
-\caption{Reflux characteristics measured by pH-MII.}\label{tab:reflux}
+\caption{Reflux characteristics measured by pH-MII.}\label{tab7}
 \end{center}
 \end{table}
 
 \FloatBarrier
 \newpage
 
+
+\section{Figures}
+
+\begin{figure}[h]
+        \begin{center}
+        \includegraphics[width=1.2\textwidth]{community_overview_whitebckg.png}
+        \caption{\textbf{Aerodigestive communities have similar predominant genera.} Bar plots showing relative abundances of aerodigestive OTUs collapsed to the genus level. Each column corresponds to one patient who had all three aerodigestive sites sequenced (N $=$ 19 non-aspirators, 23 aspirators, 24 untested). Phyla in legend are those with mean abundance $>$ 0.01 across all patients. Any other phyla are colored gray.}
+        \label{fig1}
+        \end{center}
+\end{figure}
+
+\begin{figure}[h]
+        \begin{center}
+        \includegraphics[width=\textwidth]{baseline_aerodigestive_across_patients_whitebckg.png}
+        \caption{\textbf{Lung and gastric communities are more variable across people than oropharyngeal communities.} (A) Violin plot of the Jensen-Shannon distance (JSD) between samples from the same site across different patients. A JSD close to 1 indicates that communities are very different (less similar). (B) PCoA plots of aerodigestive and stool microbial communities for all patients in the 2016 sequencing batch (N $=$ 21 BAL, 52 oropharyngeal swab, 43 gastric fluid, and 14 stool samples).}
+        \label{fig2}
+        \end{center}
+\end{figure}
+
+\begin{figure}[h]
+        \begin{center}
+        \includegraphics[width=\textwidth]{baseline_aerodigestive_within_patients_whitebckg.png}
+        \caption{\textbf{Within patients, aerodigestive communities are similar but lung and oropharynx remain most distinct.} (A) Jensen-Shannon distances between samples from different sites from the same patient. Comparisons between stool and oropharynx are included to contextualize these results, as these are expected to be very different. All comparisons are significant (Wilcoxon rank sums test calculated with Python's \texttt{scipy.stats.ranksums} function) except the lung and gastric fluid vs. gastric fluid and oropharyngeal swab beta diversities (p $=$ 0.6). Lung and oropharyngeal vs. oropharyngeal and stool, p $=$ 0.005. All other comparisons:  $p < 1 \times 10^{-8}$. (B) ROC curve of classifiers distinguishing different aerodigestive sites. Mean areas under the ROC curve (AUCs) are reported in parentheses in the legend.}
+        \label{fig3}
+        \end{center}
+\end{figure}
+
+\begin{figure}[h]
+        \begin{center}\includegraphics[width=\textwidth]{aspiration_jsd_exchange_whitebckg.png}
+        \caption{\textbf{Dysphagia increases aspiration of microbes from the oropharynx but not the stomach} (A) Intra-patient Jensen Shannon distance for different aerodigestive site comparisons in non-aspirators (brown) and aspirators (pink). Each point represents one patient. P-values (Wilcoxon rank sums test, calculated with Python's \texttt{scipy.stats.ranksums} function): lung and oropharyngeal swab $p = 0.04$, lung and gastric fluid $p = 0.5$, gastric fluid and oropharyngeal swab $p = 0.8$. (B) Percentage of patients with the previously defined exchanged microbes present in both of the respective sites (x-axis) in non-aspirators (brown) and aspirators (pink). Each pair of points represents one exchanged OTU. P-values (paired t-test on $log_{10}$ prevalence values, calculated with Python's \texttt{scipy.stats.ttest\_rel} function: lung and oropharyngeal swab $p = 3 \times 10^{-5}$, lung and gastric fluid $p = 0.8$, gastric fluid and oropharyngeal swab $p = 0.09$.}
+        \label{fig4}
+        \end{center}
+\end{figure}
+
+\begin{figure}[h]
+        \begin{center}\includegraphics[width=\textwidth]{reflux_correlation_with_bal_gastric.png}
+        \caption{\textbf{Reflux severity may correlate with the similarity between lung and gastric communities.} Each plot shows the correlation between different reflux measures and the within-patient Jensen-Shannon distance between BAL and gastric fluid samples. Points are colored according to aspiration status. All reflux measures include both acid- and non-acid reflux. Spearman correlation and p-values: total number of reflux episodes $\rho_s = -0.14, p = 0.5$, percentage of full column reflux events $\rho_s = -0.41, p = 0.03$, percent of time reflux was proximal $\rho_s = -0.47, p = 0.01$, percent of time reflux was distal $\rho_s = -0.43, p = 0.02$.}
+        \label{fig5}
+        \end{center}
+\end{figure}
+
+\FloatBarrier
+\newpage
+
 \bibliographystyle{unsrtnat}
-\bibliography{../refs.bib}
+\bibliography{aspiration/aspiration_refs.bib}
 
 %\end{document}
