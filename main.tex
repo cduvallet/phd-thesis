@@ -7,25 +7,30 @@
 \usepackage[T1]{fontenc}
 \pagestyle{plain}
 
-% packages I put into the template
+% packages Scott put into the template
 \usepackage{pdfpages} % to include pdfs
 \usepackage{caption} % for caption*
-\usepackage{graphicx}
+\usepackage{graphicx} % for figures
 \usepackage{chapterbib} % for bibliographies in each chapter
 \usepackage{tocloft} % for fixing table of contents
-\usepackage[linktocpage=true]{hyperref} % for internal links
 \usepackage{booktabs} % for nice tables
-\usepackage{lscape} % for a landscape page (extra-wide table)
 
 % options for controlling the table of contents typesetting
 \setcounter{tocdepth}{1} % only show chapters in table of contents
 \renewcommand{\cftchapfont}{\rmfamily} % chapters in not bold
 \renewcommand{\cftchappagefont}{\rmfamily} % page in not bold
 
-% for inputting the ancient Greek
-\usepackage[utf8x]{inputenx}
-\usepackage[polutonikogreek,english]{babel}
-\usepackage{epigraph}
+% Packages Claire needed for individual papers
+\usepackage[colorlinks=false]{hyperref} % for links and urls
+\usepackage{amsmath,amssymb} % for math
+\usepackage{color,soul} % for highlighting
+\usepackage{rotating,multirow} % for nice tables
+\usepackage[numbers]{natbib}
+\usepackage[above]{placeins} % for FloatBarrier
+\usepackage{amsmath} % for pretty fraction text
+\usepackage{booktabs} % for multi-line tables
+\usepackage{lineno} % for line numbers
+\usepackage{geometry} % for supp fig large pages
 
 \begin{document}
 
