@@ -25,53 +25,53 @@ Together, the following chapters aim to move the findings from microbiome data a
 
 \section{Multi-site sampling to identify clinical associations in the aerodigestive microbiome}
 
-In Chapter 2, we present an analysis that leverages simultaneous sampling within patients to identify clinically-relevant aerodigestive microbiome characteristics that distinguish patients with swallowing dysfunction from those with normal swallow.
+In Chapter 2, I leverage simultaneous sampling within patients to identify clinically-relevant aerodigestive microbiome characteristics that distinguish patients with swallowing dysfunction from those with normal swallow.
 Currently, diagnosing aspiration resulting from impaired swallow function involves imaging a patient as they ingest barium-labeled food or liquid.
 Identifying lung microbial biomarkers would provide a useful non-radioactive alternative to this diagnosis.
 Additionally, patients with impaired swallow function are at higher risk for respiratory infections, but the extent to which the lung microbiome is perturbed by aspiration and thus potentially involved in mediating this risk is unknown.
 Finally, clinical interventions to treat respiratory symptoms in patients with impaired swallow focus on preventing material transfer from the stomach into the lungs, for example via anti-reflux medication or fundoplication surgery.
-However, the clinical utility of these interventions in pediatric populations is not fully established, and the extent to which the gastric vs. mouth microbiome mediates respiratory complications is also not known.
+However, the clinical utility of these interventions in pediatric populations is not fully established, and the extent to which the gastric vs. mouth microbiome mediates respiratory complications is not known.
 
 In this study, I analyzed a set of aerodigestive microbiome samples collected from over 200 patients at Boston Children's Hospital.
-I first show that lung and stomach microbiomes are highly variable across people and driven primarily by person rather than body site, thus complicating the search for a reliable microbial biomarker of aspiration across people.
-I overcome this challenge by leveraging the fact that we have multiple samples per patient and looking instead at aspiration-related changes in the within-patient \textit{relationships} between microbial communities across the aerodigestive tract.
+I first show that lung and stomach microbiomes are highly variable across people and driven primarily by person rather than body site, complicating the search for a reliable microbial biomarker of aspiration across patients.
+I overcome this challenge by leveraging the fact that we have multiple samples per patient, comparing instead the within-patient \textit{relationships} between microbial communities in the aerodigestive tract of patients with and without aspiration.
 Using this approach, I show that aspiration shifts lung microbial communities toward the oropharyngeal but not the stomach microbiome, suggesting that the mouth is likely an important source of lung microbiome changes in these patients.
 Thus, approaches for treating aspiration-related respiratory symptoms should target microbial transfer from the mouth into the lungs in addition to focusing on the gastric-lung axis, as most current interventions do.
-This study also illustrates the power of multi-site within-patient sampling to overcome variability across people to identify clinically meaningful microbiome-base biomarkers.
+This study also illustrates the power of multi-site within-patient sampling to overcome variability across people to identify clinically meaningful microbiome-based biomarkers.
 
 \section{Re-analyzing datasets to find consistent patterns of associations between the gut microbiome and disease}
 
-In Chapter 3, I present a meta-analysis of 28 case-control gut microbiome studies across 10 diseases to synthesize findings across studies and identify generalizable associations.
+In Chapter 3, I perform a meta-analysis of 28 case-control gut microbiome studies across 10 diseases to synthesize findings across studies and identify generalizable associations.
 Although the human gut microbiome has been extensively studied in many diseases, there is little consensus on which disease associations are consistent across patient cohorts.
 In other fields like medicine or psychology, consensus is usually achieved through meta-analyses of published literature.
 However, comparing published results across microbiome studies is not straightforward.
 The field lacks standard data processing and analysis methods, making many reported results impossible or inappropriate to compare directly between studies.
-For example, different studies often use incompatible bioinformatics or statistical methods: they may compare bacteria at different taxonomic levels or use incompatible bioinformatics workflows, and they may identify significant associations through univariate statistical tests or machine learning models, results from which can not be compared.
-Additionally, studies led by clinicians often ask very different questions of the data than studies led by microbial ecologists, and so the reported results are not necessarily representative of the potential information contained in the full dataset.
+For example, different studies often use incompatible bioinformatics or statistical methods: they may compare bacteria at different taxonomic levels and use different bioinformatics workflows, and they may identify significant associations through univariate statistical tests or machine learning models, results from which can not be compared.
+Additionally, studies led by clinicians often ask very different questions of the data than studies led by microbial ecologists, and so the reported results are not necessarily representative of the comprehensive information contained in the full dataset.
 This issue is especially relevant in this field, where non-invasive sample collection and open-source bioinformatics software suites have made microbiome research accessible to a broad range of scientists and clinicians.
 
-In this chapter, I perform a meta-analysis of gut microbiome studies which overcomes many of these challenges by reprocessing and reanalyzing data with standard methods.
+In this chapter, I perform a meta-analysis of gut microbiome studies which overcomes many of these challenges by reprocessing and reanalyzing raw data with standard methods.
 Even though specific bacterial associations vary across studies of the same disease, I identify patterns of general microbiome shifts which are consistent  and which suggest different approaches for developing microbiome-based therapeutics.
 When looking across multiple diseases, I find a set of bacteria which are non-specifically associated with health and disease, perhaps forming a shared or core response to health and disease.
 These results highlight the importance of contextualizing results from individual studies within the existing body of work, and also hints at the possibility of developing broadly beneficial targeted probiotic and antibiotic therapies.
 
 \section{Translating microbiome research through rationally designed fecal microbiota transplant clinical trials}
 
-In Chapter 4, we present a framework for selecting donors in fecal microbiota transplant (FMT) clinical trials, which are clinical and research tools.
-In recurrent \textit{Clostridium difficile} infection (rCDI), FMTs have proven themselves as a remarkably effective clinical treatment, with an approximately 85% cure rate.
-In microbiome research, FMT trials can be used to identify or confirm promising conditions where the microbiome may have a causal role to play.
-In rCDI, there is little variability in FMT efficacy and patient across different donors.
-However, as FMT expands to conditions beyond rCDI, it is becoming apparent that in most other conditions, donor heterogeneity is likely to play a role in patient response.
-Thus, it is likely that as FMT expands to these new indications, many trials will fail not because the indication is not amenable to FMT but rather because an ineffective donor was chosen.
-As a consequence, excitement for and resources to support FMT research may dwindle, slowing progress toward finding clinical applications of microbiome-based therapies.
+In Chapter 4, I present a framework for rationally selecting donors in fecal microbiota transplant (FMT) clinical trials.
+In recurrent \textit{Clostridium difficile} infection (rCDI), FMTs have proven themselves as a remarkably effective clinical treatment, generating excitement about the clinical potential of FMTs in other diseases.
+Clinical trials in non-rCDI diseases can be used to identify promising conditions in which the microbiome may have a causal role to play.
+However, although there is little donor-dependent variability in FMT efficacy in rCDI, it is becoming apparent that in most other non-rCDI conditions, donor heterogeneity likely plays a role in patient response.
+Thus, as FMT trials expand to new indications, many trials may fail not because the indication was not amenable to improvement by FMT but rather because an ineffective donor was chosen.
+As a consequence, excitement and support for FMT research will be dampened, slowing progress toward finding clinical applications of microbiome-based therapies.
 
-In this chapter, we present an approach for selecting donors in FMT trials to increase the likelihood that FMT trials will succeed.
-In our proposed framework, a clinician uses her a priori hypotheses for how the indication under study is being mediated by the microbiome in order to drive the donor selection process.
-We present four disease models which may underly microbiome-mediated diseases: including acute dysbiosis and mediation by individual taxa, community function, or complex host-microbiome interactions.
-We present an associated donor selection strategy for each of these disease models, and provide case studies illustrating this process.
-Finally, we show that retrospective analyses in most common FMT trial set-ups are unlikely to identify important bacteria in the donor stool that may be mediating patient response to FMT.
-The framework that we present encourages clinicians to leverage existing research, their clinical exprience, and the increasing availability of donor stools via stool banks to ensure that clinical microbiome research does not stagnate on its road to patient impact.
-Furthermore, it suggests that larger trials than are usual may be necessary to identify bacteria associated with FMT response, and encourages clinicians to come up with more targeted hypotheses to test in their prospective analyses.
+In this chapter, we present an approach for selecting donors in FMT trials to increase the likelihood that these trials will succeed.
+In our proposed framework, a clinician applies her existing knowledge and hypotheses for how her indication of interest is being mediated by the microbiome to drive the donor selection process.
+We present four types of disease models to describe underlying processes mediating microbiome-related diseases: acute dysbiosis, mediation by individual taxa, missing or overactive community function, and complex host-microbiome interactions.
+We suggest associated donor selection strategies for each of these disease models, and provide case studies illustrating the process of selecting donors rationally.
+Finally, I perform a power simulation which finds that most FMT trials are unlikely to be powered enough to identify the key donor bacteria mediating patient responses to FMT.
+Thus, to successfully make discoveries from completed trials, clinicians should perform hypothesis-driven retrospective analyses and plan for these during the clinical trial design process, for example by collecting paired donor and patient and/or longitudinal samples.
+The framework that we present encourages clinicians to leverage their clinical experience, existing microbiome research and published datasets, and the increasing availability of screened donor stools to more efficiently translate microbiome research into clinical impact.
+It also suggests approaches for improving retrospective analyses of the microbiome data generated during these clinical trials.
 
 
 \section{More words}
