@@ -11,7 +11,7 @@
 
 The human microbiome, the microbes that live in and on our bodies, is essential for health and has been implicated in many diseases.
 Almost all human body sites are colonized by microbes, ranging from the gut, the largest human-associated microbial community, to the lungs, which were for many years considered sterile (citation needed).
-These microbial communities perform essential functions for health, including fighting off and preventing infections, interacting with and regulating host immune responses, and metabolizing xenobiotics or other compounds which are indigestible by the host.
+These microbial communities perform essential functions for health, including fighting off and preventing infections, regulating host metabolism and interacting with the immune system, and metabolizing xenobiotics or other compounds which are indigestible by the host.
 Additionally, perturbations in human microbiomes have been implicated in many diseases, including metabolic, autoimmune, neurological, and respiratory conditions.
 
 The potential for microbiome-based therapies to improve human health and address a broad range of diseases has led to a recent expansion of research and clinical studies in this field.
@@ -41,19 +41,20 @@ This study also illustrates the power of multi-site within-patient sampling to o
 
 \section{Re-analyzing datasets to find consistent patterns of associations between the gut microbiome and disease}
 
-In Chapter 3, I perform a meta-analysis of 28 case-control gut microbiome studies across 10 diseases to synthesize and identify generalizable findings from these studies.
-Although the human gut microbiome has been extensively studied in over hundreds of studies, there is little consensus on which disease associations are clinically relevant and consistent across patient cohorts.
-In most fields, consensus across studies is achieved by performing a meta-analysis of the published literature.
-However, comparing published results across microbiome studies is complicated in part by the lack of standardized data processing and analysis methods.
-Furthermore, and especially in the microbiome field, studies led by different research groups can have fundamentally different approaches to their analyses that preclude comparing published results.
-For example, a gastroenterologist and a microbial ecologist analyzing the same patient cohort might be interested in answering different scientific questions and have access to fundamentally different analysis approaches.
+In Chapter 3, I perform a meta-analysis of 28 case-control gut microbiome studies across 10 diseases to synthesize findings across studies and identify generalizable associations.
+Although the human gut microbiome has been extensively studied in many diseases, there is little consensus on which disease associations are consistent across patient cohorts.
+In other fields like medicine or psychology, consensus is usually achieved through meta-analyses of published literature.
+However, comparing published results across microbiome studies is not straightforward.
+The field lacks standard data processing and analysis methods, making many reported results impossible or inappropriate to compare directly between studies.
+For example, different studies often use incompatible bioinformatics or statistical methods: studies may compare bacteria at different taxonomic levels or use incomparable bioinformatics workflows, and they may identify significant associations through univariate statistical tests or machine learning models, all of which complicates the comparison of results across studies.
+Additionally, studies led by clinicians often ask very different questions of the data than studies led by microbial ecologists, and so the reported results are not necessarily representative of the comprehensive information capable of being extracted from the full dataset.
+This issue is especially pertinent to the gut microbiome field, where stool sample collection and open-source bioinformatics software suites have made microbiome research accessible to a broad range of scientists and clinicians alike.
 
-I overcome the challenges involved in doing a traditional meta-analysis in this field by starting from raw data and applying the same data processing and analysis methods to all 28 datasets.
-I find that although there is considerable heterogeneity in which individual bacteria are associated with a given disease across multiple studies of that disease, there are also patterns of microbiome shifts which are remarkably consistent.
-Furthermore, I show that many associations within individual studies are not specific to the disease being investigated.
-This study is the first reported cross-disease meta-analysis and shows the value and importance of contextualizing results from individual studies within the broader context of existing microbiome research.
-The consistent shifts that we describe can also suggest different approaches for developing microbiome-based therapeutics in diseases with different types of shifts.
-Furthermore, identifying a set of shared health- and disease-associated bacteria suggests core responses to disease and hints at the potential for developing broadly beneficial probiotic or targeted antibiotic therapies.
+In this chapter, I present a meta-analysis of gut microbiome studies which overcomes many of these challenges by reprocessing and reanalyzing data with standard methods.
+Even though specific bacterial associations may vary across studies of the same disease, I do find consistent patterns of general microbiome shifts which are consistent.
+These shifts suggest different associated approaches for developing microbiome-based therapeutics.
+When looking across multiple diseases, we find a set of bacteria which are non-specifically associated with health and disease, suggesting a shared response to health and disease.
+These results highlight the importance of contextualizing individual study results within existing work and also hints at the possibility of developing broadly beneficial targeted probiotic and antibiotic therapies.
 
 \section{Translating microbiome research through rationally designed fecal microbiota transplant clinical trials}
 
