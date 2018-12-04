@@ -6,23 +6,47 @@
 %% prompt when you run the file main.tex through LaTeX.
 \chapter{Discussion}
 
-\section{Summary}
+\section{Summary and limitations of reported work}
 
-In the first project, I overcome the difficult of identifying consistent biomarkers across highly variable lung and stomach communities by instead looking at the relationships between different aerodigestive body sites.
-In the second project, I re-analyze gut microbiome datasets across many diseases and individual studies to identify consistent associations and overcome the difficulty of extracting generalizable knowledge from the many published studies.
-In the third project, I present a framework to leverage insights gleaned from data analyses and mechanistic experiments to improve future fecal microbiota transplant clinical trials.
+In this thesis, I present three projects which overcome a variety of challenges to mine human microbiome data to extract clinical insights.
+In the first project, I overcome the difficulty of identifying consistent biomarkers across highly variable lung and stomach communities by instead looking at the relationships between aerodigestive body sites within individual patients.
+In the second project, I re-analyze gut microbiome datasets across many diseases and individual studies to identify consistent associations despite the technical challenges involved in extracting generalizable knowledge from the existing corpus of published studies.
+In the third project, I present a framework to categorize disease-specific insights gleaned from previously performed analyses and experiments and leverage them to improve fecal microbiota transplant clinical trials.
+Although performed in different contexts and with different goals in mind, these three computational projects share limitations which suggest further work to test and validate their findings.
 
-\section{Limitations of reported work}
+The major limitation of this thesis is that the findings in each project suggest associations but do not and cannot confirm causal relationships.
+In Chapter 2, although I demonstrate that the interpretation of the aspiration-associated perturbation that I find is consistent across a variety of analyses and metrics, these associations would still need to be recapitulated and confirmed in an independent patient cohort before being further developed as a clinical diagnostic.
+Furthermore, many more mechanistic experiments and longitudinal retrospective cohort analyses would need to be done to confirm their association with aspiration-related respiratory infections.
+In Chapter 3, the consistent associations that I identify across many different gut microbiome studies and microbiome-related diseases can make no claim of causality: in all case-control microbiome datasets, it is not possible to determine whether the microbiome shifts are a cause of the disease or simply responding to the host's physiological state.
+In fact, finding many non-specific disease- and health-associated bacteria across these datasets suggests that a large part of these associations are more likely to be responses to the host's general health status rather than specifically causal to any given disease.
+To truly find disease-associated bacteria, researchers need to identify consistent associations across multiple cohorts of their disease of interest which are also specific to that disease, and isolate the strains of interest to test their and specificity in animal models.
+Finally, the conceptual framework that I present in Chapter 4 suggests one way to advance translational microbiome science but will need to be applied in many FMT trials before its impact on FMT trial successes can be confirmed.
 
-Associations not causation: in all three projects, I only show associations. Need to go back and validate with larger patient cohorts and orthogonal confirmations (mechanistic model organism studies, randomized trials, culturing bugs to check that they matter, etc)
+Another limitation of the projects presented in this thesis comes from the fact that they anchored in the analysis of 16S rRNA data, which is more accessible than many 'omics data types but comes with its own set of inherent limitations.
+16S data provides a window into which bacteria are present in microbial communities but does not indicate what functions these bacteria are performing.
+Because disease-mediating effects will result from bacterial function, future work should strive to incorporate function into their studies, for example by analyzing metagenomics, metabolomics or transcriptomics data, or a combination of these data types.
+Experimental work like ex-vivo studies could also be paired with 'omics data analyses to confirm functional associations as these experimental techniques become more developed and accessible.
+Furthermore, in most cases 16S data cannot resolve bacteria at the strain level.
+Given that different strains of the same species have dramatically different clinical presentations, this is a crucial limitation in extracting clinically relevant associations from 16S microbiome data.
+Strain-level resolution will be especially important in evaluating rational donor selection methods, where engraftment of specific donor strains may be an important factor mediating different patient responses to FMT.
 
-Taxonomy but not function-based: in all three projects, I mostly focus on what we can learn from 16S data. But function is probably way more relevant: need to look at metagenomics or transcriptomics. And also, strains are really the thing that matters in this data. For FMT stuff especially, will need robust ways to track strains in complex communities.
-
-Sample sizes: even though aerodigestive in the largest cohort, it's still too small to make robust inferences about things of interest (like reflux). Even though 30 datasets is a lot, it's nowhere near the size of "real" meta-analyses. And, as we show in donor selection chapter, sample size will continue to be a limitation in trying to extract new discoveries from FMT trials.
+Finally, small sample sizes limit each of the projects presented in this thesis.
+Although the aerodigestive cohort presented in Chapter 2 and the meta-analysis in Chapter 3 are the largest of their kind to date, the analyses that I could perform were still limited by their sample sizes.
+In Chapter 2, I was unable to draw robust conclusions about the relationship between reflux and the aerodigestive microbiome because the number of patients with the respective samples and metadata was too small to sufficiently power my analysis.
+In fact, throughout this project I frequently found my analyses limited by the necessary confluence of samples and metadata.
+For example, I would have liked to analyze the combinatorial effects of proton pump inhibitors, aspiration, and reflux on the aerodigestive microbiome, but I simply did not have enough patients with the respective samples and metadata to perform any reasonably powered analyses.
+The meta-analysis presented in Chapter 3 was also limited by the number of datasets and diseases.
+Originally, I had hoped to compare disease-associated microbiome shifts in an unsupervised manner to identify patterns of shifts common to similar types of diseases.
+For example, I wondered if I could find a consistent group of bacteria associated with inflammation across multiple inflammatory diseases.
+However, I was not able to find enough datasets across multiple diseases to enable such broader categorization of diseases and perform statistically meaningful analyses on these groups of datasets.
+Finally, one of the main conclusions of the framework presented in Chapter 4 is that the usual sample sizes in FMT studies will almost always limit the power of retrospective analyses to identify key bacteria.
+Because these studies are performed with human samples and sometimes require careful ethical justifications and considerable patient recruitment efforts, this challenge of small sample sizes is likely to remain an important limitation for future studies throughout the microbiome field.
 
 \section{Perspective and extensions}
 
 \subsection{Re-analyzing existing datasets is awesome}
+
+A core theme of my thesis work has the re-analysis of existing microbiome datasets
 
 Allows for people to come and ask new questions easily.
 
@@ -46,15 +70,21 @@ Third project: illustrates the power of putting the two expertises together
 
 First project: have to go beyond just looking for statistical significance and try to figure out what would be clinically meaningful.
 
-Second project: just listing bugs doesn't mean anything if you don't contextualize them
+Second project: just listing bugs doesn't mean anything if you don't contextualize them. More work should be done to identify a generic "healthy" and "disease" microbiome.
 
 Third project: need to incorporate your a priori knowledge into everything you do. Have to think about *why* a trial would fail, and whether or not you think that's legit or not. Also, remember to try very hard to ask better questions at the outset of a clinical trial.
 
 
 
+\section{More words}
 
+Sample sizes: even though aerodigestive in the largest cohort, it's still too small to make robust inferences about things of interest (like reflux). Even though 30 datasets is a lot, it's nowhere near the size of "real" meta-analyses. And, as we show in donor selection chapter, sample size will continue to be a limitation in trying to extract new discoveries from FMT trials.
 
-\section{Extensions}
+Associations not causation: in all three projects, I only show associations. Need to go back and validate with larger patient cohorts and orthogonal confirmations (mechanistic model organism studies, randomized trials, culturing bugs to check that they matter, etc)
+
+Taxonomy but not function-based: in all three projects, I mostly focus on what we can learn from 16S data. But function is probably way more relevant: need to look at metagenomics or transcriptomics. And also, strains are really the thing that matters in this data. For FMT stuff especially, will need robust ways to track strains in complex communities. Also meta-analysis, need to confirm what the bugs are doing.
+
+\subsection{Extensions}
 
 Aerodigestive: ??
 
