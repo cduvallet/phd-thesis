@@ -9,27 +9,26 @@
 
 \section{The human microbiome in health and disease}
 
-The human microbiome, the microbes that live in and on our bodies, is essential for health and has been implicated in many diseases.
-Almost all human body sites are colonized by microbes, ranging from the gut, the largest human-associated microbial community, to the lungs, which were for many years considered sterile.
+The microbes that live in and on our bodies make up the human microbiome, are essential for health, and have been implicated in many diseases.
+Almost all human body sites are colonized by microbes, ranging from the gut, the largest human-associated microbial community, to the lungs, which were for many years considered sterile \cite{sender-2016-bhratio,beck-2012-lungmicrobiome}.
 These microbial communities perform essential functions for health, including fighting off and preventing infections, regulating host metabolism and interacting with the immune system, and metabolizing xenobiotics or other compounds which are indigestible by the host.
-Additionally, perturbations in human microbiomes have been implicated in many diseases, including inflammatory, metabolic, neurological, and respiratory conditions.
+Additionally, perturbations in human microbiomes have been implicated in many diseases, including inflammatory, metabolic, neurological, and respiratory conditions \cite{beck-2012-lungmicrobiome,ibd-papa,ob-TBD,hsiao-2013-autism}.
 
 The potential for microbiome-based therapies to improve human health and address a broad range of diseases has led to a recent expansion of research and clinical studies in this field.
-Much of the emerging research has been driven in part by the increasing accessibility of DNA sequencing technology, which can provide a detailed view of the bacteria in these communities without the need for time-consuming and difficult culturing experiments.
-However, identifying clinically-relevant associations from microbiome studies remains challenging.
+Much of the emerging research has been driven in part by the increasing accessibility of DNA sequencing technology, which can provide a detailed view of the bacteria in these communities without the need for time-consuming and difficult culturing experiments \cite{hmp-2012}.
+However, identifying clinically-relevant associations from microbiome studies remains challenging \cite{knights-2011-predictivevalue}.
 Microbiome datasets are high-dimensional, with hundreds to thousands of bacterial species measured in usually only tens to hundreds of patient samples.
 Microbial communities are also highly variable across people, making it more difficult to identify individual bacterial biomarkers that can consistently distinguish health and disease across many different patients.
 Finally, microbiome datasets provide a window into associations but not causal relationships, and researchers must perform follow-up mechanistic studies or clinical trials to confirm the clinical relevance of any identified associations.
-In this thesis, we present three unique analyses of microbiome data which overcome some of these challenges and which illustrate a variety of approaches for extracting useful clinical insights from mining microbiome data.
-Together, the following chapters aim to move the findings from microbiome data analyses beyond statistical significance and toward clinical meaningfulness.
+In this thesis, I present three unique analyses of microbiome data which overcome some of these challenges and which illustrate a variety of approaches for extracting useful clinical insights from mining microbiome data.
+Together, the following chapters aim to move findings from the individual microbiome data analyses beyond statistical significance and toward clinical meaningfulness.
 
 \section{Multi-site sampling to identify clinical associations in the aerodigestive microbiome}
 
 In Chapter 2, I leverage simultaneous sampling within patients to identify clinically-relevant aerodigestive microbiome characteristics that distinguish patients with swallowing dysfunction from those with normal swallow.
-Currently, diagnosing aspiration resulting from impaired swallow function involves imaging a patient as they ingest barium-labeled food or liquid.
-Identifying lung microbial biomarkers would provide a useful non-radioactive alternative to this diagnosis.
-Additionally, patients with impaired swallow function are at higher risk for respiratory infections, but the extent to which the lung microbiome is perturbed by aspiration and thus potentially involved in mediating this risk is unknown.
-Finally, clinical interventions to treat respiratory symptoms in patients with impaired swallow focus on preventing material transfer from the stomach into the lungs, for example via anti-reflux medication or fundoplication surgery.
+The current gold standard to diagnose aspiration resulting from impaired swallow function involves imaging a patient as they ingest different quantities and consistencies of contrast material \cite{cook-1999-dysphagia}, but identifying lung microbial biomarkers could provide a useful non-radioactive alternative to this diagnosis.
+Additionally, patients with impaired swallow function are at higher risk for respiratory infections, but the extent to which the lung microbiome is perturbed by aspiration and thus potentially involved in mediating this risk is unknown \cite{cook-1999-dysphagia,thomson-2016-asppneumo}.
+Finally, clinical interventions to treat respiratory symptoms in patients with impaired swallow focus on preventing material transfer from the stomach into the lungs, for example via anti-reflux medication or fundoplication surgery \cite{goldin-2006-fundo,lee-2008-fundo}.
 However, the clinical utility of these interventions in pediatric populations is not fully established, and the extent to which the gastric vs. mouth microbiome mediates respiratory complications is not known.
 
 In this study, I analyzed a set of aerodigestive microbiome samples collected from over 200 patients at Boston Children's Hospital.
@@ -43,11 +42,11 @@ This study also illustrates the power of multi-site within-patient sampling to o
 
 In Chapter 3, I perform a meta-analysis of 28 case-control gut microbiome studies across 10 diseases to synthesize findings across studies and identify generalizable associations.
 Although the human gut microbiome has been extensively studied in many diseases, there is little consensus on which disease associations are consistent across patient cohorts.
-In other fields like medicine or psychology, consensus is usually achieved through meta-analyses of published literature.
+In other fields like medicine or psychology, consensus is usually achieved through meta-analyses of published literature \cite{glass-1976}.
 However, comparing published results across microbiome studies is not straightforward.
 The field lacks standard data processing and analysis methods, making many reported results impossible or inappropriate to compare directly between studies.
-For example, different studies often use incompatible bioinformatics or statistical methods: they may compare bacteria at different taxonomic levels and use different bioinformatics workflows, and they may identify significant associations through univariate statistical tests or machine learning models, results from which can not be compared.
-Additionally, studies led by clinicians often ask very different questions of the data than studies led by microbial ecologists, and so the reported results are not necessarily representative of the comprehensive information contained in the full dataset.
+For example, different studies often use incompatible bioinformatics or statistical methods: they may compare bacteria at different taxonomic levels and use different bioinformatics workflows, and they may identify significant associations through univariate statistical tests or machine learning models, results from which can not be compared \cite{edd-singh,crc-baxter,crc-zeller,ob-zupancic}.
+Additionally, studies led by clinicians often ask very different questions of the data than studies led by microbial ecologists, and so the reported results are not necessarily representative of the comprehensive information contained in the full dataset \cite{asd-son,ra-scher,nash-wong}.
 This issue is especially relevant in this field, where non-invasive sample collection and open-source bioinformatics software suites have made microbiome research accessible to a broad range of scientists and clinicians.
 
 In this chapter, I perform a meta-analysis of gut microbiome studies which overcomes many of these challenges by reprocessing and reanalyzing raw data with standard methods.
@@ -58,9 +57,9 @@ These results highlight the importance of contextualizing results from individua
 \section{Translating microbiome research through rationally designed fecal microbiota transplant clinical trials}
 
 In Chapter 4, I present a framework for rationally selecting donors in fecal microbiota transplant (FMT) clinical trials.
-In recurrent \textit{Clostridium difficile} infection (rCDI), FMTs have proven themselves as a remarkably effective clinical treatment, generating excitement about the clinical potential of FMTs in other diseases.
+In recurrent \textit{Clostridium difficile} infection (rCDI), FMTs have proven themselves as a remarkably effective clinical treatment, generating excitement about the clinical potential of FMTs in other diseases \cite{quraishi-2017-rcdifmt,bafeta-2017-fmt}.
 Clinical trials in non-rCDI diseases can be used to identify promising conditions in which the microbiome may have a causal role to play.
-However, although there is little donor-dependent variability in FMT efficacy in rCDI, it is becoming apparent that in most other non-rCDI conditions, donor heterogeneity likely plays a role in patient response.
+However, although there is little donor-dependent variability in FMT efficacy in rCDI, it is becoming apparent that in many other non-rCDI conditions, donor heterogeneity likely plays a role in patient response \cite{moayyedi-2015,olesen-2018-superstool}.
 Thus, as FMT trials expand to new indications, many trials may fail not because the indication was not amenable to improvement by FMT but rather because an ineffective donor was chosen.
 As a consequence, excitement and support for FMT research will be dampened, slowing progress toward finding clinical applications of microbiome-based therapies.
 
@@ -73,90 +72,7 @@ Thus, to successfully make discoveries from completed trials, clinicians should 
 The framework that we present encourages clinicians to leverage their clinical experience, existing microbiome research and published datasets, and the increasing availability of screened donor stools to more efficiently translate microbiome research into clinical impact.
 It also suggests approaches for improving retrospective analyses of the microbiome data generated during these clinical trials.
 
-
-\section{More words}
-
-
-Excitement in this field from scientists, engineers, clinicians, and entrepreneurs has also been driven by the non-invasiveness of the research, large range and accessibility of potential interventions, and the increasing potential for clinical impact.
-Many human-associated communities can be sampled non-invasively, facilitating research that is performed with real human patient populations rather than model organisms.
-Interventions which can change the composition of microbial communities already exist and are accessible to patients: lifestyle changes such as diet can have large effects on the microbiome, and commonly used drugs like antibiotics and probiotics are already in wide usage.
-Thus, identifying ways to repurpose existing interventions for targeted outcomes is attractive and exciting because the potential to implement them quickly is high.
-Finally, the potential clinical impact of microbiome-based interventions is vast and growing.
-Fecal microbiota transplants (FMT) for recurrent Clostridium infection have already proven themselves as an effective treatment: over 80% of patients with recurrent C. diff are cured after FMT.
-Furthermore, many of the diseases in which the microbiome may play a role are associated with industrialization and are increasing in incidence worldwide.
-
------
-
-Identifying modifications in these drugs
-
-Interventions which can change the composition of microbial communities are also relatively accessible: diet and lifestyle are known to have large effects on the human microbiome, and existing drugs like antibiotics and probiotics are already in wide usage.
-
-Many possible ways to intervene to improve microbiome: lifestyle changes, antibiotics, probiotics
-
-There is also an exciting possibility of repurposing existing interventions like antibiotics and probiotics for greater or novel therapeutic effects.
-
-There is also strong precedent for microbial-based therapies, and the
-
-allowing for studies to iterate between real human patients and model organisms
-
-Motivate why we're excited about using the microbiome for therapeutic applications - written out version of my usual talk intro.
-
-with the motivating goal
-
-Discuss big data aspect of microbiome research: sequencing provides opportunities and challenges.
-
-From Sarah's: "In this thesis, I present three studies of bacterial functional and spatial structure that highlight innovative new molecular biology techniques and methods to increase throughput by reducing reaction volume. The following chapters each contain a unique application in environmental or human microbial communities that show the critical need to link genes to hosts, and link hosts to local community members and microenvironments."
-
------
-
-Furthermore, this analysis suggests that future studies investigating clinical associations in lung and stomach microbiomes
-
-Suggest new avenues for approaches to treating aspiration and for analyzin future lung microbiome studies.
-
-Mention that this patient population is already undergoing these invasive tests, so a microbiome-based alternative would actually be useful.
-
-We overcome the challenge presented by huge variability between lungs by looking within patients.
-
-Patients with impaired swallow function are at higher risk for respiratory infections, but the mechanism by which these infections are mediated is unknown.
-Clinical interventions like fundoplication surgery and anti-reflux medication attempt to reduce transfer of material and bacteria from the stomach to the lungs, which is thought to drive respiratory complications, but often do not show clinical benefit.
-
-Additionally, the extent to which the microbiome is perturbed by and perhaps implicated in aspiration-related respiratory complications is unknown.
-
-Further complicating this is that we lack a comprehensive understanding of hte lung and stomach microbial communities: these samples require invasive sampling procedures and are thus difficult to acquire, especially in health people.
-In fact, neither the lung nor stomach were included in the first iteration of the Human Microbiome Project, and the lung was thought to be sterile for many years.
-
-The aerodigestive tract is comprised of the upper and lower respiratory tracts and the upper gastrointestinal tract, including body sites such as the oropharynx, lungs, and stomach.
-Unlike most other body systems, material in the aerodigestive tract flows between body sites bidirectionally.
-For example, swallowing carries material from the mouth into the stomach, but vomiting or reflux can also lead to exchange in the opposite direction.
-Thus, microbial communities in this body system are shaped by a balance of immigration, elimination, and growth (Dickson Lancet 2014).
-However, compared to other human-associated communities like the gut and skin microbiome, relatively little is known about the communities in the lung and stomach.
-In fact, the lungs were long thought to be sterile and neither the lung nor stomach were included in the first iteration of the Human Microbiome Project.
-Despite the emerging recognition that these sites are also characterized by microbial communities which perform important functions, it remains difficult to study these in part because acquiring lung and gastric microbiome samples requires invasive procedures such as bronchoscopies and upper endoscopies.
-Thus, we lack a baseline understanding of these communities in health.
-
-Introduce aerodigestive microbiome. Discuss challenges: sampling is invasive so it's not very well-studied. Lungs communities especially are very variable, making it difficult to identify specific biomarkers.
-
-However, identifying microbial biomarkers would be useful: these patients are already undergoing invasive tests, and reducing radiation would be good.
-
-In Chapter 2, we present an analysis that leverages simultaneous sampling of patients to identify clinically-relevant microbiome characteristics distinguishing patients with swallowing dysfunction from those with normal swallow.
-
-Mention that this patient population is already undergoing these invasive tests, so a microbiome-based alternative would actually be useful.
-
-We overcome the challenge presented by huge variability between lungs by looking within patients.
-
-Suggest new avenues for approaches to treating aspiration and for analyzin future lung microbiome studies.
-
------
-
-Important way to move from associations to clinical impact is through FMT. In model organisms, FMT is useful to prove causality and test mechanism. In humans, FMTs are useful to identify promising clinical areas where microbiome might be implicated.
-
-As our understanding of microbiome associations with diseases increases, FMTs will be used to drive the development of therapies. Coupled with exitence of stool banks, we can use what we learn to do better FMT trials.
-
-In Chapter 4, I present a framework for rational donor selection in FMT clinical trials, where the hypothesized type of microbiome association drives the way you do your trial.
-
-This chapter talks about what to do once you have figured out how your disease is being mediated by the microbiome.
-
 \begin{singlespace}
-\bibliography{main}
+\bibliography{chap1}
 \bibliographystyle{unsrt}
 \end{singlespace}
