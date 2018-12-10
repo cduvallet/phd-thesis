@@ -1,15 +1,15 @@
-\section{Supplementary Tables and Figures for Chapter 2}
+\section{Supplementary Tables}
 
-\subsection{Supplementary Tables}
-
-\newpage \pdfpagewidth=8.5in \pdfpageheight=16in
+%\newpage \pdfpagewidth=8.5in \pdfpageheight=16in
 \FloatBarrier
 
-\begin{table}
+\footnotesize
 \begin{center}
-\begin{tabular}{ccccc}
+\begin{longtable}{ccccc}
+%\begin{tabular}{ccccc}
 	Family & Genus & Non-aspirator & Aspirator  & Difference \\
 	\midrule
+    \endhead
 	Neisseriaceae & Neisseria & 7.1 & 41.4 & 34.2 \\
 	Porphyromonadaceae & Porphyromonas & 28.6 & 62.1 & 33.5 \\
 	Pasteurellaceae & Haemophilus & 50.0 & 82.8 & 32.8 \\
@@ -85,13 +85,13 @@
 	Streptococcaceae & Lactococcus & 78.6 & 37.9 & -40.6 \\
 	Streptococcaceae & Lactococcus & 78.6 & 37.9 & -40.6 \\
 	\bottomrule
-\end{tabular}
+%\end{tabular}
 \caption{Prevalence of lung-gastric fluid exchanged OTUs. Prevalence is calculated as the percentage of patients who have the OTU present in both their lungs and oropharynx, calculated separately among aspirators (N $=$ 29) and non-aspirators (N $=$ 28). OTUs are ordered by their differential prevalence in aspirators relative to non-aspirators, and are labeled with their family- and genus-level taxonomies. Blank genus names indicate OTUs which were not annotated at the genus level.}\label{tab:bal-gastric-exchanged}
+\end{longtable}
 \end{center}
-\end{table}
 
 \FloatBarrier
-\newpage \pdfpagewidth=8.5in \pdfpageheight=11in
+%\newpage \pdfpagewidth=8.5in \pdfpageheight=11in
 
 
 %% Classifiers based on abundance of exchanged OTUs
@@ -122,16 +122,17 @@ Both & 0.71 & 0.07 & 28/29 \\
 \caption{\textbf{Classifiers based on the abundance of exchanged OTUs.} (Top) Classifiers built from the abundance of lung-oropharynx exchanged OTUs. (Bottom) Classifiers built from the abundance of lung-gastric exchanged OTUs. Rows indicate which microbial community was used to train each classifier. In classifiers using two sites (``Both''), abundances of each exchanged OTU in each site were considered as separate features. AUCs are calculated as the area under the average ROC curve from five-fold cross validation. Fisher's exact p values are calculated on the predictions on the hold-out data for all cross validation folds using Python's \texttt{scipy.stats.fisher\_exact} function. Each classifier was built 100 times with random patient splits and classifier initializations, and mean values are reported here. AUCs and Fisher p-values from all 100 repetitions for all classifiers are shown in Supplementary Figures \ref{fig:exchanged_cls_aucs} and \ref{fig:exchanged_cls_p}.)}\label{tab:abun-exchange-classifiers}
 \end{center}
 \end{table}
+\normalsize
 
 \newpage
 \FloatBarrier
 
-\subsection{Supplementary Figures}
+\section{Supplementary Figures}
 
 % Exchange schematic
 \begin{figure}[h]
         \begin{center}
-        \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{exchange_schematic.png}}
+        \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{exchange_schematic_whitebckg.png}}
         \caption{Schematic illustrating an OTU which is considered exchanged between the lung and stomach (left) and one which is not (right). If an OTU is exchanged in two sites, its abundance in the two sites should be correlated across patients. Lung image was adapted from Cancer Research UK / Wikimedia Commons and the stomach image from Servier Medical Art.}
         \label{fig:exchanged_schematic}
         \end{center}

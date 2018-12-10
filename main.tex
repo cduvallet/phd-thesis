@@ -25,12 +25,16 @@
 \usepackage{amsmath,amssymb} % for math
 \usepackage{color,soul} % for highlighting
 \usepackage{rotating,multirow} % for nice tables
+\usepackage{longtable} %for multi-page tables, in aerodigestive supplement
+\usepackage{float} % here for H placement parameter
 \usepackage[numbers]{natbib}
 \usepackage[above]{placeins} % for FloatBarrier
 \usepackage{amsmath} % for pretty fraction text
 \usepackage{booktabs} % for multi-line tables
-\usepackage{lineno} % for line numbers
-\usepackage{geometry} % for supp fig large pages
+%\usepackage{geometry} % for supp fig large pages
+
+% Decrease space between rows in tables
+\renewcommand{\arraystretch}{0.8}
 
 \begin{document}
 
