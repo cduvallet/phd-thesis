@@ -71,7 +71,7 @@ Together, these findings reveal distinct categories of dysbioses which can infor
 To answer questions about the reproducibility and generalizability of reported associations between the human microbiome and disease, we collected, re-processed, and re-analyzed raw data from a collection of microbiome datasets.
 We included studies with publicly available 16S amplicon sequencing data (i.e. FASTQ or FASTA) for stool samples from at least 15 case patients which also had associated disease metadata (i.e. case or control disease labels).
 Studies which exclusively focused on children under 5 years old were excluded from our analyses.
-We identified over 50 suitable case-control 16S datasets, of which 28 were successfully downloaded, processed, and included in a publicly available database which we called MicrobiomeHD\cite{microbiomehd}.
+We identified over 50 suitable case-control 16S datasets, of which 28 were successfully downloaded, processed, and included in a publicly available database which we called MicrobiomeHD \cite{microbiomehd}.
 Characteristics of these datasets, including sample sizes, diseases and conditions, and references, are shown in Table \ref{tab:datasets} and Supplementary Table \ref{tab:datasets_full_info}.
 For each downloaded study, we processed the raw sequencing data through our 16S processing pipeline (\url{https://github.com/thomasgurry/amplicon_sequencing_pipeline}) (see Supplementary Tables \ref{tab:processing} and \ref{tab:data} for detailed data sources and processing methods).
 100\% denovo OTUs were assigned taxonomy with the RDP classifier \cite{wang2007naive} (c $=$ 0.5), converted to relative abundances by dividing by total sample reads, and collapsed to the genus level. OTUs which were not assigned at the genus level were discarded.
@@ -116,7 +116,7 @@ In particular, we see a reduction in butyrate-producing Clostridia, including ge
 We also see an increase in prevalence of genera that contain organisms often associated with lower pH and higher oxygen levels of the upper-gut, like \textit{Lactobacillaceae} and \textit{Enterobacteriaceae}, in patients with diarrhea (Figure \ref{fig:fig3}A) \cite{donaldson2016gut}.
 Additionally, both CDI and non-CDI diarrhea patients had lower alpha diversity, a measure of overall community structure, than healthy controls in all studies (Supplementary Figures \ref{fig:fig_alpha}-\ref{fig:fig_alpha_simpson}).
 Consistent with the CDI and non-CDI diarrheal studies, we also found that organisms associated with the upper gut, like \textit{Lactobacillus} and \textit{Enterobacteriaceae}, appear to be enriched in IBD patients, who can present with diarrheal symptoms (Supplementary Figure \ref{fig:supp_dis_specific}) \cite{donaldson2016gut,Kirsner1982ibd}.
-IBD patients also tended to have lower alpha diversities than controls (Crohn's disease vs. controls in three studies, ulcerative colitis vs. controls in two studies; Supplementary Figures \ref{fig:fig_alpha}-\ref{fig:fig_alpha_simpson}), though this difference was less drastic than in the diarrheal studies where all patients had active diarrhea.
+IBD patients also tended to have lower alpha diversities than controls (Crohn's disease vs. controls in three studies, ulcerative colitis vs. controls in two studies; Supplementary Figures \ref{fig:fig_alpha}--\ref{fig:fig_alpha_simpson}), though this difference was less drastic than in the diarrheal studies where all patients had active diarrhea.
 
 In some studies, confounding variables may drive associations.
 For example, there were no consistent differences between cases and controls across HIV studies because of demonstrated confounders \cite{noguera2016gut,lozupone2013alterations,hiv-dinh} (Figure \ref{fig:fig2}, \ref{fig:fig3}A).
@@ -140,8 +140,8 @@ Future case control studies should focus on better separating treatment and dise
 \subsection{Shared vs. disease-specific microbial responses}
 
 Finally, we sought to determine whether a unified microbiome response to general health and disease could be identified.
-Previous studies have proposed that reduced alpha diversity is a reliable indicator of disease-associated dysbiosis \cite{ob-gordon,cdi-vincent,mosca2016gut}.
-In our re-analysis, we found no consistent reduction of alpha diversity in case patients, with the exception of diarrhea and perhaps IBD (Supplementary Figures \ref{fig:fig_alpha}-\ref{fig:fig_alpha_simpson}).
+Previous studies have proposed that reduced alpha diversity is a reliable indicator of disease-associated dysbiosis \cite{cdi-vincent,ob-gordon,mosca2016gut}.
+In our re-analysis, we found no consistent reduction of alpha diversity in case patients, with the exception of diarrhea and perhaps IBD (Supplementary Figures \ref{fig:fig_alpha}--\ref{fig:fig_alpha_simpson}).
 These results are consistent with previous meta-analyses, which found inconsistent relationships between alpha diversity and disease and very small effect sizes in non-diarrheal diseases \cite{walters2014meta, Sze07092016}.
 To further address the question of whether we could find a robust, generalized signal for diseased microbiomes regardless of the disease type, we built random forest classifiers to distinguish healthy patients from any type of case patient.
 The AUCs from these general healthy vs. disease classifiers correlated strongly with the original single-dataset classification results, indicating that there is indeed a general microbiome signal that can be identified even across different diseases (see Supplementary Note \ref{sec:overall_classifier} and Supplementary Figure \ref{fig:overall_classifier}).
@@ -189,7 +189,7 @@ However, because few other studies of the same disease were available for compar
 For other studies with high AUCs but few univariate associations (e.g. Vincent et al. (2013) \cite{cdi-vincent}, Morgan et al. (2012) \cite{ibd-hut}, Chen et al. (2012) \cite{crc-xiang}), our confidence that the high AUCs reflect true disease-associated differences increased because the high AUCs were consistent with other classifiers from the same disease type.
 
 Meta-analysis identified potential false positives and false negatives across studies and conditions.
-For example, we found that reported associations between alpha diversity and disease within individual studies tended to lose significance when looking across studies, except in the case of diarrhea and perhaps IBD (Supplementary Figures \ref{fig:fig_alpha}-\ref{fig:fig_alpha_simpson}).
+For example, we found that reported associations between alpha diversity and disease within individual studies tended to lose significance when looking across studies, except in the case of diarrhea and perhaps IBD (Supplementary Figures \ref{fig:fig_alpha}--\ref{fig:fig_alpha_simpson}).
 Another example of a potential false positive was the association between \textit{Prevotella} and disease.
 Autism \cite{asd-kb}, rheumatoid arthritis \cite{ra-littman}, and HIV \cite{lozupone2013alterations,hiv-dinh} have each been reported to be associated with \textit{Prevotella}. For each of these diseases, the associations with \textit{Prevotella} were weakly significant or complicated by confounding factors.
 In our more statistically conservative re-analysis, we found no association between autism or arthritis and \textit{Prevotella}.
@@ -257,7 +257,8 @@ In the Schubert et al. CDI study \cite{cdi-schubert}, which had both CDI and non
 We also analyzed the NASH and obese patients from the Zhu et al. study \cite{nash-baker} as independent case groups.
 When obesity studies reported body mass index instead of obesity status, we considered patients with BMI less than 25 as our control group and patients with BMI greater than 30 as the case group.
 
-\subsection*{16S processing}
+\subsection{16S processing}
+
 Raw data were downloaded and processed through our in-house 16S processing pipeline ({\url{ https://github.com/thomasgurry/amplicon_sequencing_pipeline}).
 Data and metadata were acquired as described in Supplementary Table \ref{tab:data}.
 When needed, we de-multiplexed sequences by finding exact matches to the provided barcodes and trimmed primers with a maximum of 1 mismatch.
@@ -387,9 +388,10 @@ The remaining authors declare no competing financial interests.
 \end{table}
 }
 
+\FloatBarrier
+\clearpage
 \section{Figures}
 
-\newpage
 \begin{figure}[h]
 	\begin{center}
   	\makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{samplesize_auc_nsig_balance.pdf}}
