@@ -1,0 +1,1136 @@
+\documentclass{article}
+
+\usepackage[colorlinks=true]{hyperref} % for links and urls
+\usepackage{amsmath,amssymb} % for math
+\usepackage{color,soul} % for highlighting
+\usepackage{booktabs,rotating,multirow} % for nice tables
+\usepackage{authblk} % for author affiliations
+\usepackage{graphicx} % for figures
+\usepackage[numbers]{natbib}
+\usepackage[superscript,biblabel]{cite} % for superscript citations
+\usepackage[above]{placeins} % for FloatBarrier
+\usepackage{amsmath} % for pretty fraction text (heatmap caption)
+\usepackage{lineno} % for line numbers
+\usepackage{geometry} % for supp fig large pages
+
+% Change margins
+ \geometry{
+ left=1.25in,
+ right=1.25in,
+ top=1in,
+% tmargin=0.5in,
+% bottom=0.5in
+ }
+
+
+% Smaller captions
+\usepackage[font=footnotesize]{caption}
+
+
+
+\begin{document}
+
+\title{Meta-analysis of gut microbiome studies identifies disease-specific and shared responses}
+\author[1,2]{Claire Duvallet}
+\author[1,2,3]{Sean M. Gibbons}
+\author[1,2,3]{Thomas Gurry}
+\author[4,5]{Rafael A. Irizarry}
+\author[1,2,3,*]{Eric J. Alm}
+\affil[1]{Department of Biological Engineering, Massachusetts Institute of Technology, Cambridge, MA 02139 USA}
+\affil[2]{Center for Microbiome Informatics and Therapeutics, Cambridge, MA 02139 USA}
+\affil[3]{The Broad Institute of MIT and Harvard, Cambridge, MA 02139 USA}
+\affil[4]{Department of Biostatistics and Computational Biology, Dana-Farber Cancer Institute, Boston, MA 02215 USA}
+\affil[5]{Department of Biostatistics, Harvard T.H. Chan School of Public Health, Boston, MA 02115 USA}
+\affil[*]{Corresponding author, ejalm@mit.edu}
+
+\maketitle
+
+\section*{Abstract}
+Hundreds of clinical studies have demonstrated associations between the human microbiome and disease, yet fundamental questions remain on how we can generalize this knowledge. 
+Results from individual studies can be inconsistent and comparing published data is further complicated by a lack of standard processing and analysis methods. 
+Here, we introduce the MicrobiomeHD database, which includes 28 published case-control gut microbiome studies spanning ten diseases. 
+We perform a cross-disease meta-analysis of these studies using standardized methods. 
+We find consistent patterns characterizing disease-associated microbiome changes. 
+Some diseases are associated with over 50 genera, while most show only 10 to 15 genus-level changes. 
+Some diseases are marked by the presence of potentially pathogenic microbes whereas others are characterized by a depletion of health-associated bacteria. 
+Furthermore, we show that about half of genera associated with individual studies are bacteria which respond to more than one disease. 
+Thus, many associations found in case-control studies are likely not disease-specific but rather part of a non-specific, shared response to health and disease.
+
+\newpage
+
+\section*{Introduction}
+
+The human gastrointestinal tract digests food, absorbs nutrients, and plays important roles in maintaining metabolic homeostasis.
+The microbes residing in our gut harvest energy from the food we eat, train our immune system, break down xenobiotics and other foreign products, and release metabolites and hormones important for regulating our physiology \cite{nash-baker, asd-kb, turnbaugh2006obesity}. 
+Chemical signals from our microbiota can act locally within the gut, and can also have larger systemic effects (e.g. the `gut-brain axis') \cite{Hsiao2013gutbrain,Cryan2012gutbrain,Poutahidis2013gutbrain}. 
+
+Due to the physiological interplay between humans and our microbial communities, many diseases are hypothesized to be associated with shifts away from a ``healthy'' gut microbiome. 
+These include metabolic disorders, inflammatory and auto-immune diseases, neurological conditions, and cancer, among others \cite{nash-baker, turnbaugh2006obesity, asd-son, crc-zhao, par-schep}.
+Certain gut-related conditions (e.g. obesity and inflammatory bowel disease) have been extensively studied in human cohorts and in animal experiments, where significant and sometimes causal microbial associations have been shown.
+These studies have spurred research into a number of complex diseases with unclear etiologies where a connection to the microbiome is suspected.
+
+Overall, our current understanding of the precise relationships between the human gut microbiome and disease remains limited.
+Existing case-control studies often report finding disease-associated microbial ``dysbiosis''. 
+However, the term ``dysbiosis'' is inconsistently and often vaguely defined, and can have a wide range of interpretations \cite{olesen2016dysbiosis,zaneveld2017karenina}. 
+Thus, we lack a comprehensive understanding of precisely how microbial communities and specific microbes within those communities cause, respond to, or contribute to disease. 
+Are different diseases characterized by distinct shifts in the gut microbiome? 
+Are some diseases marked by an invasion of pathogens whereas others show a depletion of beneficial bacteria? 
+Can we identify microbial biomarkers for certain conditions, which are consistently enriched or depleted in a disease across many patient cohorts? 
+Finally, are some bacteria part of a non-specific ``healthy'' or ``diseased'' microbiome and consistently associated with health or disease in general?
+
+One approach to synthesize existing knowledge is to identify consistencies across studies through a meta-analysis, which allows researchers to find and remove false positives and negatives that may obscure underlying biological patterns. 
+However, prior meta-analyses of case-control gut microbiome studies have yielded mixed results and did not contextualize their findings across multiple diseases \cite{walters2014meta, Sze07092016,finucane2014obesity}. 
+For some conditions like inflammatory bowel disease (IBD), an overall difference in the gut microbiota was found within several studies, but no individual microbes were consistently associated with IBD across studies \cite{walters2014meta}. 
+For other conditions like obesity, multiple meta-analyses have found little to no difference in the gut microbiomes of obese and lean patients \cite{walters2014meta,Sze07092016,finucane2014obesity}, even though the microbiome has been causally linked to obesity in mouse models \cite{turnbaugh2006obesity, ridaura2013gut}. 
+These meta-analyses have been limited by focusing on only one or two diseases, and thus do not extend their findings across a broader landscape of human disease to answer more general questions about overall patterns of disease-associated microbiome shifts.
+
+In this paper, we collected 28 published case-control 16S amplicon sequencing gut microbiome datasets spanning ten different disease states. 
+We acquired raw data and disease metadata for each study and systematically re-processed and re-analyzed the data. 
+We investigated whether consistent and specific disease-associated changes in gut microbial communities could be identified across multiple studies of the same disease. 
+Certain diseases (e.g. colorectal cancer (CRC)) are marked by an enrichment of disease-associated bacteria, while others (e.g. IBD) are characterized by a depletion of health-associated bacteria.
+Some conditions (e.g. diarrhea) exhibit large-scale community shifts with many associated microbes, while most show only a handful of associations. 
+However, many associations are not specific to individual diseases but rather respond to multiple disease states. 
+In most studies, the majority of the individual disease-associated microbes were part of this set of bacteria that respond non-specifically to healthy and diseased states. 
+Thus, associations from individual case-control studies should be interpreted with caution, as these microbes may be indicative of a shared response to disease rather than part of disease-specific differences.
+Together, these findings reveal distinct categories of dysbioses which can inform the development of microbiome-based diagnostics and therapeutics.
+
+\section*{Results}
+
+\subsection*{Most disease states show altered microbiomes}
+
+To answer questions about the reproducibility and generalizability of reported associations between the human microbiome and disease, we collected, re-processed, and re-analyzed raw data from a collection of microbiome datasets.
+We included studies with publicly available 16S amplicon sequencing data (i.e. FASTQ or FASTA) for stool samples from at least 15 case patients which also had associated disease metadata (i.e. case or control disease labels).
+Studies which exclusively focused on children under 5 years old were excluded from our analyses.
+We identified over 50 suitable case-control 16S datasets, of which 28 were successfully downloaded, processed, and included in a publicly available database which we called MicrobiomeHD\cite{microbiomehd}.
+Characteristics of these datasets, including sample sizes, diseases and conditions, and references, are shown in Table \ref{tab:datasets} and Supplementary Table \ref{tab:datasets_full_info}.
+For each downloaded study, we processed the raw sequencing data through our 16S processing pipeline (\url{https://github.com/thomasgurry/amplicon_sequencing_pipeline}) (see Supplementary Tables \ref{tab:processing} and \ref{tab:data} for detailed data sources and processing methods).
+100\% denovo OTUs were assigned taxonomy with the RDP classifier \cite{wang2007naive} (c $=$ 0.5), converted to relative abundances by dividing by total sample reads, and collapsed to the genus level. OTUs which were not assigned at the genus level were discarded. 
+By collapsing data to the genus level, we lost the sensitivity to detect fine-scale differences in species or strain abundances across case and control groups, but we minimized certain batch effects that plague comparisons across studies. 
+Thus, we took a course-grained approach to optimize our ability to compare data across studies at the expense of phylogenetic resolution.
+
+We first asked whether reported associations between the gut microbiome and disease would be recapitulated once we controlled for processing and analysis approaches.
+To test whether the gut microbiome is altered in a variety of disease states, we built genus-level random forest classifiers to classify cases from controls within each study.
+We compared the resulting area under the Receiver Operating Characteristic (ROC) curves (AUC) across studies (Figure \ref{fig:fig1}A, Supplementary Figure \ref{fig:roc_curves}). 
+We could classify cases from controls (AUC $>$ 0.7) for at least one dataset for all diseases except arthritis and Parkinson's disease, which each only had one study.
+Notably, all diarrhea datasets (except Youngster et al. (2014) \cite{cdi-youngster}, which had only 4 distinct control patients and thus was not included in this analysis) had very high classifiability (AUC $>$ 0.9).
+We successfully classified patients from controls (AUC $>$ 0.7) in three out of four IBD studies and all four CRC studies, which is consistent with previous work showing that these patients can be readily distinguished from controls using supervised classification methods \cite{walters2014meta,ibd-papa,crc-baxter,crc-zeller}. 
+Thus, the microbiome is indeed altered in many different diseases.
+
+\subsection*{Loss of beneficial microbes or enrichment of pathogens}
+
+We next wondered whether the specific type of alteration was consistent across independent cohorts of patients with the same disease.
+We performed univariate tests on genus-level relative abundances for each dataset independently and compared results across studies (Kruskal-Wallis (KW) test with the Benjamini-Hochberg false discovery rate (FDR) correction \cite{benjamini-hochberg}).
+Our re-analyses of the studies were largely consistent with the originally reported results.
+The same taxonomic groups showed similar trends as in the original publications, despite differences in data-processing methodologies (see Supplementary Note \ref{sec:lit_comp} for a full comparison of our re-analysis with previously published results).  
+Furthermore, we found that the disease-associated changes in the microbiome could be categorized into meaningful groups which provide insight into possible etiologies or therapeutic strategies for different types of disease. 
+
+In some diseases, microbiome shifts are dominated by an enrichment of a small number of ``pathogenic'' bacteria.
+In these cases, it is possible that the microbes play a causal role and that they could be targeted with narrow-spectrum antimicrobials.
+Colorectal cancer is characterized by such a shift, and we found significant agreement across three of the four CRC studies \cite{crc-zhao,crc-baxter,crc-zeller,crc-xiang} (Figures \ref{fig:fig1}B and \ref{fig:fig2}, genus labels in Supplementary Figure \ref{fig:supp_dis_specific}).
+Dysbiosis associated with CRC is generally characterized by increased prevalence of the known pathogenic or pathogen-associated \textit{Fusobacterium}, \textit{Porphyromonas}, \textit{Peptostreptococcus}, \textit{Parvimonas}, and \textit{Enterobacter} genera (i.e. these genera were higher in CRC patients in 2 or more studies, Figures \ref{fig:fig2} and \ref{fig:fig3}A, genus labels in Supplementary Figures \ref{fig:supp_dis_specific} and \ref{fig:supp_meta_heatmap}). 
+\textit{Fusobacterium} is associated with a broad spectrum of human diseases and \textit{Porphyromonas} is a known oral pathogen \cite{Han2015fusopatho, Flynn2016oral}.
+
+By contrast, other disease-associated microbiome shifts are characterized by a depletion of health-associated bacteria in patients relative to controls.
+In these cases, probiotics that replace missing taxa may be a better treatment strategy than anti-microbials.
+Across our four IBD studies, patient microbiomes were dominated by a depletion of genera in patients relative to controls, especially butyrate-producing \textit{Clostridiales} \cite{ibd-papa,ibd-gevers,ibd-hut,ibd-engstrand} (Figures \ref{fig:fig1}B and \ref{fig:fig2}, genus labels in Supplementary Figure \ref{fig:supp_dis_specific}). 
+In particular, five genera from the \textit{Ruminococcacaea} and \textit{Lachnospiracaea} families were consistently depleted in IBD patients relative to controls in at least two studies (Figure \ref{fig:fig3}A, genus labels in Supplementary Figure \ref{fig:supp_meta_heatmap}).
+While not all genera within \textit{Ruminococcacaea} and \textit{Lachnospiracaea} are verified short-chain fatty acid (SCFA) producers, the dominant genera within these families are known to harbor genes for short chain fatty acid production \cite{louis2010diversity} and are often associated with colonic health \cite{flint2012role,miquel2013faecalibacterium,reeves2012suppression}. 
+We found similar results when comparing Crohn's disease and ulcerative colitis patients to controls separately, without any consistent patterns across datasets that distinguished either IBD sub-type (Supplementary Note \ref{sec:split_cases}; Supplementary Figures \ref{fig:split_cases_fig1} and \ref{fig:split_cases_heatmaps}).
+
+Some conditions are characterized by a broad restructuring of gut microbial communities.
+In these cases, full community restoration strategies like fecal microbiota transplants may be more appropriate.
+For example, diarrhea consistently results in large-scale rearrangements in the composition of the gut microbiome, which is likely reflective of reduced stool transit time (Figures \ref{fig:fig1} and \ref{fig:fig2}).
+We saw many microbes consistently associated with both \textit{Clostridium difficile} infection (CDI) and non-CDI diarrhea (Figures \ref{fig:fig2} and \ref{fig:fig3}A) \cite{cdi-youngster,cdi-schubert,cdi-vincent,edd-singh}.
+In general, Proteobacteria increase in prevalence in patients with diarrhea, with a concomitant decrease in the relative abundances of Bacteroidetes and some Firmicutes. 
+In particular, we see a reduction in butyrate-producing Clostridia, including genera within \textit{Ruminococcaceae} and \textit{Lachnospiraceae} families, which have been associated with a healthy gut \cite{wong2006colonic}. 
+We also see an increase in prevalence of genera that contain organisms often associated with lower pH and higher oxygen levels of the upper-gut, like \textit{Lactobacillaceae} and \textit{Enterobacteriaceae}, in patients with diarrhea (Figure \ref{fig:fig3}A) \cite{donaldson2016gut}. 
+Additionally, both CDI and non-CDI diarrhea patients had lower alpha diversity, a measure of overall community structure, than healthy controls in all studies (Supplementary Figures \ref{fig:fig_alpha}-\ref{fig:fig_alpha_simpson}).
+Consistent with the CDI and non-CDI diarrheal studies, we also found that organisms associated with the upper gut, like \textit{Lactobacillus} and \textit{Enterobacteriaceae}, appear to be enriched in IBD patients, who can present with diarrheal symptoms (Supplementary Figure \ref{fig:supp_dis_specific}) \cite{donaldson2016gut,Kirsner1982ibd}. 
+IBD patients also tended to have lower alpha diversities than controls (Crohn's disease vs. controls in three studies, ulcerative colitis vs. controls in two studies; Supplementary Figures \ref{fig:fig_alpha}-\ref{fig:fig_alpha_simpson}), though this difference was less drastic than in the diarrheal studies where all patients had active diarrhea.
+
+In some studies, confounding variables may drive associations.
+For example, there were no consistent differences between cases and controls across HIV studies because of demonstrated confounders \cite{noguera2016gut,lozupone2013alterations,hiv-dinh} (Figure \ref{fig:fig2}, \ref{fig:fig3}A).
+As in the original Lozupone et al. (2013) \cite{lozupone2013alterations} study, we found enrichment in \textit{Prevotella}, \textit{Catenibacterium}, \textit{Dialister}, and \textit{Desulfovibrio} in HIV-positive patients, in addition to 8 other genera (Figure \ref{fig:fig2} and Supplementary Figure \ref{fig:supp_dis_specific}).
+We also found depletion of \textit{Bacteroides}, \textit{Odoribacter}, \textit{Anaerostipes}, \textit{Parasutterella}, and \textit{Alistipes} in HIV-positive patients relative to controls.
+However, the Noguera-Julian et al. (2016) study showed that the genera that were significantly associated with HIV in the Lozupone paper were strongly associated with sexual behavior (e.g. men who have sex with men were associated with much higher \textit{Prevotella} levels), and our re-analysis also found conflicting results between these two studies (Figure \ref{fig:fig2}).
+Thus, there is no consensus on what genera are associated with HIV. 
+Obesity is another example where confounding variables may drive microbiome alterations.
+Three recent meta-analyses found no reproducible obesity-associated microbiome shifts \cite{walters2014meta,Sze07092016,finucane2014obesity}, which is consistent with our classification results where we were only able to accurately classify obese and control patients in two out of five studies (Zhu et al. (2013) \cite{nash-baker}, Turnbaugh et al. (2009) \cite{ob-gordon}; Figure \ref{fig:fig1}A). 
+Our genus-level re-analysis did find a few consistent genus-level associations between lean and obese patients \cite{nash-baker,ob-gordon,ob-goodrich,ob-zupancic,ob-ross}.
+Two genera, \textit{Roseburia} and \textit{Mogibacterium}, were significantly enriched in obese individuals across two of the obesity studies (Figure \ref{fig:fig3}A). 
+Furthermore, \textit{Anaerovorax}, \textit{Oscillibacter}, \textit{Pseudoflavonifractor}, and \textit{Clostridium IV}  were depleted in obese patients relative to controls in two of the studies. 
+However, two of the five studies had no significant genus-level associations (q $<$ 0.05), despite one having a large sample size (Zupancic et al. (2012) \cite{ob-zupancic}). 
+This suggests that confounding factors like diet may have given rise to certain associations found in our re-analysis and previously reported in the literature \cite{finucane2014obesity}.
+More studies that control for potential confounders, like host behavior and diet, will be required for diseases like obesity and HIV, where associations with the microbiome remain unclear.
+Finally, patients in case-control cohorts are frequently on other medications such as antibiotics which may confound disease-associated microbiome shifts.
+Six of our datasets included antibiotics metadata, and of these only one dataset (Schubert et al, 2014 \cite{cdi-schubert}) had more than 5 controls who were on antibiotics.
+Thus, it is very likely that disease-associated genera in conditions which are often treated with antibiotics (e.g. diarrhea, IBD) are confounded with antibiotic usage.
+Future case control studies should focus on better separating treatment and disease variables by collecting detailed metadata on antibiotic and other medication usage, and perhaps also by recruiting controls undergoing a variety of treatments.
+
+\subsection*{Shared vs. disease-specific microbial responses}
+
+Finally, we sought to determine whether a unified microbiome response to general health and disease could be identified.
+Previous studies have proposed that reduced alpha diversity is a reliable indicator of disease-associated dysbiosis \cite{ob-gordon,cdi-vincent,mosca2016gut}. 
+In our re-analysis, we found no consistent reduction of alpha diversity in case patients, with the exception of diarrhea and perhaps IBD (Supplementary Figures \ref{fig:fig_alpha}-\ref{fig:fig_alpha_simpson}). 
+These results are consistent with previous meta-analyses, which found inconsistent relationships between alpha diversity and disease and very small effect sizes in non-diarrheal diseases \cite{walters2014meta, Sze07092016}.
+To further address the question of whether we could find a robust, generalized signal for diseased microbiomes regardless of the disease type, we built random forest classifiers to distinguish healthy patients from any type of case patient.
+The AUCs from these general healthy vs. disease classifiers correlated strongly with the original single-dataset classification results, indicating that there is indeed a general microbiome signal that can be identified even across different diseases (see Supplementary Note \ref{sec:overall_classifier} and Supplementary Figure \ref{fig:overall_classifier}).
+
+Having putatively shown the presence of a generalized microbial response to disease, we next sought to identify individual genera which respond non-specifically to health and disease.
+We considered a genus to be part of the non-specific, shared microbial response if it was significantly enriched or depleted (q $<=$ 0.05) in at least one dataset from at least two different diseases (see Supplementary Note \ref{sec:core_defns} and Supplementary Figures \ref{fig:core_defns} and \ref{fig:core_sig} for further discussion on alternative definitions and statistical significance of shared response). 
+We identified 24 health-associated genera and 20 disease-associated genera out of the 152 genera that were significant in at least one dataset (Figure \ref{fig:fig3}A, genus labels in Supplementary Figure \ref{fig:supp_meta_heatmap}).
+We also found 7 genera that were both health- and disease-associated (i.e. they were enriched in controls across at least two diseases, but were also depleted in controls in different comparisons across at least two diseases) (Figure \ref{fig:fig3}A, black). 
+Perhaps these genera represent bacteria disproportionately affected by confounders or technical artifacts. 
+Alternatively, different species or strains within these genera may play alternate roles across diseases or community contexts, giving rise to variable responses at the genus level.
+
+We identified distinct sub-groups of microbes within the \textit{Bacteroidetes} and \textit{Firmicutes} phyla which respond non-specifically to health and disease (Figure \ref{fig:fig3}A).
+The order \textit{Clostridiales} (specifically the \textit{Lachnospiraceae} and \textit{Ruminococcacaea} families) is associated with health across multiple diseases while the order \textit{Lactobacillales} and family \textit{Clostridiales Incertae Sedis XI} are associated with disease.
+The majority of the the non-specific responders in the order \textit{Clostridiales} were associated with health, comprising the majority of all of the microbes which were non-specifically associated with healthy patients (17 genera out of 24 total health-associated genera).
+All of five of the non-specific responders in the order \textit{Lactobacillales} were enriched in case patients across multiple diseases. 
+\textit{Lactobacillales} genera are adapted to the lower pH of the upper gastrointestinal tract \cite{donaldson2016gut}. 
+Perhaps the shared disease-associated taxa are indicators of shorter stool transit times and disruptions in the redox state and/or pH of the lower intestine, rather than specific pathogens. 
+These non-specific responders are consistent with the results from a recent meta-analysis of six metagenomics datasets, which also found \textit{Lactobacillales} and \textit{Clostridiales} microbes among the most discriminative classification features across multiple studies \cite{pasolli2016machine}.
+Finally, we found that the order \textit{Bacteroidales} is more mixed: two \textit{Bacteroidales} genera were non-specifically associated with health, one with disease, and two with both health and disease.
+
+A majority of bacterial associations within individual studies overlap with the shared response.
+For each dataset that had at least one significant (q $<$ 0.05) association, we calculated the percent of associated genera which were also part of the non-specific response in the same direction (Figure \ref{fig:fig3}B).
+Strikingly, the majority of microbial responses were not specific to individual diseases; on average, 51\% of a dataset's genus-level associations were genera which were associated with more than one disease.
+In light of this finding, it is important that researchers performing future case-control studies consider whether an identified microbial association is truly specific to their disease of interest or is instead responding to a common symptom (e.g. diarrhea) or perhaps generally associated with health or sickness.
+Additionally, they can use the knowledge that many microbes respond non-specifically to disease to narrow lists of putative causal or diagnostic biomarkers to microbes which fall outside of the shared response and are thus more likely to be specific to the disease being studied.
+Researchers can access an updated list of shared microbial responders from this analysis at the MicrobiomeHD database \cite{microbiomehd}, or they can curate their own lists by performing similar cross-disease meta-analyses.
+
+Bacteria which are non-specifically associated with health are both ubiquitous and abundant across people, whereas bacteria which are non-specifically associated with disease are abundant when present but are not ubiquitous.
+We calculated the average relative abundance (i.e. the total relative abundance across all patients divided by the number of patients with non-zero abundance) and ubiquity (i.e. the number of patients with non-zero abundance divided by the total number of patients) for each genus in the shared response.
+We found that health-associated genera were more ubiquitous than disease-associated ones, but not necessarily more abundant (Figure \ref{fig:fig3}C).
+Thus, presence/absence of the non-specifically disease-associated genera appears to be a better indicator of disease-associated microbial shifts than changes in their relative abundances.
+However, a small subset of the non-specifically disease-associated genera were relatively ubiquitous across patients.
+Among the most ubiquitous were \textit{Escherichia/Shigella} and \textit{Streptococcus}.
+\textit{Escherichia} includes common commensal strains, as well as pathogenic strains \cite{rasko2008pangenome}, and is frequently present in healthy people's guts as well as over-represented in sick patients. Genera within \textit{Enterobacteriaceae}, \textit{Lactobacillaceae}, and \textit{Streptococcaceae} families are dominant in the upper gastrointestinal tract \cite{donaldson2016gut,wang2013upper} and are present in many people's stool at low frequency. These taxa likely become enriched with faster stool transit time (i.e. signatures of diarrhea) \cite{donaldson2016gut,savage1977microbial}.
+
+
+\subsection*{Within and cross-disease meta-analysis improves interpretability}
+
+Identifying disease-specific and non-specific microbial responses required comparing studies both within and across multiple diseases. 
+Multiple studies of the same disease were necessary to identify shifts consistently associated with individual diseases.
+We did not find consistent bacterial associations for conditions with fewer than four datasets (Figure \ref{fig:fig1}, \ref{fig:fig3}A).
+Within-disease meta-analysis also increased our ability to interpret the results from any one dataset.
+Despite few significant differences, some of these studies (e.g. Zhang et al. (2013) \cite{mhe-zhang}, Zhu et al. (2013) \cite{nash-baker}) had high classifiability of patients vs. controls (AUC $>$ 0.7, Figure \ref{fig:fig1}A), indicating that there may be a disease-associated shift that was not detected by univariate comparisons.
+However, because few other studies of the same disease were available for comparison, we could not confidently interpret the classification results beyond the reported AUC. 
+For other studies with high AUCs but few univariate associations (e.g. Vincent et al. (2013) \cite{cdi-vincent}, Morgan et al. (2012) \cite{ibd-hut}, Chen et al. (2012) \cite{crc-xiang}), our confidence that the high AUCs reflect true disease-associated differences increased because the high AUCs were consistent with other classifiers from the same disease type.
+
+Meta-analysis identified potential false positives and false negatives across studies and conditions.
+For example, we found that reported associations between alpha diversity and disease within individual studies tended to lose significance when looking across studies, except in the case of diarrhea and perhaps IBD (Supplementary Figures \ref{fig:fig_alpha}-\ref{fig:fig_alpha_simpson}). 
+Another example of a potential false positive was the association between \textit{Prevotella} and disease. 
+Autism \cite{asd-kb}, rheumatoid arthritis \cite{ra-littman}, and HIV \cite{lozupone2013alterations,hiv-dinh} have each been reported to be associated with \textit{Prevotella}. For each of these diseases, the associations with \textit{Prevotella} were weakly significant or complicated by confounding factors.
+In our more statistically conservative re-analysis, we found no association between autism or arthritis and \textit{Prevotella}.
+As mentioned previously, in the case of HIV, the association with \textit{Prevotella} was due to demographic factors unrelated to disease \cite{noguera2016gut}. 
+Regardless of whether shifts in \textit{Prevotella} are truly biologically related to each studied disease state, it is clear that such shifts are not specific to one particular condition and should not be reported as putative disease-specific biomarkers.
+We also found that certain signals picked out by meta-analysis did not always hold within individual studies.
+For example, studies with small sample sizes often had few or no significant associations (e.g. Vincent et al. (2014) \cite{cdi-vincent}, Chen et al. (2012) \cite{crc-xiang}, and Willing et al. (2009) \cite{ibd-engstrand}).
+Here, the fact that other studies analyzing the same diseases consistently found associations strengthens the hypothesis that the lack of microbiome-associated signal in these studies was due to low power rather than a lack of true signal.
+Because individual studies are plagued by low statistical power, confounding variables, and batch effects which can obscure biological signals, the identification of disease-specific and non-specific microbial associations will continue to improve as more datasets and diseases are included in future meta-analyses.
+
+
+\section*{Discussion}
+
+Here, we report patterns of disease-associated shifts in the human gut microbiome which differ in their directionality (i.e. fraction of disease-enriched vs. disease-depleted genera) and extent (i.e. total number of genera that differ between cases and controls).
+Some diseases are characterized by an invasion of pathogenic or disease-associated bacteria (e.g. CRC), while others largely show a depletion of health-associated microbes (e.g. IBD). 
+Diarrheal illnesses induce large-scale rearrangement of many members of the microbiota, whereas other conditions show fewer associations. 
+We also find a set of microbes which are non-specifically associated with multiple diseases and show that these microbes comprise many of the disease-associated genera within any given study. 
+
+The identification of a non-specific microbial response is an important concept that should be considered in future case-control microbiome studies.
+It suggests that studies should be interpreted with extra caution, as many identified microbial associations may be indicative of a shared response to health or disease rather than a disease-specific biological difference.
+Microbes that are non-specifically associated with multiple diseases would not be useful as disease-specific diagnostics or to address causality \cite{olesen2016dysbiosis}. 
+On the other hand, bacteria that are associated with healthy patients across multiple diseases could be developed into a general probiotic which may be suited for many different conditions.
+
+Additionally, characterizing ``dysbioses'' by their directionality and extent is a useful framework to generate hypotheses for future research on complex, heterogenous diseases with links to the microbiome.
+For example, the search for microbiome-based diagnostics may be more appropriate for diseases with consistently enriched disease-associated microbes, like CRC. 
+On the other hand, patients with diseases which are characterized by depletion of health-associated microbes, like IBD, may benefit from prebiotic or probiotic interventions designed to enrich for these taxa. 
+Furthermore, conditions which are characterized by large-scale shifts in community structure may be well-suited to treatment with fecal microbiota transplantation, as in CDI \cite{cdi-youngster}.
+While many of these conditions are unlikely to be fully treated by antibiotics, probiotics, or fecal microbiota transplants, our proposed framework could guide the search for new therapies and etiologies by generating testable hypotheses with higher likelihoods of success \cite{olesen2016dysbiosis}.
+
+This analysis is the first to compare microbiome studies across more than two different diseases and highlights the importance of making raw data and associated patient metadata publicly available to enable future, more comprehensive analyses.
+This analysis does not include all possible studies, and certain important gastrointestinal diseases (e.g. irritable bowel syndrome) are missing, largely due to data and metadata availability.
+Future studies should expand on this work by including more cohorts from the same diseases as well as more diseases.
+To re-analyze these studies, we applied standard methods commonly used in the field and assumed that the original study designs and patient selection methods were adequate. 
+We were reassured to find that a straightforward and standardized approach was able to recover very similar results to those previously reported in the various papers.
+Thus, we did not formally investigate heterogeneity between cohorts or technical inter-study batch effects.
+However, it is clear from our genus-level results that there is significant variation even across studies of the same disease. 
+There are many possible reasons for this variation (experimental and sequencing artifacts, host-related covariates, stochastic disease-associated community changes etc. \cite{ zaneveld2017karenina,Falony2016variation, David2014lifestyle}), and future analyses should consider methods to correct for host confounders and technical batch effects.
+Concerns about batch effects motivated us to analyze the data at the genus level, which necessarily limited our resolution and biological interpretations of identified associations (e.g. different species or strains within a genus may have different associations with disease, which would not be captured in this analysis).
+Making raw data from case-control studies publicly available will also allow researchers to develop methods to correct for these batch effects, in addition to enabling more comprehensive future meta-analyses.
+
+Despite the limitations of this study, our results provide more nuanced insight into dysbiosis, revealing distinct types of alterations that more precisely describe disease-associated microbiome shifts.
+As the number of case-control cohorts increases, similar meta-analyses could be used to compare related diseases and identify microbiome alterations associated with general host physiological changes.
+For example, there may be a group of microbes which respond to or cause systemic inflammation.
+Could we identify these microbes by comparing multiple inflammatory or auto-immune diseases and study them to better understand the interactions between the microbiome and our immune system? 
+Furthermore, some microbes may be consistently associated with neurological conditions and could contribute to the gastrointestinal symptoms that accompany or precede neurological manifestations \cite{asd-kb,par-schep}.
+Studying these microbes could help us understand the `gut-brain axis' by identifying common neuroactive molecules produced by these bacteria, which could also be used as targets for new treatments \cite{Hsiao2013gutbrain,Cryan2012gutbrain,Poutahidis2013gutbrain}.
+Finally, meta-analysis could be used to identify subsets of patients who exhibit distinct microbiome shifts within heterogenous diseases like IBD or in conditions which exhibit stochastic microbial responses, allowing for further stratification of disease subtypes and microbiome disruptions \cite{zaneveld2017karenina,ibd-engstrand,Pascal2017crohns}.
+This work demonstrates that employing standard methods to contextualize new results within the broader landscape of clinically relevant microbiome studies is feasible and adds value to individual analyses.
+As excitement in this field grows, researchers should harness the increasing number of replicated case-control studies to swiftly and productively advance microbiome science from putative associations to transformative clinical impact. 
+
+
+\section*{Methods}
+
+\subsection*{Dataset collection}
+We identified case-control 16S studies from keyword searches in PubMed and by following references in meta-analyses and related case-control studies.
+We included studies with publicly available raw 16S data (fastq or fasta) and metadata indicating case or control status for each sample.
+Most data was downloaded from online repositories (e.g. SRA) or links provided in the original publications, but some were acquired after personal communication with the authors (Supplementary Table \ref{tab:data}).
+We did not include any studies which required additional ethics committee approvals or authorizations for access (e.g. controlled dbGaP studies).
+In studies where multiple body sites were sampled or where multiple samples were taken per patient, we also required the respective metadata to include those metadata.
+We analyzed only stool 16S samples, and excluded studies with fewer than 15 case patients.
+In CRC studies with multiple control groups (e.g. healthy and non-CRC adenoma), only the healthy patients were used as controls for all of our comparisons.
+In studies with non-healthy controls (e.g. non-IBD patients), these patients were used as controls (as in the original papers).
+In the Schubert et al. CDI study \cite{cdi-schubert}, which had both CDI and non-CDI diarrheal patients, each group was used as an independent case group compared with controls. 
+We also analyzed the NASH and obese patients from the Zhu et al. study \cite{nash-baker} as independent case groups.
+When obesity studies reported body mass index instead of obesity status, we considered patients with BMI less than 25 as our control group and patients with BMI greater than 30 as the case group.
+
+\subsection*{16S processing}
+Raw data were downloaded and processed through our in-house 16S processing pipeline ({\url{ https://github.com/thomasgurry/amplicon_sequencing_pipeline}).
+Data and metadata were acquired as described in Supplementary Table \ref{tab:data}.
+When needed, we de-multiplexed sequences by finding exact matches to the provided barcodes and trimmed primers with a maximum of 1 mismatch.
+In general, sequences were quality filtered by truncating at the first base with Q $<$ 25.
+However, some datasets did not pass this stringent quality threshold (i.e. the resulting OTU table was either missing many of the original samples, or the read depth was significantly lower than reported in the original paper).
+For 454 data, we loosened the quality threshold to 20, whereas for paired-end Illumina data we removed reads with more than 2 expected errors.
+If possible, all reads were trimmed to 200 bp.
+In cases where this length trimming discarded a majority of sequences, we lowered our threshold to 150 or 101 bp.
+The specific processing parameters we used for each dataset can be found in Supplementary Table \ref{tab:processing}.
+To assign OTUs, we clustered OTUs at 100\% similarity using USEARCH \cite{edgar-usearch-2010} and assigned taxonomy to the resulting OTUs with the RDP classifier \cite{wang2007naive} and a confidence cutoff of 0.5.
+For each dataset, we removed samples with fewer than 100 reads and OTUs with fewer than 10 reads, as well as OTUs which were present in fewer than 1\% of samples within a study.
+We calculated the relative abundance of each OTU by dividing its value by the total reads per sample.
+We then collapsed OTUs to genus level by summing their respective relative abundances, discarding any OTUs which were unannotated at the genus level.
+All statistical analyses were performed on this genus-level relative abundance data.
+
+\subsection*{Statistical analyses}
+To perform supervised classification of cases and controls within each dataset, we built Random Forest classifiers with 5-fold cross-validation.
+To build our train and test sets, we used the python \texttt{scikit-learn} \texttt{StratifiedKFold} function with shuffling of the data \cite{scikit-learn}.
+To build our classifiers, we used the \texttt{RandomForestClassifier} function with 1000 estimators and other default settings \cite{scikit-learn}.
+We found no significant effect of various Random Forest parameters on the AUCs  (Supplementary Figures \ref{fig:rf_params_gini} and \ref{fig:rf_params_entropy}). 
+We calculated the interpolated area under the ROC curve (AUC) for each classifier based on the cross-validation testing results.
+To account for spurious high classifiability due to class imbalances, we also calculated the Cohen's kappa score for each classifier using \texttt{sklearn.metrics.cohen\_kappa\_score} on the test set predictions (Supplementary Table \ref{tab:kappa}).
+The kappa scores correlated well with the AUCs (Pearson $\rho$ $=$ 0.9), indicating that the majority of the classifiers performed well even when considering their underlying data distributions.
+We excluded Youngster et al. (2014) \cite{cdi-youngster}, which had only 4 distinct control patients, from all classifier analyses.
+
+We performed univariate analyses on the relative abundances of genera in cases and controls with a non-parametric Kruskal-Wallis test using the \\ \texttt{scipy.stats.mstats.kruskalwallis} function \cite{scipy}. 
+We corrected for multiple hypothesis testing in each dataset with the Benjamini-Hochberg false discovery rate \cite{benjamini-hochberg}.
+We performed all analyses on genus-level relative abundances for each dataset individually, and then compared these results across all studies.
+
+We considered a genus to be consistently associated with a disease (Figure \ref{fig:fig3}A, bottom) if it was significantly associated (q $<$ 0.05) with the disease in the same direction in at least two studies of that disease.
+We considered a genus to be a non-specific microbial association (Figure \ref{fig:fig3}A, top) if it was significantly associated (q $<$ 0.05) in at least one dataset of at least two different diseases in the same direction.
+When we defined these non-specific genera, we did not include datasets which used non-healthy controls (Papa et al. (2012) \cite{ibd-papa} and Gevers et al. (2014) \cite{ibd-gevers}) and the Lozupone et. al (2013) dataset \cite{lozupone2013alterations}, where the microbiome signal reflected behavior rather than disease state \cite{noguera2016gut}.
+
+To build our generalized healthy vs. disease classifiers, we first concatenated metadata and genus-level abundance data for all datasets which had healthy controls (i.e. all datasets except Papa et al. (2012) \cite{ibd-papa} and Gevers et al. (2014) \cite{ibd-gevers}, which used non-IBD patients as controls, and CDI Youngster (2014), \cite{cdi-youngster}, which had only 4 distinct controls).
+We performed leave-one-dataset-out and leave-one-disease-out cross validation and calculated an AUC for each of the testing results.
+
+\subsection*{Microbiome community analyses}
+
+Alpha diversities were calculated based on the non-collapsed 100\% OTU-level relative abundances, and included un-annotated OTUs.
+We calculated alpha diversity metrics with the \texttt{skbio.math.diversity.alpha.chao1}, \texttt{shannon}, and \texttt{simpson} implementations.
+
+We calculated the average abundance and ubiquity (Figure \ref{fig:fig3}C) of each genus as the mean of its average values in each dataset across all patients.
+To calculate the abundance of each genus, we first calculated each genus's mean abundance within each dataset.
+We counted only patients with non-zero abundance of the genus in this calculation.
+We then took the average of these mean abundances across all datatsets. 
+To calculate the ubiquity of each genus, we calculated the percent of patients with non-zero abundance of that genus in each dataset. 
+We then took the average of these ubiquities across all datasets. 
+
+\subsection*{Code availability}
+
+The code to reproduce all of the analyses in this paper is available at \url{https://github.com/cduvallet/microbiomeHD}.
+We encourage researchers to incorporate their existing and future case-control studies into the MicrobiomeHD database by contacting us.
+
+\subsection*{Data availability}
+
+Raw sequencing data for each study can be accessed as described in Supplementary Table \ref{tab:data}.
+The raw processed OTU tables can be accessed at the MicrobiomeHD database, available at \url{https://doi.org/10.5281/zenodo.840333} \cite{microbiomehd}.
+
+Supplementary files, including the q-values for all genus-level comparisons in every dataset, disease-associated genera for the diseases with more than three datasets, and a list of non-specific genera are also available at \url{https://github.com/cduvallet/microbiomeHD}.
+All other relevant data supporting the findings of the study are available in this article and its Supplementary Information files, or from the corresponding author upon request.
+
+\section*{Acknowledgements}
+
+We thank the authors who made their data publicly available as well as those who provided data after personal communication.
+The Center for Microbiome Informatics and Therapeutics supported the computational resources for this project, and C.D. acknowledges support by the Department of Defense through the National Defense Science \& Engineering Graduate Fellowship (NDSEG) Program.
+We thank Shijie Zhao and Xiaoqian Yu for their early contributions to the literature review, as well as Nathaniel Chu and other members of the Alm and Irizarry groups for helpful discussions.
+
+\section*{Author contributions}
+
+C.D., T.G., and E.A. conceived of the research.
+C.D., S.G., and T.G. identified and downloaded the datasets.
+C.D. and T.G. wrote the code to process data.
+C.D. processed the data and performed all analyses.
+C.D., S.G, R.I., and E.A. interpreted the results and prepared the manuscript.
+
+\section*{Competing Financial Interests}
+
+E.A. is on the Board of Directors of OpenBiome, a non-profit stool bank. E.A. is a co-founder of Finch Therapeutics, which aims to develop microbiome-based therapeutics.
+The remaining authors declare no competing financial interests.
+
+\FloatBarrier
+
+{
+\renewcommand{\arraystretch}{1.1}
+\begin{table}[h]
+%\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\resizebox{\textwidth}{!}{\begin{tabular}{c c c c c c}
+	\hline
+	\textbf{Dataset ID} & \textbf{Controls} & \textbf{N (controls)} & \textbf{Cases} & \textbf{N (cases)} & \textbf{Ref.} \\
+	\hline
+	Singh 2015, EDD & H & 82 & EDD & 201 & \cite{edd-singh} \\ 
+	Schubert 2014, CDI & H & 154 & CDI & 93 & \cite{cdi-schubert} \\ 
+	Schubert 2014, nonCDI & H & 154 & nonCDI & 89 & \cite{cdi-schubert} \\ 
+	Vincent 2013, CDI & H & 25 & CDI & 25 & \cite{cdi-vincent} \\ 
+	Youngster 2014, CDI & H & 4 & CDI & 19 & \cite{cdi-youngster} \\ 
+	Goodrich 2014, OB & H & 428 & OB & 185 & \cite{ob-goodrich} \\ 
+	Turnbaugh 2009, OB & H & 61 & OB & 195 & \cite{ob-gordon} \\ 
+	Zupancic 2012, OB & H & 96 & OB & 101 & \cite{ob-zupancic} \\ 
+	Ross 2015, OB & H & 26 & OB & 37 & \cite{ob-ross} \\ 
+	Zhu 2013, OB & H & 16 & OB & 25 & \cite{nash-baker} \\ 
+	Baxter 2016, CRC & H & 172 & CRC & 120 & \cite{crc-baxter} \\ 
+	Zeller 2014, CRC & H & 75 & CRC & 41 & \cite{crc-zeller} \\ 
+	Wang 2012, CRC & H & 54 & CRC & 44 & \cite{crc-zhao} \\ 
+	Chen 2012, CRC & H & 22 & CRC & 21 & \cite{crc-xiang} \\ 
+	Gevers 2014, IBD & nonIBD & 16 & CD & 146 & \cite{ibd-gevers} \\ 
+	Morgan 2012, IBD & H & 18 & UC, CD & 108 & \cite{ibd-hut} \\ 
+	Papa 2012, IBD & nonIBD & 24 & UC, CD & 66 & \cite{ibd-papa} \\ 
+	Willing 2010, IBD & H & 35 & UC, CD & 45 & \cite{ibd-engstrand} \\ 
+	Noguera-Julian 2016, HIV & H & 34 & HIV & 205 & \cite{noguera2016gut} \\ 
+	Dinh 2015, HIV & H & 15 & HIV & 21 & \cite{hiv-dinh} \\ 
+	Lozupone 2013, HIV & H & 13 & HIV & 23 & \cite{lozupone2013alterations} \\ 
+	Son 2015, ASD & H & 44 & ASD & 59 & \cite{asd-son} \\ 
+	Kang 2013, ASD & H & 20 & ASD & 19 & \cite{asd-kb} \\ 
+	Alkanani 2015, T1D & H & 55 & T1D & 57 & \cite{t1d-alkanani} \\ 
+	Mejia-Leon 2014, T1D & H & 8 & T1D & 21 & \cite{t1d-mejia} \\ 
+	Wong 2013, NASH & H & 22 & NASH & 16 & \cite{nash-chan} \\ 
+	Zhu 2013, NASH & H & 16 & NASH & 22 & \cite{nash-baker} \\ 
+	Scher 2013, ART & H & 28 & PSA, RA & 86 & \cite{ra-littman} \\ 
+	Zhang 2013, LIV & H & 25 & CIRR, MHE & 46 & \cite{mhe-zhang} \\ 
+	Scheperjans 2015, PAR & H & 74 & PAR & 74 & \cite{par-schep} \\ 
+	\hline
+\end{tabular}}
+\caption{Datasets collected and processed through standardized pipeline. Disease labels: ART = arthritis, ASD = austism spectrum disorder, CD = Crohn's disease, CDI = \textit{Clostridium difficile} infection, CIRR = liver cirrhosis, CRC = colorectal cancer, EDD = enteric diarrheal disease, H = healthy, HIV = human immunodeficiency virus, LIV = liver diseases,  MHE =  minimal hepatic encephalopathy, NASH = non-alcoholic steatohepatitis, OB = obesity, PAR = Parkinson's disease, PSA = psoriatic arthritis, RA = rheumatoid arthritis, T1D = type I diabetes, UC = ulcerative colitis. nonCDI controls are patients with diarrhea who tested negative for \textit{C. difficile} infection. nonIBD controls are patients  with gastrointestinal symptoms but no intestinal inflammation. Datasets are ordered as in Figure \ref{fig:fig1}.}\label{tab:datasets}
+\end{table}
+}
+
+\newpage
+\begin{figure}[h]
+	\begin{center}
+  	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{samplesize_auc_nsig_balance.pdf}}
+	\caption{\textbf{Most diseases show microbiome alterations, and consistent disease-associated shifts differ in their extent and direction.} (A) Left: Total sample size for each study included in these analyses. Additional information about each dataset can be found in Table \ref{tab:datasets}. Studies on the y-axis are grouped by disease and ordered by decreasing sample size (top to bottom). Right: Area under the ROC curve (AUC) for genus-level random forest classifiers. X-axis starts at 0.5, the expected value for a classifier which assigns labels randomly, and AUCs less than 0.5 are not shown. ROC curves for all datasets are in Supplementary Figure \ref{fig:roc_curves}. Note that Youngster et al. (2014) \cite{cdi-youngster} had only 4 distinct control patients was excluded from the Random Forest analysis. (B) Left: Number of genera with q $<$ 0.05 (Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction) for each dataset. If a study has no significant associations, no point is shown. Right: Direction of the microbiome shift, i.e. the percent of total associated genera which were enriched in diseased patients. In datasets on the leftmost blue line, 100\% of associated (q $<$ 0.05, FDR KW test) genera are health-associated (i.e. depleted in patients relative to controls). In datasets on the rightmost red line, 100\% of associated (q $<$ 0.05, FDR KW test) genera are disease-associated (i.e. enriched in patients relative to controls). Supplementary Figures \ref{fig:overall_heatmap_qvalues} and \ref{fig:overall_heatmap_foldchange} show q-values and effects for each genus in each study.}
+	\label{fig:fig1}
+	\end{center}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+	\begin{center}
+  	\makebox[\textwidth][c]{\includegraphics[width=0.9\textwidth]{disease_specific_heatmaps.pdf}}
+	\caption{\textbf{Comparing results from multiple studies of the same disease reveals patterns in disease-associated microbiome alterations.} Heatmaps showing log10(q-values) for each disease (Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction). Rows include all genera which were significant in at least one dataset within each disease, columns are datasets. Q-values are colored by direction of the effect, where red indicates higher mean abundance in disease patients and blue indicates higher mean abundance in controls. Opacity ranges from q = 0.05 to 1, where q values less than 0.05 are the most opaque and q values close to 1 are gray. White indicates that the genus was not present in that dataset. Within each heatmap, rows are ordered from most disease-associated (top) to most health-associated (bottom) (i.e. by the sum across rows of the log10(q-values), signed according to directionality of the effect). The extent of a disease-associated microbiome shift can be visualized by the number of rows in each disease heatmap; the directionality of a shift can be seen in the ratio of red rows to blue rows within each disease. See Supplementary Figure \ref{fig:supp_dis_specific} for genus (row) labels.}
+	\label{fig:fig2}
+	\end{center}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+	\begin{center}
+  	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{core_response.pdf}}
+	\caption{\textbf{The majority of disease-associated microbiome alterations overlap with a non-specific microbial response to disease.} (A) Non-specific and disease-associated genera. Genera are in columns, arranged phylogenetically according to a PhyloT tree built from genus-level NCBI IDs (\url{http://phylot.biobyte.de}). Non-specific genera are associated with health (or disease) in at least two different \textit{diseases} (q $<$ 0.05, Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction). Disease-specific genera are significant in the same direction in at least two \textit{studies} of the same disease (q $<$ 0.05, FDR KW test). As in Figure \ref{fig:fig2}, blue indicates higher mean abundance in controls and red indicates higher mean abundance in patients. Black bars indicate mixed genera which were associated with health in two diseases and also associated with disease in two diseases. Disease-specific genera are shown for diseases with at least 3 studies. Phyla, left to right: Euryarchaeota (brown), Verrucomicrobia Subdivision 5 (gray), Candidatus Saccharibacteria (gray), Bacteroidetes (blue), Proteobacteria (red), Synergistetes (pink), Actinobacteria (green), Firmicutes (purple), Verrucomicrobia (gray), Lentisphaerae (pink), Fusobacteria (orange). See Supplementary Figure \ref{fig:supp_meta_heatmap} for genus labels. (B) The percent of each study's genus-level associations which overlap with the shared response  (q $<$ 0.05, FDR KW test). Only datasets with at least one significant association are shown. (C) Overall abundance and ubiquity of non-specific genera across all patients in all datasets. Non-specific genera on the x-axis are as defined above.}
+	\label{fig:fig3}
+	\end{center}
+\end{figure}
+
+\FloatBarrier
+
+\renewcommand{\figurename}{Supplementary Figure}
+\renewcommand{\tablename}{Supplementary Table}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\section*{Supplementary Note 1: Re-processing and re-analyzing raw data yields results which are generally consistent with previously published results}\label{sec:lit_comp}
+
+Our re-analyses of the 29 studies were largely consistent with the originally reported results, with the same taxonomic groups showing similar trends despite differences in data-processing methodologies. 
+We usually found fewer significant (q $<$ 0.05) differences between control and diseased groups, which is likely due to our choice of a non-parametric statistical test (Kruskall-Wallis) paired with a multi-test correction (FDR). 
+Thus, our results are more conservative.  
+We also collapsed to genus level in order to compare results across disparate studies, which prevented us from identifying species- or strain-specific associations which the original authors may have identified. 
+A major advantage of our re-analysis is that each data set was processed and analyzed in the same way, which allowed us to more directly compare results across studies and diseases.
+
+\subsection*{\textit{Clostridium difficile} Infection and enteric diarrhea are characterized by large-scale shifts in the microbiome (CDI; 4 studies)}
+
+Schubert et al. (2014) looked at how the gut microbiota differed between CDI patients with diarrhea (n $=$ 94), non-CDI patients with diarrhea (n $=$ 89), and non-diarrheal controls (n $=$ 155) \cite{cdi-schubert}. 
+Similar to other CDI studies, the authors found a significant reduction in alpha diversity in patients with diarrhea (Dunn’s multiple-comparison test on AMOVA, p $<$ 0.0001). 
+They found that OTUs from the \textit{Ruminococcaceae}, \textit{Lachnospiraceae}, \textit{Bacteroides}, \textit{Prevotellaceae}, and \textit{Porphyromonadaceae} families were enriched in healthy subjects relative to patients with CDI and non-CDI diarrhea. 
+They also showed that OTUs from the \textit{Enterococcus} genus and the \textit{Enterobacteriaceae} and \textit{Erysipelotrichaceae} families were more prevalent in patients with diarrhea. 
+In our analysis of the data, we also observed a significant reduction in alpha diversity in patients with diarrhea (q $<=$ 0.05, KW test). 
+Similarly, we found that \textit{Enterobacteriaceae}, \textit{Enterococcus}, and \textit{Erysipelotrichaceae} were enriched in CDI patients, in addition to \textit{Fusobacterium}, \textit{Parvimonas}, \textit{Veillonella}, \textit{Carnobacterium}, \textit{Streptococcus}, \textit{Tetragenococcus}, \textit{Lactobacillus}, \textit{Pediococcus}, \textit{Gemella}, \textit{Staphylococcus}, \textit{Butyricicoccus}, \textit{Robinsoniella}, \textit{Clostridium XlVa}, \textit{Clostridium XlVb}, \textit{Ruminococcus2}, \textit{Flavonifractor}, \textit{Gemmiger}, \textit{Mogibacterium}, \textit{Peptostreptococcus}, \textit{Clostridium XI}, \textit{Eggerthella}, \textit{Atopobium}, \textit{Actinomyces}, \textit{Arthrobacter}, \textit{Aggregatibacter}, \textit{Pseudomonas}, and \textit{Dysgonomonas}.
+As in the original study, we found that \textit{Bacteroides}, \textit{Alistipes}, \textit{Anaerovorax}, \textit{Oxalobacter}, \textit{Bordetella}, \textit{Prevotellaceae}, \textit{Porphyromonadaceae}, \textit{Lachnospiraceae}, and \textit{Ruminococcaceae} were more abundant in the healthy controls. 
+We also found \textit{Turicibacter}, \textit{Dialister}, \textit{Eubacterium}, \textit{Asteroleplasma}, \textit{Cloacibacillus}, \textit{Bordetella}, \textit{Oxalobacter}, \textit{Sutterella}, \textit{Parasutterella}, \textit{Desulfovibrio}, \textit{Sediminibacterium}, and \textit{Methanobrevibacter} to be enriched in the controls (q $<=$ 0.05, KW tests). 
+Overall, our analysis closely matched what was presented in the original manuscript.
+
+Vincent et al. (2013) compared 25 patients with CDI to 25 healthy control patients \cite{cdi-vincent}. 
+The authors found a significant reduction in alpha diversity (p $<=$ 0.05, Mann-Whitney U test). 
+They also report a reduction in \textit{Bacteroidaceae} and \textit{Clostridiales Incertae Sedis XI} in CDI patients relative to controls, and an enrichment in \textit{Enterococcaceae} in CDI patients (p $<$ 0.05, logistic regression). 
+After reprocessing these data and collapsing abundances to the genus level, we observed a similar reduction in alpha diversity (q $<=$ 0.05, KW test). We saw that the \textit{Enterococcaceae} genera \textit{Enterococcus} and \textit{Proteus} were enriched in CDI patients. Healthy controls showed higher levels of \textit{Fusobacterium}, \textit{Peptoniphilus}, \textit{Murdochiella}, \textit{Anaerococcus}, \textit{Finegoldia}, \textit{Odoribacter}, \textit{Prevotella}, and \textit{Parabacteroides} relative to CDI patients. In summary, our results are fairly similar to the authors' original analysis, showing a depletion in \textit{Bacteroidetes} and an enrichment in \textit{Proteobacteria} in CDI patients.
+
+Youngster et al. (2014) applied fecal microbiota transplants (FMTs) with materials collected from 5 healthy donors to 20 patients with recurrent \textit{Clostridium difficile} infections (CDIs) \cite{cdi-youngster}. 
+The goal of this study was to determine whether nasal-gastric tube or colonoscopy administration of FMTs was most effective for treating CDIs (i.e. half of the CDI patients received one or the other treatment). 
+The authors reported a significant reduction in alpha diversity in CDI patients vs. the healthy donors (p $<$ 0.001, Mann-Whitney test). 
+They did not assess whether there were significant differences in microbial community composition between CDI patients and donors, although they show that composition becomes more similar to donors following FMT. 
+In our analysis, we also found a significant reduction in alpha diversity (p $<=$ 0.05, KW test). \textit{Enterococcus} was enriched in CDI patients relative to healthy stool donors (q $<=$ 0.05, KW tests) and 15 genera were depleted in CDI patients relative to healthy controls.
+Healthy donors were enriched in genera from \textit{Ruminococcaceae} and \textit{Lachnospiraceae} families, in addition to the genera \textit{Dialister} and \textit{Anaerosporobacter}. 
+
+Singh et al. (2015) examined differences in the gut microbiome between individuals with enteric infections (n=200) and healthy controls (n=75) \cite{edd-singh}. 
+The authors report a significant drop in alpha diversity in diseased patients relative to the controls (unknown test). 
+They also report a general reduction in the dominance of \textit{Firmicutes} and \textit{Bacteroidetes} phyla and an increase in the prevalence of \textit{Proteobacteria} in diseased patients. 
+Specifically, they report an increase in the abundance of \textit{Enterobacteriaceae}, \textit{Lactobacillaceae}, \textit{Pasteurellaceae}, \textit{Streptococcus}, \textit{Bacilli}, \textit{Escherichia},  \textit{Haemophilus}, and certain \textit{Ruminococcus} species in patients with diarrhea. 
+In healthy people, they report a significant enrichment in \textit{Verrucomicrobia}, \textit{Dorea}, \textit{Blautia}, \textit{Holdermania}, \textit{Ruminococcaceae}, \textit{Lachnospiraceae}, \textit{Butyricimonas}, \textit{Faecalibacterium}, \textit{Bacteroidaceae}, and \textit{Bifidobacterium}, \textit{Sutterella}, \textit{Parabacteroides}, \textit{Rikenellaceae}, and \textit{Oscillospira}. 
+After re-processing the data, we found very similar results to those originally reported. 
+We found that alpha diversity was significantly lower in patients with enteric infections (q $<=$ 0.05, KW test). 
+We saw significant enrichment in \textit{Proteobacteria} families in patients with diarrhea, including \textit{Enterobacteriaceae}, \textit{Pasteurellaceae}, \textit{Campylobacteraceae}, and \textit{Neisseriaceae}. 
+We also saw higher levels of \textit{Fusobacterium}, \textit{Parvimonas}, \textit{Veillonella}, \textit{Lactococcus}, \textit{Streptococcus}, \textit{Enterococcus}, \textit{Tetragenococcus}, \textit{Gemella}, \textit{Ruminococcus II}, \textit{Peptostreptococcus}, and \textit{Collinsella} in diseased patients. 
+In the healthy controls, we found enrichment of 43 genera, including \textit{Sutterella}, \textit{Verrucomicrobia} (\textit{Akkermansia}), \textit{Ruminococcaceae}, \textit{Lachnospiraceae}, \textit{Bacteroidaceae}, and \textit{Bifidobacterium}. 
+In addition, we saw higher levels of several members of \textit{Rumminococcaceae}, \textit{Lachnospiraceae}, and \textit{Bacteroidales} in healthy controls (q $<=$ 0.05, KW tests). 
+Overall, our results largely overlap with those presented, but we identify a number of significant taxa that were not originally reported.
+
+Taken together, we see large-scale shifts in the microbiome associated with both CDI and non-CDI diarrhea. 
+The dysbiosis of enteric infection and diarrhea is quite consistent across studies. 
+In general, \textit{Proteobacteria} increase in prevalence in patients with diarrhea, with a concomitant decrease in \textit{Bacteroidetes} and \textit{Firmicutes}. 
+In particular, we see a reduction in butyrate-producing Clostridia, including genera within \textit{Ruminococcaceae} and \textit{Lachnospiraceae} families, which have been associated with a healthy gut. 
+We also see in increase in prevalence of organisms often associated with lower pH and higher oxygen levels of the upper-gut, like \textit{Lactobacillaceae} and \textit{Enterobacteriaceae} \cite{donaldson2016gut}, in patients with diarrhea. 
+Thus, diarrhea leads to consistent and large-scale rearrangements in the composition of the gut microbiome.
+
+\subsection*{Colorectal Cancer has a consistent, ootentially pathogenic microbial signature (CRC; 4 studies)}
+
+Baxter et al. (2016) looked at differences in the microbiomes of 120 colorectal cancer (CRC) patients, 198 patients with non-cancerous adenomas, and 172 healthy controls \cite{crc-baxter}. 
+Similar to prior work, the authors found that \textit{Porphyromonas}, \textit{Peptostreptococcus}, \textit{Parvimonas}, and \textit{Fusobacterium} were positively associated with CRC (random forest classifiers). 
+Furthermore, they found that the absence of certain \textit{Lachnospiraceae} species was associated with the presence of adenomas. 
+We found similar patterns in our re-analysis of these data, with \textit{Fusobacterium}, \textit{Peptostreptococcus}, \textit{Parvimonas}, and \textit{Porphyromonas} enriched in CRC patients (q $<=$ 0.05, KW tests). 
+We also found higher levels of \textit{Victivallis}, \textit{Peptoniphilus}, \textit{Anaerococcus}, \textit{Catenibacterium}, \textit{Staphylococcus}, \textit{Collinsella}, \textit{Enterobacter}, and \textit{Alloprevotella} in CRC patients (q $<=$ 0.05, KW tests). 
+We found that healthy controls were enriched in \textit{Lachnobacterium} (genus within \textit{Lachnospiraceae}), \textit{Gemmiger} (within \textit{Rumminococcaceae}), \textit{Clostridium XVIII}, and \textit{Haemophilus} (q $<=$ 0.05, KW tests). 
+Overall, these results match what has been reported previously for CRC \cite{brennan2016gut}.
+
+Zeller et al. (2014) collected microbiome data from 41 CRC patients and 75 control patients \cite{crc-zeller}. 
+At the phylum level, they found that \textit{Proteobacteria}, \textit{Fusobacteria}, and \textit{Bacteroidetes}, were more abundant in CRC patients, while \textit{Firmicutes} and \textit{Actinobacteria} were enriched in control patients. 
+At the genus level, the authors report higher levels of \textit{Fusobacterium}, \textit{Pseudoflavonifractor}, \textit{Peptostreptococcus}, \textit{Leptotrichia}, \textit{Porphyromonas}, \textit{Desulfovibrio}, \textit{Parvimonas}, \textit{Selenomonas}, and \textit{Bilophila} in CRC patients (q $<=$ 0.1, FDR-corrected Wilcoxon tests). 
+Healthy controls were enriched in \textit{Bifidobacterium}, \textit{Acinetobacter}, \textit{Campylobacter}, \textit{Ruminococcus}, and \textit{Eubacterium} genera (q $<=$ 0.1, FDR-corrected Wilcoxon tests). 
+In our re-analysis we found enrichment of \textit{Fusobacterium}, \textit{Parvimonas}, \textit{Flavonifractor}, \textit{Anaerotruncus}, \textit{Anaerovorax}, \textit{Peptostreptococcus}, \textit{Comamonas}, \textit{Eikenella}, \textit{Butyricimonas}, and \textit{Porphyromonas} genera in CRC patients (q $<=$ 0.05, KW tests). 
+In healthy patients, we found higher levels of \textit{Anaerostipes} (within \textit{Lachnospiraceae}; q $<=$ 0.05, KW tests).
+
+Wang et al. (2011) analyzed a cohort of 46 CRC patients and 56 healthy controls \cite{crc-zhao}. 
+The authors found no difference in alpha diversity between CRC and control patients. 
+CRC patients had higher abundances of \textit{Porphyromonas}, \textit{Escherichia-Shigella}, \textit{Enterococcus}, \textit{Streptococcus}, and \textit{Peptostreptococcus} genera (p $<=$ 0.05, Mann-Whitney). 
+The authors report that healthy controls were enriched \textit{Bacteroides}, \textit{Roseburia}, \textit{Alistipes}, \textit{Eubacterium}, and \textit{Parasutterella} genera (p $<=$ 0.05, Mann-Whitney). 
+We found very similar results in our re-analysis of these data. 
+We saw greater levels of \textit{Enterococcus}, \textit{Peptostreptococcus}, \textit{Enterobacter}, \textit{Klebsiella}, \textit{Escherichia-Shigella}, and \textit{Porphyromonas} genera in CRC patients (q $<=$ 0.05, KW tests). 
+And we observed significantly higher levels of \textit{Bacteroides}, and several genera within \textit{Lachnospiraceae} in healthy controls (q $<=$ 0.05, KW tests). 
+Furthermore, we also did not detect any significant differences in alpha diversity between CRC and healthy patients.
+
+Chen et al. (2012) analyzed stool from 22 healthy patients and 21 CRC patients \cite{crc-xiang}. 
+The authors found that \textit{Paraprevotella}, \textit{Eubacterium}, \textit{Desulfovibrio}, \textit{Mogibacterium}, \textit{Collinsella}, \textit{Anaerotruncus}, \textit{Slackia}, \textit{Anaerococcus}, \textit{Porphyromonas}, \textit{Fusobacterium}, and \textit{Peptostreptococcus} genera were significantly enriched in CRC patients relative to controls, while \textit{Bifidobacterium}, \textit{Faecalibacterium}, and \textit{Blautia} were reduced in CRC patients (p $<=$ 0.05, Mann-Whitney). 
+In our re-analysis of this data set, we found no significant differences between CRC and control patients. 
+Again, this is likely due to the small number of replicates and our implementation of multiple-test corrections. 
+However, non-significant trends were largely in agreement with the original results.
+
+Across these four colorectal cancer studies, we find significant agreement. 
+Dysbiosis associated with CRC is generally characterized by increased prevalence of \textit{Fusobacterium}, \textit{Porphyromonas}, \textit{Peptostreptococcus}, \textit{Parvimonas}, \textit{Leptotrichia}, \textit{Desulfovibrio}, and \textit{Anaerococcus} genera (i.e. these genera were higher in CRC patients in 2 or more studies). 
+In addition, there is a consistent decrease in the abundances of \textit{Faecalibacterium}, \textit{Blautia}, \textit{Bacteroides} genera and organisms from the \textit{Lachnospiraceae} family in CRC patients. 
+CRC appears to have a smaller impact on overall community structure than diahrrea. 
+Indeed, we saw no significant differences in alpha diversity between healthy controls and CRC patients. 
+In summary, CRC is characterized by a consistent enrichment of disease-associated bacteria.
+
+\subsection*{Inflammatory Bowel Disease is characterized by a depletion of health-associated bacteria (IBD - Ulcerative Colitis and Crohn's Disease; 4 studies)}
+
+Gevers et al. (2014) looked for microbial signatures of Crohn's disease (CD) samples across 447 CD patients and 221 non-IBD controls \cite{ibd-gevers}. 
+Non-IBD controls were patients with non-inflammatory conditions such as abdominal pain and diarrhea.
+The authors report increased abundance of \textit{Enterobacteriaceae}, \textit{Pasteurellaceae}, \textit{Veillonellaceae}, and \textit{Fusobacteriaceae} in CD patients. 
+CD patients also showed a drop in the abundances of \textit{Erysipelotrichales}, \textit{Bacteroidales}, and \textit{Clostridiales} (\textit{Ruminococcaceae} and \textit{Lachnospiraceae}) taxa. 
+These results were based on a mixture of 16S amplicon and shotgun metagenomic sequencing. 
+In our re-analysis of the 16S stool data, we found significant enrichment in \textit{Anaerosporobacter}, \textit{Roseburia}, \textit{Hespellia}, \textit{Ruminococcus II}, \textit{Eubacterium}, \textit{Pseudoflavonifractor}, \textit{Sporobacter}, \textit{Ruminococcus}, \textit{Subdoligranulum}, \textit{Papillibacter}, \textit{Collinsella}, and \textit{Methanobrevibacter} in healthy patients (q $<=$ 0.05, KW tests). 
+The only genera that we saw significantly enriched in CD patients were \textit{Lactobacillus} and \textit{Acetanaerobacterium} (q $<=$ 0.05, KW tests). 
+We found a similar set of taxa enriched in the controls, but did not detect as many significant CD-enriched genera as the authors reported. 
+This is likely due to the fact that we restricted our analysis to the 16S stool data. 
+However, we saw non-significant trends in \textit{Enterobacteriaceae} and \textit{Veillonellaceae} consistent with the results reported in the original paper.
+
+Morgan et al. (2012) studied a cohort of 119 CD patients, 74 UC patients, and 27 healthy controls \cite{ibd-hut}. 
+The authors found that healthy patients’ gut microbiomes were significantly enriched in \textit{Roseburia}, \textit{Phascolarctobacterium}, and an unclassified genus in the family \textit{Veillonellaceae} (multivariate linear model, q $<=$ 0.25). 
+Patients with UC showed significantly higher levels of \textit{Clostridiaceae} (multivariate linear model, q $<=$ 0.25). 
+In our re-analysis, we did not find any genera that were significantly enriched in IBD patients. 
+We found that healthy patients had significantly greater abundances of \textit{Ruminococcus}, and \textit{Gemmiger} relative to both UC and CD patients (q $<=$ 0.05, KW tests).
+Additionally, CD patients were depleted in \textit{Clostridium IV} relative to healthy controls (q $<=$ 0.05, KW tests). 
+
+Papa et al. (2012) studied a cohort of 23 CD patients, 43 UC patients, and 24 non-IBD controls \cite{ibd-papa}. 
+Non-IBD controls were patients with symptoms such as: constipation, abdominal pain, gastroesophageal reflux, poor weight gain, diarrhea, blood in stool and oropharyngeal dysphagia.
+At the genus level, they found that controls were enriched in \textit{Alistipes}, \textit{Subdoligranulum}, \textit{Anaerovorax}, \textit{Oscillibacter}, \textit{Parabacteroides}, \textit{Odoribacter}, \textit{Ruminococcus}, \textit{Butyricicoccus}, \textit{Akkermansia}, \textit{Anaerotruncus}, \textit{Sporobacter}, \textit{Phascolarctobacterium}, \textit{Lawsonia}, \textit{Ethanoligenens}, \textit{Peptococcus} relative to IBD patients (KW, q $<$ 0.01). 
+The only genus that was found to be enriched in IBD patients was \textit{Escherichia-Shigella}. 
+In our re-analysis, we also found \textit{Escherichia-Shigella} and \textit{Cronobacter} to be enriched in patients with IBD (q $<=$ 0.05, KW tests). 
+When comparing healthy controls with UC patients, we also found an enrichment of \textit{Haemophilus} in the UC patients.
+Control patients showed higher abundances of \textit{Phascolarctobacterium}, \textit{Butyricicoccus}, \textit{Ruminococcus II}, \textit{Oscillibacter}, \textit{Ruminococcus}, \textit{Gemmiger}, \textit{Subdoligranulum}, \textit{Clostridium IV}, \textit{Odoribacter}, \textit{Alistipes}, and \textit{Parabacteroides} relative to all IBD patients (q $<=$ 0.05, KW tests). 
+Additionally, control patients were enriched in \textit{Clostridium XIVa}, \textit{Flavonifractor}, and \textit{Akkermansia} relative to UC patients.
+Overall, our results match very closely what was found in the original paper.
+
+Willing et al. (2010) compared 29 CD patients and 16 UC patients to 35 healthy controls \cite{ibd-engstrand}. 
+The authors reported variable, and sometimes opposing shifts in the microbiomes of patients with UC, ileal CD and colonic CD at different taxonomic resolutions. 
+We found no significant differences between IBD and healthy patients in our re-analysis.
+When comparing healthy controls with CD cases only, we found an enrichment of \textit{Butyricicoccus} and \textit{Oscillibacter} in the control patients (q $<=$ 0.05, KW tests).
+
+In summary, there are certain consistencies across IBD studies. 
+IBD patients tend to be depleted in butyrate-producing clostridia: \textit{Ruminococcus} and \textit{Lachnospiraceae}. 
+The organisms the are enriched in CD and UC patients tend to vary across studies. 
+One consistency is organisms associated with the upper gut, like \textit{Lactobacillus} and \textit{Enterobacteriaceae} appear to be enriched in IBD patients \cite{donaldson2016gut}. 
+This result fits with the reduced stool transit times associated with IBD (i.e. diarrhea).
+
+\subsection*{Obesity shows a somewhat inconsistent microbial signature (OB; 5 studies)}
+
+Goodrich et al. (2014) studied a cohort of 416 twin pairs: 422 normal BMI, 322 overweight, and 185 obese \cite{ob-goodrich}. 
+The authors report higher levels of \textit{Lactobacillaceae}, \textit{Eggerthella}, and \textit{Lachnospiraceae} (\textit{Blautia} and \textit{Dorea}) in obese individuals (q $<$ 0.05, FDR-corrected T-test). 
+They showed enrichment for \textit{Christensenellaceae}, \textit{Dehalobacterium}, \textit{Lachnospira}, \textit{Mogibacteriaceae}, \textit{Rikenellaceae}, \textit{Methanobre}, \textit{Coriobacteriaceae}, \textit{Peptococcaceae}, \textit{Oscillospira}, \textit{Ruminococcaceae}, and \textit{Sarcina} in healthy BMI individuals (q $<$ 0.05, FDR-corrected T-test). 
+In our re-analysis, we found higher levels of \textit{Streptococcus}, \textit{Weissella}, \textit{Roseburia}, \textit{Blautia}, \textit{Clostridium XlVb}, and \textit{Mogibacterium} in obese individuals, while \textit{Robinsoniella}, \textit{Ruminococcaceae} (\textit{Oscillibacter}, \textit{Pseudoflavonifractor}, \textit{Sporobacter}, and \textit{Anaerofilum}), and \textit{Anaerovorax} were more abundant in low-BMI individuals (q $<=$ 0.05, KW tests). 
+Our results only partially agree with the authors' original findings, which may be due to the fact that we used a different statistical test and OTU-calling method and that we binned the data at the genus level.
+
+Zupancic et al. (2012) analyzed 310 individuals from an Amish population with varying BMIs \cite{ob-zupancic}. 
+They found a significant positive correlation between the abundance of \textit{Collinsella} and BMI (i.e. enriched in obese individuals), while \textit{Lachnobacterium}, \textit{Anaerotruncus}, \textit{Faecalibacterium}, and \textit{Clostridium} were negatively correlated with BMI (i.e. enriched lean individuals) (p < 0.001, Spearman correlation). 
+We found no significant differences in the proportion of genera between lean and obese individuals in our re-analysis.
+
+Turnbaugh et al. (2008) looked differences in gut microbial community structure between 31 monozygotic and 23 dizygotic twin pairs concordant for leanness or obesity \cite{ob-gordon}. 
+The authors report a reduction in alpha diversity in obese individuals. 
+They also report a significant decrease in \textit{Bacteroidetes}  and an increase in \textit{Actinobacteria} in obese twins. 
+In our re-analysis of these data, we did not see a significant reduction in alpha diversity (Supplementary Figure \ref{fig:fig_alpha}).
+We found significant increases in \textit{Catenibacterium}, \textit{Acidaminococcus}, \textit{Megasphaera}, \textit{Lactobacillus}, \textit{Roseburia}, and \textit{Collinsella} in obese twins (q $<=$ 0.05, KW tests). 
+\textit{Coprobacillus}, \textit{Clostridium XVIII}, \textit{Phascolarctobacterium}, \textit{Clostridium XlVb}, \textit{Oscillibacter}, \textit{Flavonifractor}, \textit{Pseudoflavonifractor}, \textit{Ruminococcus}, \textit{Clostridium IV}, \textit{Gordonibacter}, \textit{Alistipes}, and \textit{Barnesiella} were significantly enriched in lean twins (q $<=$ 0.05, KW tests).
+
+Ross et al. (2015) looked at 63 Mexican American patients with varying BMIs \cite{ob-ross}. 
+They found no significant differences between patients with high and low BMIs within their 63 patient cohort, but identified several significant differences between their patient population and the HMP data set. 
+However, it is unclear whether these differences were related to obesity, so we do not discuss them here. 
+Our re-analysis of these results also found no significant differences in the relative abundances of bacterial genera between high- and low-BMI subjects.
+
+Zhu et al. (2013) compared across a cohort of 16 healthy and 25 obese patients, in addition to 22 patients with Nonalcoholic steatohepatitis (see below) \cite{nash-baker}. 
+For obesity, the authors found that \textit{Prevotella} was enriched in high-BMI patients, while healthy controls showed significantly greater relative abundances of \textit{Bifidobacterium}, \textit{Blautia}, and \textit{Faecalibacterium} (p $<=$ 0.05, ANOVA with post-hoc Tukey's tests). 
+In our re-analysis of these data, we found a significant enrichment of \textit{Peptoniphilus}, \textit{Anaerococcus}, \textit{Finegoldia}, \textit{Leuconostoc}, \textit{Mogibacterium}, \textit{Varibaculum}, \textit{Campylobacter}, \textit{Prevotella}, and \textit{Porphyromonas} in obese patients (q $<=$ 0.05). Healthy patients were significantly enriched in \textit{Akkermansia}, \textit{Murdochiella}, \textit{Blautia}, \textit{Lachnospiracea incertae sedis}, and \textit{Clostridium IV}, \textit{Anaerovorax} (q $<=$ 0.05, KW tests).
+
+Overall, we found several differences between lean and obese patients that were consistent across at least two studies. 
+\textit{Roseburia} and \textit{Mogibacterium} were enriched in obese individuals in more than one study. \textit{Pseudoflavonifractor}, \textit{Oscillobacter}, \textit{Anaerovorax} and \textit{Clostridium IV} were enriched in the controls across more than one study. However, no genera showed consistent differences across three or more studies.
+Our results are largely consistent with a recent meta-analysis of obesity studies, which found no universal signature of human obesity \cite{Sze07092016}.
+
+\subsection*{Human Immunodeficiency Virus microbial signature is confounded with patient cohorts (HIV; 3 studies)}
+
+Dinh et al. (2015) compared the gut microbiome from 16 healthy patients to 22 patients with chronic HIV infections \cite{hiv-dinh}. 
+The authors report an general enrichment in \textit{Proteobacteria} in HIV-infected patients. 
+At the genus level, they found a significant enrichment in \textit{Barnesiella} and a depletion in \textit{Alistipes} in HIV-infected patients (LEfSe, p $<$ 0.05). 
+In our re-analysis of these data we found no significant differences in the relative abundances of genera between healthy and HIV-infected patients.
+
+Lozupone et al. (2013) looked at 22 HIV-positive patients and 13 healthy controls \cite{lozupone2013alterations}. 
+The authors reported enrichment of \textit{Prevotella}, \textit{Catenibacterium}, \textit{Dialister}, \textit{Allisonella}, and \textit{Megasphera} genera in HIV-positive patients, while \textit{Bacteroides} and \textit{Alistipes} were more abundant in controls (p $<$ 0.05, ANOVA). 
+We found all the associations reported above in our re-analysis. 
+Additionally, we saw higher relative abundances of \textit{Erysipelotrichaceae incertae sedis}, \textit{Peptococcus}, \textit{Mogibacterium}, \textit{Peptostreptococcus}, \textit{Desulfovibrio}, \textit{Hallella}, and \textit{Alloprevotella} in HIV-positive patients. 
+And healthy patients were also enriched in \textit{Oridibacter}, \textit{Anaerostipes}, and \textit{Parasutterella}. 
+Many of the significant genera from the Lozupone study were shown to be strongly associated with sexual behavior in the Noguera-Julian study (i.e. these genera were significantly different in men who have sex with men versus other subjects; see below) and may not necessarily be related to HIV status.
+
+Noguera-Julian et al. (2016) studied a cohort of 293 HIV-infected patients and 57 healthy controls. 
+The authors found that many putative associations between HIV and the microbiome were driven by sexual preference (i.e. \textit{Prevotella}, along with several other genera, were enriched in men who have sex with men (MSM)). 
+After controlling for this demographic confounder, the authors reported that they were not able to classify HIV positive and negative patients MSM patients. 
+Due to the large size of their study, the authors were able to separate the influences of sexual behavior and HIV-status from one another and found that the majority of reported HIV-associations are likely confounded with sexual behavior. 
+
+Overall, there is not yet a strong consensus on the impacts of HIV on the human gut microbiome. 
+Differences between patient cohorts may have obscured any putative HIV signal across studies. 
+For example, all the patients in the Dinh et al. (2015) study were on antiretroviral therapy (ART), while only some of the patients in the other two studies were on ART. 
+Noguera-Julian et al. (2016) found that patients who initiated ART within the first 6 months of HIV infection were able to maintain gut microbial community richness, unlike patients that were not on ART. 
+In addition, the Noguera-Julian et al. (2016) paper was able to show that prior results showing enrichment of \textit{Prevotella} in HIV-positive patients was an artifact due to this genera being enriched in men who have sex with men.
+
+\subsection*{Autism Spectrum Disorder (ASD; 2 studies)}
+
+Kang et al. (2013) reported a reduced prevalence of \textit{Prevotella} and other fermentative organisms in the guts of ASD children \cite{asd-kb}. 
+In particular, the authors showed significant (q $<=$ 0.05, Mann-Whitney) depletion in unclassified \textit{Prevotella} and \textit{Veillonellaceae} genera in autistic children (n $=$ 20 treatment and 20 controls). 
+The authors also note a reduced alpha diversity in autistic children. 
+After reprocessing these data, we found no significant differences in alpha diversity or genera abundances between autistic and control children (Figure 1; q $>$ 0.05, Kruskal-Wallis). 
+The original conclusion that \textit{Prevotella} and \textit{Veillonellaceae} were different was based on q-values of 0.04, which is only moderately convincing evidence against the null-hypothesis. 
+Therefore, the loss of this marginal significance (for q $<=$ 0.05) is unsurprising when using a different statistical test.
+
+In a more recent study, Son et al. (2015) found no significant differences in microbial community diversity or composition between autistic and neurotypical children (n $=$ 59 ASD and 44 neurotypical) \cite{asd-son}. 
+One genus, representing chloroplast sequences, was associated with ASD children with functional constipation, but this signal appeared to be due to dietary intake of chia seeds. 
+Similar to the authors’ findings, we did not detect any significant differences in genera abundances between ASD children and neurotypical children in the reprocessed data (q $>$ 0.05, Kruskal-Wallis).
+
+Taken together, we find no evidence for changes in the composition or diversity of the gut microbiome in response to ASD. 
+However, we cannot discount subtle dysbiosis (i.e. small effect size) in response to ASD due to the small number of patients in each study.
+
+\subsection*{Type 1 Diabetes (T1D; 2 studies)}
+
+Alkanani et al. (2015) compared 23 healthy patients to 35 early-onset T1D patients and 21 seropositive T1D patients \cite{t1d-alkanani}. 
+The authors report higher relative abundances of \textit{Lactobacillus}, \textit{Prevotella} and \textit{Staphylococcus} genera in healthy patients (p $<$ 0.05, Wilcoxon). 
+T1D patients showed higher levels of \textit{Bacteroides} (p $<$ 0.05, Wilcoxon). 
+In our re-analysis, we found no significant differences in bacterial genera across healthy and diseased patients.
+
+Mejia-Leon et al. (2014) compared 8 healthy patients to 8 early-onset T1D patients and 13 T1D patients who had received 2 years of treatment \cite{t1d-mejia}. 
+Similar to Alkanani et al. (2015), they found controls to be significantly enriched in \textit{Prevotella} and T1D patients enriched in \textit{Bacteroides} (p $<$ 0.05, ANOVA, Tukey-Kramer test). 
+They also found higher levels of \textit{Acidaminococcus} and \textit{Megamonas} genera (in the \textit{Veillonellaceae} family) in the controls (p $<$ 0.05, ANOVA, Tukey-Kramer test). 
+We saw no significant differences in our re-analysis of these data.
+
+Overall, the original authors report a consistent increase in \textit{Bacteroides} and depletion in \textit{Prevotella} genera associated with T1D. 
+However, our re-analysis found that these differences did not pass our significance threshold. 
+Thus, we cannot yet conclude that there is a consistent dysbiosis associated with T1D.
+
+\subsection*{Nonalcoholic Steatohepatitis (NASH; 2 studies)}
+
+Zhu et al. (2013) compared the microbiomes from 16 healthy individuals to 22 patients with NASH \cite{nash-baker}. 
+They found significantly lower relative abundances of \textit{Bifidobacterium}, \textit{Blautia}, and \textit{Faecalibacterium} genera in NASH patients (p $<=$ 0.05, ANOVA with post-hoc Tukey's tests). 
+NASH patients were enriched in \textit{Escherichia}, compared to controls, and tended to show increased levels of \textit{Proteobacteria} (p $<=$ 0.05, ANOVA with post-hoc Tukey's tests). 
+In our re-analysis, we found that NASH patients showed significantly higher levels of \textit{Fusobacterium}, \textit{Peptoniphilus}, \textit{Anaerococcus}, \textit{Finegoldia}, \textit{Gallicola}, \textit{Negativicoccus}, \textit{Leuconostoc}, \textit{Weissella}, \textit{Lactobacillus}, \textit{Peptococcus}, \textit{Moryella}, \textit{Syntrophococcus}, \textit{Mogibacterium}, \textit{Olsenella}, \textit{Varibaculum}, \textit{Mobiluncus}, \textit{Pyramidobacter}, \textit{Escherichia/Shigella}, \textit{Campylobacter}, \textit{Hallella}, \textit{Prevotella}, and \textit{Porphyromonas} genera (q $<$ 0.05, KW test). 
+Conversely, control patients were significantly enriched in \textit{Akkermansia}, \textit{Murdochiella}, \textit{Coprococcus}, \textit{Anaerostipes}, \textit{Blautia}, \textit{Lachnospiracea incertae sedis}, \textit{Faecalibacterium}, \textit{Ruminococcus}, \textit{Gemmiger}, \textit{Clostridium IV}, \textit{Anaerovorax}, \textit{Clostridium XI}, \textit{Corynebacterium}, \textit{Bifidobacterium}, \textit{Alistipes}, and \textit{Barnesiella} genera (q $<$ 0.05, KW test).
+
+Wong et al. (2013) investigated a cohort of 16 healthy and 22 NASH patients \cite{nash-chan}. 
+They found that control patients were enriched in \textit{Faecalibacterium} and \textit{Anaerosporobacter} genera, while NASH patients showed significantly higher levels of \textit{Parabacteroides} and \textit{Alisonella} genera (p $<$ 0.05, t-test). 
+In our re-analysis of these data, we saw no significant differences.
+
+In summary, there were not many consistencies between the two NASH studies analyzed here. 
+The original studies consistently report a depletion in \textit{Faecalibacterium} in NASH patients.  
+Thus, the overall influence of NASH on the microbiome is difficult to assess without further study.
+
+\subsection*{Minimal Hepatic Encephalopathy and Liver Cirrhosis (LIV; 1 study)}
+
+Zhang et al. (2013) looked at the microbiomes of 26 healthy patients, 26 patients with MHE, and 25 patients with CIRR \cite{mhe-zhang}. 
+The original paper reported several genera that differed between diseased and control patients. \textit{Odoribacter}, \textit{Flavonifractor}, and \textit{Coprobacillus} were all enriched in MHE patients relative to controls, while \textit{Eubacterium}, \textit{Lachnospira}, \textit{Parasutteralla}, and an unclassified \textit{Erysipelotrichaceae} genus were enriched in healthy patients (p $<$ 0.01, Mann-Whitney). 
+The authors also reported depletion in \textit{Prevotella} in non-MHE patients with cirrhosis (CIRR), relative to controls.
+When we re-processed and re-analyzed these data, the only difference we found was an enrichment in \textit{Veillonella} in case (MHE and CIRR) patients (q $<$ 0.05, KW test).
+When comparing controls with MHE patients alone, we also saw an enrichment of \textit{Faecalibacterium} in healthy controls relative to MHE cases.
+
+\subsection*{Rheumatoid and Psoriatic Arthritis (ART; 1 study)}
+
+Scher et al. (2013) investigated the impacts of arthritis on a cohort of 86 arthritic and 28 healthy patients \cite{ra-littman}. 
+The authors report that greater abundances of \textit{Prevotella copri} can predict susceptibility to arthritis. 
+There were three types of arthritic conditions studied, but only new-onset untreated rheumatoid arthritis (NORA) showed a strong association with multiple \textit{Prevotella} OTUs among others (q $<$ 0.01, LEfSe). 
+The other RA groups were not easily distinguishable from controls. 
+Indeed, when grouping all arthritis patients together for our re-analysis as well as comparing RA and psoriatic arthritis patients separately, we did not find any genera that were significantly different between arthritic patients and controls.
+
+\subsection*{Parkinson's Disease (PAR; 1 study)}
+
+Scheperjans et al. (2014) looked for differences in the gut microbiome between 72 neurotypical patients and 72 Parkinson's (PAR) patients \cite{par-schep}. 
+They found a small handful of significant differences at the family level. 
+Control patients showed higher relative abundances of \textit{Prevotellaceae}, while PAR patients were enriched in \textit{Lactobacillaceae}, \textit{Verrucomicrobiaceae}, \textit{Bradyrhizobiaceae}, and \textit{Clostridiales Incertae Sedis} (q $<$ 0.05, Mann-Whitney). 
+In our re-analysis, we found significantly higher relative abundances of \textit{Lactobacillus} (within \textit{Lactobacillaceae}) and \textit{Alistipes} (within \textit{Rikenellaceae}) in PAR patients (q $<$ 0.05, KW tests).
+
+\section*{Supplementary Note 2: Stratifying heterogenous case groups shows consistent disease-specific signals}\label{sec:split_cases}
+
+In our main analyses, we combined Crohn's disease (CD) and ulcerative colitis (UC) patients together as IBD cases.
+We also performed separate analyses on these individual patient groups.
+All four IBD studies included CD cases and three included UC cases (all except Gevers et al. (2014) \cite{ibd-gevers}).
+We performed the same analysis as in Figure 1 for these stratified groups, and found that both CD and UC patients are characterized by depletion of similar health-associated microbes (Supplementary Figures \ref{fig:split_cases_fig1} and \ref{fig:split_cases_heatmaps}).
+Interestingly, neither UC nor CD seemed to have a larger microbiome shift: only one dataset for each type of comparison had more than 10 significant genera (Gevers et al. (2014), 14 CD-associated genera; Papa et al. (2012), 17 UC-associated genera).
+Additional studies comparing UC- and CD-specific microbiome alterations will be needed to tease out whether and how these IBD subtypes differentially impact the gut microbiome.
+
+We also performed stratified analyses on the arthritis (ART) and liver (LIV) patients in the Scher et al. (2013) and Zhang et al. (2013) datasets, respectively \cite{mhe-zhang, ra-littman} (Supplementary Figure \ref{fig:split_cases_fig1}).
+The random forest classifiers performed similarly well on the stratified patient groups than on the combined cases.
+As in the combined analyses, neither type of arthritis (rheumatoid arthritis (RA) or psoriatic arthritis (PSA)) had any significant genus-level associations.
+In the Zhang et al. (2013) dataset, 1 genus was significantly associated with the liver cirrhosis (CIRR) patients and 2 with the minimal hepatic encelopathy (MHE) patients.
+As in the original combined analysis, \textit{Veillonella} was associated with both groups of patients.
+In our stratified analysis, \textit{Faecalibacterium} was additionally significantly associated with non-MHE healthy controls.
+However, the lack of other arthritis or liver datasets in this analysis prevents us from drawing more generalized conclusions from these stratified analyses.
+
+\section*{Supplementary Note 3: Healthy vs. disease classifier identifies general microbiome shifts}\label{sec:overall_classifier}
+
+To further address the question of whether we could find a robust, generalized signal for diseased microbiomes regardless of the disease type, we built two classifiers to distinguish healthy patients from any type of case patients. 
+In these classifiers, we excluded the two datasets which did not have healthy controls (Gevers et al. (2014) \cite{ibd-gevers}  and Papa et al. (2012) \cite{ibd-papa}, which used non-IBD patients as controls) and CDI Youngster (2014), \cite{cdi-youngster} which had only 4 distinct controls. 
+First, we performed leave-one-dataset-out cross-validation to determine whether a general healthy vs. disease classifier trained on the other datasets could still classify cases from controls in a test dataset. 
+These AUCs correlated well with the single-dataset classifiers, though usually performed slightly less well than the single-dataset classifiers (Pearson $\rho$ $=$ 0.56, p $=$ 0.003; Supplementary Figure \ref{fig:overall_classifier}). 
+We also built a more stringent leave-one-disease-out classifier to ensure that the diarrhea datasets and others with strong microbiome signals were not driving the classification ability of all other diseases. 
+Surprisingly, this classifier performed similarly to the leave-one-dataset-out classifier  (Supplementary Figure \ref{fig:overall_classifier}). 
+The positive correlation with the original single-dataset classification results (Pearson $\rho$ $=$ 0.47, p $=$ 0.02) indicates that there is a generalizable healthy vs. disease microbiome signal that is being identified even across different diseases. 
+These results also indicate that models for each disease group are predictive of cases and controls for other datasets within that group, since the leave-one-dataset-out classifier, which included datasets of the test disease group in the training set, performed better than the leave-one-disease-out classifier, which did not. 
+
+\section*{Supplementary Note 4: Shared microbial response is robust to different definitions}\label{sec:core_defns}
+
+Our simple heuristic defined non-specific microbes as those which were significantly enriched or depleted in two diseases.
+To ensure that this definition was not being dominated by the diarrhea datasets and that we were indeed identifying microbes which respond non-specifically to multiple diseases, we re-defined the non-specific genera as those which were significantly enriched or depleted in two diseases, excluding datasets with diarrhea cases (Schubert et al. (2014) \cite{cdi-schubert}, Singh et al. (2015) \cite{edd-singh}, Vincent et al. (2013) \cite{cdi-vincent}, and Youngster et al. (2014) \cite{cdi-youngster}).
+We found that 27 out of the 51 original non-specific genera were recovered, with all health- and disease-associated effects in matching directions (Supplementary Figure \ref{fig:core_defns}). 
+Thus, the majority of the shared microbial response is robust to the exclusion of diarrhea datasets.
+
+We also re-defined non-specific microbes using Stouffer's method to combine p-values across all datasets (except Papa et al. (2012) \cite{ibd-papa}, Gevers et al. (2014) \cite{ibd-gevers}, and Lozupone et. al (2013) \cite{lozupone2013alterations}) \cite{stouffer1951studies}.
+We combined each dataset's FDR-corrected q-values with \texttt{scipy.stats.combine\_pvalues(method=`stouffer')}, using the square root of each study's sample size as the weights.
+Genera with a combined q-value less than 0.05 were considered non-specific responders.
+Overall, these results did not conflict with the heuristic definition (i.e. only two genera, \textit{Porphyromonas} and \textit{Gemmiger}, were ``health-associated'' with one method and ``disease-associated'' with the other; Supplementary Figure \ref{fig:core_defns}). 
+Stouffer's method is less conservative than the heuristic definition, identifying
+111 genera in the non-specific response (60 health-associated and 51 disease-associated).
+In addition, using Stouffer's method does not allow for the identification of mixed genera (i.e. those which respond in both health- and disease-associated directions across multiple diseases).
+Finally, combining q-values with Stouffer's method does not ensure that identified microbes are responding non-specifically to multiple diseases: one highly significant genus in a large study can dominate other q-values and be flagged as a non-specific responder, despite only being associated with one disease.
+Thus, the heuristic definition is more conservative and more directly related to the biological question of identifying shared microbial responses to disease.
+
+We tested whether the overall number of non-specific responders we observed was greater than we would expect to see due to chance.
+We built an empirical null distribution of the number of each type of non-specific responder.
+We shuffled q-values within each dataset, re-defined non-specific responders, and counted how many health-associated, disease-associated, and mixed genera were found, repeating this process 1000 times.
+When we considered significance in two diseases as the threshold for our heuristic (as presented in the main text), we did not find a significantly larger number of non-specific responses than would be expected by chance (Supplementary Figure \ref{fig:core_sig}).
+When we raised the heuristic threshold to three diseases our results became more significant, but there was a large reduction in the number of identified non-specific genera.
+Thus, there is currently not enough information to fully distinguish between microbes that are sporadically detected across multiple diseases from those that may be consistently associated with general health or disease.
+Future meta-analyses that include many more datasets for each of many conditions might be able to distinguish microbes that are consistently associated with health or disease from those that are sporadically associated with different conditions.
+
+Despite the fact that the number of non-specific microbes did not reach statistical significance, we identified multiple lines of evidence for a coherent microbial response to health and disease.
+First, the healthy vs. disease classifiers successfully classified case patients across a variety of diseases even when the disease being tested was not in the training set, indicating that some aspects of disease-associated microbiome shifts can generalize across diseases (Supplementary Figure \ref{fig:overall_classifier}).
+Second, the statistical significance of the number of non-specific responders increased as we increased the number of diseases threshold (Supplementary Figure \ref{fig:core_sig}).
+Thus, future meta-analyses which include many more studies and disease states may be able to more robustly identify bacteria which respond across a broader variety of disease states.
+Third, we saw a coherent phylogenetic signal in the non-specific response (e.g. Proteobacteria and \textit{Lactobacillaceae} associated with disease and \textit{Rumminococcaceae} and \textit{Lachnospiraceae} associated with health), which points to potential mechanisms (e.g. shorter stool transit time or inflammation) for a shared response to health or disease (Figure 3A).
+Thus, we expect that future meta-analyses that include more studies and diseases will identify a consistent set of bacteria that form a general microbial response to health and disease in the gut.
+
+\FloatBarrier
+
+{
+\renewcommand{\arraystretch}{1.1}
+\begin{table}[h]
+%\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\resizebox{\textwidth}{!}{\begin{tabular}{c c c c c c c c c c}
+	\hline
+	\textbf{Dataset ID} & \textbf{Year} & \textbf{Controls} & \textbf{N (controls)} & \textbf{Cases} & \textbf{N (cases)} & \parbox[c]{2cm}{\centering\textbf{Median}\\\textbf{reads per}\\\textbf{sample}} &	\textbf{Sequencer} & \textbf{16S Region} & \textbf{Ref.} \\
+	\hline	
+	Scher 2013, ART & 2013 & H & 28 & PSA, RA & 86 & 2194.0 & 454 & V1-V2 & \cite{ra-littman} \\ 
+	Kang 2013, ASD & 2013 & H & 20 & ASD & 19 & 1345.0 & 454 & V2-V3 & \cite{asd-kb} \\ 
+	Son 2015, ASD & 2015 & H & 44 & ASD & 59 & 4777.0 & Miseq & V1-V2 & \cite{asd-son} \\ 
+	Schubert 2014, CDI & 2014 & H & 154 & CDI & 93 & 4897.0 & 454 & V3-V5 & \cite{cdi-schubert} \\ 
+	Schubert 2014, nonCDI & 2014 & H & 154 & nonCDI & 89 & 4903.0 & 454 & V3-V5 & \cite{cdi-schubert} \\ 
+	Singh 2015, EDD & 2015 & H & 82 & EDD & 201 & 2585.0 & 454 & V3-V5 & \cite{edd-singh} \\ 
+	Vincent 2013, CDI & 2013 & H & 25 & CDI & 25 & 2526.5 & 454 & V3-V5 & \cite{cdi-vincent} \\ 
+	Youngster 2014, CDI & 2014 & H & 4 & CDI & 19 & 15081.0 & Miseq & V4 & \cite{cdi-youngster} \\ 
+	Baxter 2016, CRC & 2016 & H & 172 & CRC & 120 & 9913.5 & Miseq & V4 & \cite{crc-baxter} \\ 
+	Chen 2012, CRC & 2012 & H & 22 & CRC & 21 & 1152.0 & 454 & V1-V3 & \cite{crc-xiang} \\ 
+	Wang 2012, CRC & 2012 & H & 54 & CRC & 44 & 161.0 & 454 & V3 & \cite{crc-zhao} \\ 
+	Zeller 2014, CRC & 2014 & H & 75 & CRC & 41 & 120989.0 & MiSeq & V4 & \cite{crc-zeller} \\ 
+	Dinh 2015, HIV & 2015 & H & 15 & HIV & 21 & 3248.5 & 454 & V3-V5 & \cite{hiv-dinh} \\ 
+	Lozupone 2013, HIV & 2013 & H & 13 & HIV & 23 & 3262.0 & MiSeq & V4 & \cite{lozupone2013alterations} \\ 
+	Noguera-Julian 2016, HIV & 2016 & H & 34 & HIV & 205 & 16506.0 & MiSeq & V3-V4 & \cite{noguera2016gut} \\ 
+	Gevers 2014, IBD & 2014 & nonIBD & 16 & CD & 146 & 9773.5 & Miseq & V4 & \cite{ibd-gevers} \\ 
+	Morgan 2012, IBD & 2012 & H & 18 & UC, CD & 108 & 1022.5 & 454 & V3-V5 & \cite{ibd-hut} \\ 
+	Papa 2012, IBD & 2012 & nonIBD & 24 & UC, CD & 66 & 1323.5 & 454 & V3-V5 & \cite{ibd-papa} \\ 
+	Willing 2010, IBD & 2009 & H & 35 & UC, CD & 45 & 1118.5 & 454 & V5-V6 & \cite{ibd-engstrand} \\ 
+	Zhang 2013, LIV & 2013 & H & 25 & CIRR, MHE & 46 & 487.0 & 454 & V1-V2 & \cite{mhe-zhang} \\ 
+	Wong 2013, NASH & 2013 & H & 22 & NASH & 16 & 1980.0 & 454 & V1-V2 & \cite{nash-chan} \\ 
+	Zhu 2013, NASH & 2013 & H & 16 & NASH & 22 & 10863.0 & 454 & V4 & \cite{nash-baker} \\ 
+	Goodrich 2014, OB & 2014 & H & 428 & OB & 185 & 27077.0 & Miseq & V4 & \cite{ob-goodrich} \\ 
+	Ross 2015, OB & 2015 & H & 26 & OB & 37 & 4562.0 & 454 & V1-V3 & \cite{ob-ross} \\ 
+	Turnbaugh 2009, OB & 2009 & H & 61 & OB & 195 & 1556.5 & 454 & V2 & \cite{ob-gordon} \\ 
+	Zhu 2013, OB & 2013 & H & 16 & OB & 25 & 9778.0 & 454 & V4 & \cite{nash-baker} \\ 
+	Zupancic 2012, OB & 2012 & H & 96 & OB & 101 & 1645.0 & 454 & V1-V3 & \cite{ob-zupancic} \\ 
+	Scheperjans 2015, PAR & 2015 & H & 74 & PAR & 74 & 2351.5 & 454 & V1-V3 & \cite{par-schep} \\ 
+	Alkanani 2015, T1D & 2015 & H & 55 & T1D & 57 & 9117.0 & MiSeq & V4 & \cite{t1d-alkanani} \\ 
+	Mejia-Leon 2014, T1D & 2014 & H & 8 & T1D & 21 & 4702.0 & 454 & V4 & \cite{t1d-mejia} \\ 	\hline
+\end{tabular}}
+\caption{Datasets collected and processed through standardized pipeline. Disease labels: ART = arthritis, ASD = austism spectrum disorder, CD = Crohn's disease, CDI = \textit{Clostridium difficile} infection, CIRR = liver cirrhosis, CRC = colorectal cancer, EDD = enteric diarrheal disease, H = healthy, HIV = human immunodeficiency virus, LIV = liver diseases,  MHE =  minimal hepatic encephalopathy, NASH = non-alcoholic steatohepatitis, OB = obesity, PAR = Parkinson's disease, PSA = psoriatic arthritis, RA = rheumatoid arthritis, T1D = type I diabetes, UC = ulcerative colitis. nonCDI controls are patients with diarrhea who tested negative for \textit{C. difficile} infection. nonIBD controls are patients  with gastrointestinal symptoms but no intestinal inflammation. Datasets are ordered alphabetically by disease and within disease by first author.}\label{tab:datasets_full_info}
+\end{table}
+}
+
+\newpage
+{
+\renewcommand{\arraystretch}{1.15}
+\begin{table}[h]
+\resizebox{\textwidth}{!}{
+%	\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+	\begin{tabular}{c c c c c c c c c}
+	\hline
+	\textbf{Dataset ID} & \textbf{Data type} & \textbf{Barcodes} & \textbf{Primers} & \textbf{Quality filtering} &	\textbf{Quality cutoff} & \textbf{Length trim}  \\
+	\hline
+	Scher 2013, ART & fastq & No & Yes & -fastq\_truncqual & 25 & 200 \\ 
+	Kang 2013, ASD & fastq & No & Yes & -fastq\_truncqual & 25 & 200 \\ 
+	Son 2015, ASD & fastq & No & Yes & -fastq\_truncqual & 25 & 200 \\ 
+	Schubert 2014, CDI & fastq & No & Yes & -fastq\_truncqual & 25 & 150 \\ 
+	Vincent 2013, CDI & fastq & No & Yes & -fastq\_truncqual & 20 & 101 \\ 
+	Youngster 2014, CDI & fastq & No & No & -fastq\_truncqual & 25 & 200 \\ 
+	Baxter 2016, CRC & fastq & No & No & -fastq\_truncqual & 25 & 250 \\ 
+	Chen 2012, CRC & fastq & Yes & Yes & -fastq\_truncqual & 25 & 200 \\ 
+	Wang 2012, CRC & fastq & Yes & Yes & -fastq\_truncqual & 25 & 150 \\ 
+	Zeller 2014, CRC & fastq & No & No & -fastq\_truncqual & 25 & 200 \\ 
+	Singh 2015, EDD & fasta & n/a & n/a & n/a & n/a & 200 \\ 
+	Dinh 2015, HIV & fastq & No & No & -fastq\_truncqual & 25 & 200 \\ 
+	Lozupone 2013, HIV & fastq & No & No & -fastq\_truncqual & 25 & 150 \\ 
+	Noguera-Julian 2016, HIV & fastq & No & Yes & -fastq\_truncqual & 25 & 200 \\ 
+	Gevers 2014, IBD & fastq & No & No & -fastq\_truncqual & 25 & 200 \\ 
+	Morgan 2012, IBD & fastq & No & Yes & -fastq\_truncqual & 25 & 200 \\ 
+	Papa 2012, IBD & fasta & n/a & n/a & n/a & n/a & 200 \\ 
+	Willing 2010, IBD & fastq & No & Yes & -fastq\_maxee & 2 & 200 \\ 
+	Zhang 2013, LIV & fastq & No & Yes & -fastq\_truncqual & 25 & 200 \\ 
+	Wong 2013, NASH & fastq & No & No & -fastq\_truncqual & 25 & 200 \\ 
+	Zhu 2013, NASH & fasta & n/a & n/a & n/a & n/a & 200 \\ 
+	Schubert 2014, nonCDI & fastq & No & Yes & -fastq\_truncqual & 25 & 150 \\ 
+	Goodrich 2014, OB & fastq & No & No & -fastq\_truncqual & 25 & 200 \\ 
+	Ross 2015, OB & fastq & No & No & -fastq\_truncqual & 25 & 150 \\ 
+	Turnbaugh 2009, OB & fasta & n/a & n/a & n/a & n/a & 200 \\ 
+	Zhu 2013, OB & fasta & n/a & n/a & n/a & n/a & 200 \\ 
+	Zupancic 2012, OB & fastq & No & No & -fastq\_truncqual & 25 & 200 \\ 
+	Scheperjans 2015, PAR & fastq & No & Yes & -fastq\_truncqual & 25 & 200 \\ 
+	Alkanani 2015, T1D & fastq & No & No & -fastq\_maxee & 2 & 200 \\ 
+	Mejia-Leon 2014, T1D & fastq & Yes & Yes & -fastq\_truncqual & 25 & 150 \\ 
+	\hline
+\end{tabular}}
+\caption{Processing parameters for all datasets. \texttt{Barcodes} column indicates whether we assigned reads to samples by their barcodes (\texttt{Yes}) or if the files were already de-multiplexed (\texttt{No}). \texttt{Primers} column indicates whether we removed the primers from sequences. \texttt{Quality filtering} and \texttt{Quality cutoff} columns indicate the type of quality filtering we performed on the data. \texttt{Length trim} is the length to which all sequences were truncated before clustering into OTUs. In the case of \texttt{-fastq\_truncqual} quality filtering, reads were length trimmed after quality truncation. In the case of \texttt{-fastq\_maxee} quality filtering, reads were length trimmed before quality filtering. Datasets are ordered alphabetically by disease and within disease by first author. ART = arthritis, ASD = autism spectrum disorder, CDI = \textit{Clostridium difficile} infection, CRC = colorectal cancer, EDD = enteric diarrheal disease, HIV = human immunodeficient virus, IBD = inflammatory bowel disease, LIV = liver disease, NASH = non-alcoholic steatohepatitis, nonCDI = non-\textit{Clostridium difficile} infection, OB = obesity, PAR = Parkinson's disease, T1D = type I diabetes.}\label{tab:processing}
+\end{table}
+}
+
+\newpage
+{
+\renewcommand{\arraystretch}{1.2}
+\begin{table}[h]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ c  c  c}
+	\hline
+	\textbf{Dataset ID} & \textbf{ Raw data} & \textbf{Metadata}  \\
+	\hline
+	Scher 2013, ART & SRA study SRP023463 & SRA \\ 
+	Kang 2013, ASD & SRA study SRP017161 & SRA \\ 
+	Son 2015, ASD & SRA study SRP057700 & SRA \\ 
+	Schubert 2014, CDI & mothur.org/CDI\_MicrobiomeModeling & mothur.org/CDI\_MicrobiomeModeling \\ 
+	Vincent 2013, CDI & email authors & email authors \\ 
+	Youngster 2014, CDI & SRA study SRP040146 & email authors \\ 
+	Baxter 2016, CRC & SRA study SRP062005 & SRA \\ 
+	Chen 2012, CRC & SRA study SRP009633 & SRA sample description \\ 
+	Wang 2012, CRC & SRA study SRP005150 & SRA study description \\ 
+	Zeller 2014, CRC & ENA study PRJEB6070 & Table S1 and S2 \\ 
+	Singh 2015, EDD & http://dx.doi.org/10.6084/m9.figshare.1447256 & Additional File 4 \\ 
+	Dinh 2015, HIV & SRA study SRP039076 & SRA \\ 
+	Lozupone 2013, HIV & ENA study PRJEB4335 & Qiita study 1700 \\ 
+	Noguera-Julian 2016, HIV & SRA study SRP068240 & SRA \\ 
+	Gevers 2014, IBD & SRA study SRP040765 & Table S2 \\ 
+	Morgan 2012, IBD & SRA study SRP015953 & http://huttenhower.sph.harvard.edu/ibd2012 \\ 
+	Papa 2012, IBD & email authors & email authors \\ 
+	Willing 2010, IBD & email authors & email authors \\ 
+	Zhang 2013, LIV & SRA study SRP015698 & SRA \\ 
+	Wong 2013, NASH & SRA study SRP011160 & SRA \\ 
+	Zhu 2013, NASH & MG-RAST, study mgp1195 & MG-RAST \\ 
+	Schubert 2014, nonCDI & mothur.org/CDI\_MicrobiomeModeling & mothur.org/CDI\_MicrobiomeModeling \\ 
+	Goodrich 2014, OB & ENA studies PRJEB6702 and PRJEB6705 & ENA \\ 
+	Ross 2015, OB & SRA study SRP053023 & SRA \\ 
+	Turnbaugh 2009, OB & https://gordonlab.wustl.edu/NatureTwins\_2008/TurnbaughNature\_11\_30\_08.html & Table S1 \\ 
+	Zhu 2013, OB & MG-RAST, study mgp1195 (same data as nash\_zhu) & MG-RAST \\ 
+	Zupancic 2012, OB & SRA study SRP002465 & SRA \\ 
+	Scheperjans 2015, PAR & ENA study PRJEB4927 & sample names \\ 
+	Alkanani 2015, T1D & email authors & email authors \\ 
+	Mejia-Leon 2014, T1D & email authors & email authors \\ 
+	\hline
+\end{tabular}}
+\caption{Locations of raw data and associated metadata for each dataset used in these analyses. Datasets are ordered alphabetically by disease and within disease by first author. ART = arthritis, ASD = autism spectrum disorder, CDI = \textit{Clostridium difficile} infection, CRC = colorectal cancer, EDD = enteric diarrheal disease, HIV = human immunodeficient virus, IBD = inflammatory bowel disease, LIV = liver disease, NASH = non-alcoholic steatohepatitis, nonCDI = non-\textit{Clostridium difficile} infection, OB = obesity, PAR = Parkinson's disease, T1D = type I diabetes.}\label{tab:data}
+\end{table}
+}
+
+% Classifier results
+\newpage
+{
+\renewcommand{\arraystretch}{1}
+\begin{table}[h]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ c  c  c  c}
+	\hline
+	\textbf{Dataset ID} & \textbf{AUC} & \textbf{Fisher's p} & \textbf{Kappa score} \\
+	\hline
+	Singh 2015, EDD & 0.96 & 7.9e-31 & 0.7 \\ 
+	Schubert 2014, CDI & 0.99 & 8.7e-49 & 0.88 \\ 
+	Schubert 2014, nonCDI & 0.98 & 6.3e-38 & 0.79 \\ 
+	Vincent 2013, CDI & 0.91 & 1.6e-06 & 0.68 \\ 
+	Goodrich 2014, OB & 0.67 & 0.00014 & 0.11 \\ 
+	Turnbaugh 2009, OB & 0.84 & 1.7e-06 & 0.28 \\ 
+	Zupancic 2012, OB & 0.44 & 0.16 & -0.11 \\ 
+	Ross 2015, OB & 0.49 & 0.75 & -0.068 \\ 
+	Zhu 2013, OB & 0.86 & 1.3e-05 & 0.69 \\ 
+	Baxter 2016, CRC & 0.77 & 5.4e-16 & 0.43 \\ 
+	Zeller 2014, CRC & 0.82 & 3.4e-06 & 0.41 \\ 
+	Wang 2012, CRC & 0.9 & 2.6e-11 & 0.67 \\ 
+	Chen 2012, CRC & 0.78 & 0.034 & 0.35 \\ 
+	Gevers 2014, IBD & 0.71 & 1 & 0 \\ 
+	Morgan 2012, IBD & 0.81 & 0.0025 & 0.26 \\ 
+	Papa 2012, IBD & 0.84 & 0.0019 & 0.34 \\ 
+	Willing 2010, IBD & 0.66 & 0.81 & 0.026 \\ 
+	Noguera-Julian 2016, HIV & 0.67 & 1 & 0 \\ 
+	Lozupone 2013, HIV & 0.92 & 8.7e-06 & 0.76 \\ 
+	Dinh 2015, HIV & 0.22 & 0.062 & -0.26 \\ 
+	Son 2015, ASD & 0.39 & 0.12 & -0.16 \\ 
+	Kang 2013, ASD & 0.76 & 0.056 & 0.33 \\ 
+	Alkanani 2015, T1D & 0.71 & 0.0078 & 0.27 \\ 
+	Mejia-Leon 2014, T1D & 0.77 & 0.18 & 0.25 \\ 
+	Wong 2013, NASH & 0.68 & 0.098 & 0.28 \\ 
+	Zhu 2013, NASH & 0.93 & 1.3e-07 & 0.84 \\ 
+	Scher 2013, ART & 0.62 & 1 & -0.034 \\ 
+	Zhang 2013, LIV & 0.8 & 0.016 & 0.29 \\ 
+	Scheperjans 2015, PAR & 0.67 & 0.0083 & 0.23 \\ 
+	\hline
+\end{tabular}}
+\caption{Area under the ROC curve (AUC), Fisher's p-values, and Kappa score for each case vs. control classifier. Metrics were calculated from the predictions on each test set in five-fold cross-validation. Datasets are ordered as in Figure 1. ART = arthritis, ASD = autism spectrum disorder, CDI = \textit{Clostridium difficile} infection, CRC = colorectal cancer, EDD = enteric diarrheal disease, HIV = human immunodeficient virus, IBD = inflammatory bowel disease, LIV = liver disease, NASH = non-alcoholic steatohepatitis, nonCDI = non-\textit{Clostridium difficile} infection, OB = obesity, PAR = Parkinson's disease, T1D = type I diabetes.}\label{tab:kappa}
+\end{table}
+}
+
+\FloatBarrier
+\newgeometry{textwidth=12in, left=1.5in}
+\newpage \pdfpagewidth=16in \pdfpageheight=18in 
+\FloatBarrier
+
+\begin{figure}[h]
+	\begin{centering}
+%	\makebox[\textwidth][c]{\includegraphics[width=\textwidth]{disease_specific_heatmaps_with_labels.pdf}}%
+	\includegraphics[width=14in]{disease_specific_heatmaps_with_labels.pdf}
+	\caption{Same heatmaps as in Figure 2, with rows labeled by family and genus taxonomy. Heatmaps show log10(q-values) for each disease (Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction). Rows include all genera which were significant in at least one dataset within each disease, columns are datasets. Q-values are colored by direction of the effect, where red indicates higher mean abundance in disease patients and blue indicates higher mean abundance in controls. Opacity ranges from q = 0.05 to 1, where q values less than 0.05 are the most opaque and q values close to 1 are gray. White indicates that the genus was not present in that dataset. Within each heatmap, rows are ordered from most disease-associated (top) to most health-associated (bottom) (i.e. by the sum across rows of the log10(q-values), signed according to directionality of the effect).
+}
+	\label{fig:supp_dis_specific}
+	\end{centering}
+\end{figure}
+
+
+\restoregeometry
+\FloatBarrier
+
+% Core bugs with genus labels
+\newpage \pdfpagewidth=8.5in \pdfpageheight=27in
+\FloatBarrier
+
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=\textwidth]{meta_analysis_with_labels.pdf}}%
+	\caption{Panel A from Figure 3, with genus labels. Non-specific and disease-associated genera. Genera are in rows, arranged phylogenetically according to a PhyloT tree built from genus-level NCBI IDs (\url{http://phylot.biobyte.de}). Non-specific genera are associated with health (or disease) in at least two different \textit{diseases} (q $<$ 0.05, Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction). Disease-specific genera are significant in the same direction in at least two \textit{studies} of the same disease (q $<$ 0.05, FDR KW test). As in Figure 2, blue indicates higher mean abundance in controls and red indicates higher mean abundance in patients. Black bars indicate mixed genera which were associated with health in two diseases and also associated with disease in two diseases. Disease-specific genera are shown for diseases with at least 3 studies.
+}
+	\label{fig:supp_meta_heatmap}
+	\end{center}
+\end{figure}
+
+% Sample size, AUC, n sig, and balance for split cases analyses
+\FloatBarrier
+\newpage \pdfpagewidth=8.5in \pdfpageheight=10in
+
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{samplesize_auc_nsig_balance_split_cases.pdf}}%
+	\caption{Same analysis as in Figure 1 for stratified patient groups. (A) Left: Total sample size for each comparison. Right: Area under the ROC curve (AUC) for genus-level random forest classifiers. (B) Left: Number of genera with q $<$ 0.05 (Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction) for each type of patient group comparison. Right: Direction of microbiome shift,i.e. the percent of total associated genera which were enriched in diseased patients. In comparisons on the leftmost blue line, 100\% of associated (q $<$ 0.05, FDR KW test) genera are health-associated (i.e. depleted in patients relative to controls). In comparisons on the rightmost red line, 100\% of associated (q $<$ 0.05, FDR KW test) genera are disease-associated (i.e. enriched in patients relative to controls).
+}
+	\label{fig:split_cases_fig1}
+	\end{center}
+\end{figure}
+
+% CD and UC qvalues heatmaps
+\newpage
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{disease_specific_heatmaps_with_labels_split_cases.pdf}}%
+	\caption{Same results as presented in Figure 2 for ulcerative colitis (UC) and Crohn's disease (CD) IBD patients separately. Heatmaps show log10(q-values) for each comparison, with studies in columns and genera in rows (Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction). Q-values are colored by direction of the effect, where red indicates higher mean abundance in disease patients and blue indicates higher mean abundance in controls. Opacity ranges from q = 0.05 to 1, where q values less than 0.05 are the most opaque and q values close to 1 are gray. White indicates that the genus was not present in that dataset. Within each heatmap, rows are ordered from most disease-associated (top) to most health-associated (bottom) (i.e. by the sum across rows of the log10(q-values), signed according to directionality of the effect).	
+}
+	\label{fig:split_cases_heatmaps}
+	\end{center}
+\end{figure}
+
+% Shannon alpha diversity
+\newpage
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{alpha_diversity_shannon.pdf}}%
+	\caption{Reduction in alpha diversity is not a reliable indicator of ``dysbiosis.'' Shannon alpha diversity index across all patient groups in all studies, calculated on OTUs (i.e. not collapsed to genus level, and including unannotated OTUs). Diarrheal patients consistently have lower alpha diversity than non-diarrheal controls (green box). Crohn's disease (CD) patients also show a slight reduction of alpha diversity relative to controls in three out of four IBD studies and ulcerative colitis (UC) patients in two studies (purple box). Obese patients have inconsistent and small reductions in alpha diversity, consistent with a previous meta-analysis \cite{Sze07092016}. $\ast: 0.01 < p < 0.05, \ast\ast: 10^{-4} < p < 0.01, \ast\ast\ast: p < 10^{-4}$. P values are calculated from a two-sided T-test (using \texttt{scipy.stats.ttest\_ind}) and are not corrected for multiple tests. Note that the datasets with multiple case groups (Zhu et al. (OB/NASH, 2013) and Schubert et al. (CDI/non-CDI, 2014)) are presented only once in this plot. ART = arthritis, ASD = austism spectrum disorder, CD = Crohn's disease, CDI = \textit{Clostridium difficile} infection, CIRR = liver cirrhosis, CRC = colorectal cancer, EDD = enteric diarrheal disease, H = healthy, HIV = human immunodeficiency virus, LIV = liver diseases,  MHE =  minimal hepatic encephalopathy, NASH = non-alcoholic steatohepatitis, OB = obesity, PAR = Parkinson's disease, PSA = psoriatic arthritis, RA = rheumatoid arthritis, T1D = type I diabetes, UC = ulcerative colitis. nonCDI controls are patients with diarrhea who tested negative for \textit{C. difficile} infection. nonIBD controls are patients  with gastrointestinal symptoms but no intestinal inflammation.
+}
+	\label{fig:fig_alpha}
+	\end{center}
+\end{figure}
+
+% Chao1 alpha diversity
+\newpage
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{alpha_diversity_chao1.pdf}}%
+	\caption{Chao1 alpha diversity across all patient groups in all studies, calculated on OTUs (i.e. not collapsed to genus level, and including unannotated OTUs). $\ast: 0.01 < p < 0.05, \ast\ast: 10^{-4} < p < 0.01, \ast\ast\ast: p < 10^{-4}$. P values are calculated from a two-sided T-test (using \texttt{scipy.stats.ttest\_ind}) and are not corrected for multiple tests. Note that the datasets with multiple case groups (Zhu et al. (OB/NASH, 2013) and Schubert et al. (CDI/non-CDI, 2014)) are presented only once in this plot. ART = arthritis, ASD = austism spectrum disorder, CD = Crohn's disease, CDI = \textit{Clostridium difficile} infection, CIRR = liver cirrhosis, CRC = colorectal cancer, EDD = enteric diarrheal disease, H = healthy, HIV = human immunodeficiency virus, LIV = liver diseases,  MHE =  minimal hepatic encephalopathy, NASH = non-alcoholic steatohepatitis, OB = obesity, PAR = Parkinson's disease, PSA = psoriatic arthritis, RA = rheumatoid arthritis, T1D = type I diabetes, UC = ulcerative colitis. nonCDI controls are patients with diarrhea who tested negative for \textit{C. difficile} infection. nonIBD controls are patients  with gastrointestinal symptoms but no intestinal inflammation.
+}
+	\label{fig:fig_alpha_chao1}
+	\end{center}
+\end{figure}
+
+% Simpson alpha diversity
+\newpage
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{alpha_diversity_simpson.pdf}}%
+	\caption{Simpson alpha diversity across all patient groups in all studies, calculated on OTUs (i.e. not collapsed to genus level, and including unannotated OTUs). $\ast: 0.01 < p < 0.05, \ast\ast: 10^{-4} < p < 0.01, \ast\ast\ast: p < 10^{-4}$. P values are calculated from a two-sided T-test (using \texttt{scipy.stats.ttest\_ind}) and are not corrected for multiple tests. Note that the datasets with multiple case groups (Zhu et al. (OB/NASH, 2013) and Schubert et al. (CDI/non-CDI, 2014)) are presented only once in this plot. ART = arthritis, ASD = austism spectrum disorder, CD = Crohn's disease, CDI = \textit{Clostridium difficile} infection, CIRR = liver cirrhosis, CRC = colorectal cancer, EDD = enteric diarrheal disease, H = healthy, HIV = human immunodeficiency virus, LIV = liver diseases,  MHE =  minimal hepatic encephalopathy, NASH = non-alcoholic steatohepatitis, OB = obesity, PAR = Parkinson's disease, PSA = psoriatic arthritis, RA = rheumatoid arthritis, T1D = type I diabetes, UC = ulcerative colitis. nonCDI controls are patients with diarrhea who tested negative for \textit{C. difficile} infection. nonIBD controls are patients  with gastrointestinal symptoms but no intestinal inflammation.
+}
+	\label{fig:fig_alpha_simpson}
+	\end{center}
+\end{figure}
+
+% Healthy vs. disease classifier
+\newpage
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{healthy_vs_disease_classifier.pdf}}%
+	\caption{\textit{Both x-axes}: the area under the ROC curve (AUC) from each dataset’s single classifier. Left: leave-one-dataset-out classifier. \textit{y-axis}: the AUC of a classifier trained on all other datasets to distinguish healthy from unhealthy patients, tested on the left out dataset. Right: leave-one-disease-out classifier. \textit{y-axis}: AUC from a classifier trained to distinguish healthy from unhealthy patients on all datasets except those of the tested disease. AUCs for each dataset were built from the classification probabilities on each test sample.
+}
+	\label{fig:overall_classifier}
+	\end{center}
+\end{figure}
+
+% Different ways to define core response
+\FloatBarrier
+\newpage \pdfpagewidth=8.5in \pdfpageheight=15in
+
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=0.3\textwidth]{different_core_defns.pdf}}%
+	\caption{The majority of non-specific microbes are robust to the exclusion of diarrhea datasets from consideration. The right-most bar shows order-level phylogeny, colored as in Figure 3A of the main paper. The left bar of the heatmap shows the original non-specific microbes, including all datasets. The middle bar shows the re-defined non-specific responders after excluding all diarrhea datasets. The right bar of the heatmap shows the non-specific microbes defined using Stouffer’s method, combining one-tailed q-values across datasets and weighting by the square root of sample size (Stouffer combined q $<$ 0.05).
+}
+	\label{fig:core_defns}
+	\end{center}
+\end{figure}
+
+
+% Significance of shared response
+\FloatBarrier
+\newpage \pdfpagewidth=8.5in \pdfpageheight=11in
+
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=\textwidth]{core_significance.pdf}}%
+	\caption{Empirical null distribution of the number of non-specific responders (colored points, x-axis indicates directionality of response), overlayed with the actual observed number of non-specific responders (black diamonds) for different defining heuristics (axis titles, i.e. ``3 diseases`` means that a genus needed to be significant (q $<$ 0.05, Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction) in three diseases in the same direction to be considered a non-specific responder). Empirical one-tailed p-values are printed above each distribution.
+}
+	\label{fig:core_sig}
+	\end{center}
+\end{figure}
+
+% RF param search - gini criteria
+\newpage
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{rf_params_gini.pdf}}%
+	\caption{Varying Random Forest parameters does not significantly affect area under the ROC curve in classifying cases from controls (Gini criteria). Random Forest classifiers built by using the Gini impurity (``gini'') split criteria (``scikit-learn RandomForestClassifier''). Upward-pointing triangles are classifiers built with 10000 estimators; downward-pointing triangles are built with 1000 estimators. Colors indicate the value of \texttt{min\_samples\_leaf} (the minimum number of samples required to be at a leaf node): red = 1, blue = 2, green = 3. X-axes are the value of \texttt{min\_samples\_split} (the minimum number of samples required to split an internal node) \cite{scikit-learn}. All Random Forests were built using the random state seed $12345$.
+}
+	\label{fig:rf_params_gini}
+	\end{center}
+\end{figure}
+
+% RF param search - entropy criteria
+\newpage
+\begin{figure}[h]
+	\begin{center}
+	\makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{rf_params_entropy.pdf}}%
+	\caption{Varying Random Forest parameters does not significantly affect area under the ROC curve in classifying cases from controls (entropy criteria). Random Forest classifiers built by using the entropy (``entropy'') split criteria (``scikit-learn RandomForestClassifier''). Upward-pointing triangles are classifiers built with 10000 estimators; downward-pointing triangles are built with 1000 estimators. Colors indicate the value of \texttt{min\_samples\_leaf} (the minimum number of samples required to be at a leaf node): red = 1, blue = 2, green = 3. X-axes are the value of \texttt{min\_samples\_split} (the minimum number of samples required to split an internal node) \cite{scikit-learn}. All Random Forests were built using the random state seed $12345$.
+}
+	\label{fig:rf_params_entropy}
+	\end{center}
+\end{figure}
+
+% Heatmap with results for all datasets (all sig genera) - qvalues
+\FloatBarrier
+\newgeometry{textwidth=18in, left=1.5in}
+\newpage \pdfpagewidth=28in \pdfpageheight=28in
+
+\begin{figure}[h]
+	\begin{center}
+	\captionsetup{font={Large}}
+%	\makebox[\textwidth][c]{\includegraphics[width=1.3\textwidth]{overall_heatmap_log10qvalues.pdf}}%
+	\includegraphics[width=24in]{overall_heatmap_log10qvalues.pdf}
+	\caption{Heatmap of log10(q values) for all genera which were significant (q $<$ 0.05, Kruskal-Wallis (KW) test, Benjamini-Hochberg FDR correction) in at least one dataset, across all studies. Rows are genera, ordered phylogenetically (as in Figure 3A). Columns are datasets, grouped by disease and ordered according to total sample size (decreasing from left to right). The first and second heatmap panels from the left are the same as in Figure 3A. Q-values are colored according to directionality of the effect, where red indicates higher mean abundance in patients relative to controls and blue indicates higher mean abundance in controls. Opacity indicates significance and ranges from 0.05 to 1, where q-values less than 0.05 are the darkest colors and q-values close to 1 are gray. White indicates that the genus was not present in that dataset. ART = arthritis, ASD = autism spectrum disorder, CDI = \textit{Clostridium difficile} infection, CRC = colorectal cancer, EDD = enteric diarrheal disease, HIV = human immunodeficient virus, IBD = inflammatory bowel disease, LIV = liver disease, NASH = non-alcoholic steatohepatitis, nonCDI = non-\textit{Clostridium difficile} infection, OB = obesity, PAR = Parkinson's disease, T1D = type I diabetes.
+}
+	\label{fig:overall_heatmap_qvalues}
+	\end{center}
+\end{figure}
+
+% Heatmap with results for all datasets (all sig genera) - effect size
+\newpage
+\begin{figure}[h]
+	\begin{center}
+	\captionsetup{font={Large}}
+%	\makebox[\textwidth][c]{\includegraphics[width=1.3\textwidth]{overall_heatmap_log2change.pdf}}%
+	\includegraphics[width=24in]{overall_heatmap_log2change.pdf}
+	\caption{Heatmap of log-fold change between cases and controls (i.e. $log_2(\frac{\text{mean abundance in cases}}{\text{mean abundance in controls}}$) for all genera which were significant (q $<$ 0.05) in at least one dataset, across all studies. Rows are genera, ordered phylogenetically (as in Figure 3A). Columns are datasets, grouped by disease and ordered according to total sample size (decreasing from left to right). The first and second heatmap panels from the left are the same as in Figure 3A. Values are colored according to directionality of the effect, where red indicates higher mean abundance in patients relative to controls and blue indicates higher mean abundance in controls. Opacity indicates fold change and ranges from 1300 to 0, where fold changes greater than 1300 are the darkest colors and fold changes close to 0 are gray. White indicates that the genus was not present in that dataset. ART = arthritis, ASD = autism spectrum disorder, CDI = \textit{Clostridium difficile} infection, CRC = colorectal cancer, EDD = enteric diarrheal disease, HIV = human immunodeficient virus, IBD = inflammatory bowel disease, LIV = liver disease, NASH = non-alcoholic steatohepatitis, nonCDI = non-\textit{Clostridium difficile} infection, OB = obesity, PAR = Parkinson's disease, T1D = type I diabetes.
+}
+	\label{fig:overall_heatmap_foldchange}
+	\end{center}
+\end{figure}
+
+\FloatBarrier
+\restoregeometry
+\newpage \pdfpagewidth=8.5in \pdfpageheight=11in
+
+\bibliographystyle{unsrt}
+\bibliography{refs}
+
+\end{document}
