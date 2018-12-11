@@ -1,5 +1,3 @@
-\chapter{Increasing fecal microbiota transplant clinical trial successes by applying rational donor selection}
-
 \section*{Abstract}
 
 Fecal Microbiota Transplantation (FMT) is the transfer of healthy gut bacteria through whole stool into an individual with a diseased microbiome.
@@ -61,17 +59,24 @@ More specifically, donors can be tailored to individual patients to specifically
 With the increasing amount of microbiome data available from published FMT trials, we encourage collaborations between clinicians and bioinformaticians to analyze these data in order to generate or perhaps even confirm the validity of potential donor selection strategies before selecting one (Figure \ref{fig:ibd-butyrate}).
 Finally, the strategies presented here should also be combined with adaptive clinical trial designs to further increase the probability of having a successful FMT trial \cite{Olesen2017}.
 
+\begin{figure}
+    \begin{center}
+    \includegraphics[width=\textwidth]{fig1_overview.png}
+    \caption{Overview of the different models of microbiome-mediated disease and associated donor selection strategy.}\label{fig:disease-models}
+    \end{center}
+\end{figure}
+
 \subsection{Acute dysbiosis}
 
 An acutely dysbiotic gut microbial community is broadly dysfunctional and can no longer maintain the health of the host.
 For example, in the case of recurrent Clostridium difficile infection, a disturbed microbial community is unable to prevent colonization by the pathogen, leading to recurrent overgrowth of C. diff and clinical symptoms \cite{Britton2014}.
-Acute dysbiosis has also been described with the “Anna Karenina principle”: all healthy microbiomes are alike but dysbiotic communities are all dysbiotic in their own ways \cite{Zaneveld2017}.
+Acute dysbiosis has also been described with the ``Anna Karenina principle'': all healthy microbiomes are alike but dysbiotic communities are all dysbiotic in their own ways \cite{Zaneveld2017}.
 In this view of acute dysbiosis, microbial communities respond stochastically to stressors, resulting in dysbiotic communities which are characterized by increased variability rather than deterministic shifts to precise community type(s) \cite{Zaneveld2017}.
 
-In this model, the host just needs to return to a “healthy” microbiome and thus choosing any healthy FMT donor should be sufficient to induce clinical improvements.
+In this model, the host just needs to return to a ``healthy'' microbiome and thus choosing any healthy FMT donor should be sufficient to induce clinical improvements.
 Because there is no specific disease-associated microbial community and deviation from health is instead the more important factor, simply replenishing the microbiome with a healthy configuration should be sufficient.
 Indeed, FMT trials have demonstrated that recurrent C. diff infection can be effectively treated by almost any choice of donor \cite{Osman2016}.
-In this case, researchers should consider how they define a “healthy” microbiome and how they will ensure engraftment of the transplanted healthy communities.
+In this case, researchers should consider how they define a ``healthy'' microbiome and how they will ensure engraftment of the transplanted healthy communities.
 
 \subsection{Absence or presence of individual taxa}
 
@@ -108,12 +113,12 @@ Similarly, if patients already have taxa which are already filling certain niche
 
 \subsubsection{Case study: Inflammatory Bowel Disease}
 
-An example where the “missing taxa” model may be applicable is in inflammatory bowel disease (IBD).
+An example where the ``missing taxa'' model may be applicable is in inflammatory bowel disease (IBD).
 Butyrate has long been associated with inflammatory bowel disease \cite{Scheppach1992}, and recent case-control and longitudinal studies point to a consistent lack of butyrate-producing bacteria in patients with IBD \cite{Duvallet2017,Schirmer2018}.
 Furthermore, preliminary FMT trials in IBD have been marked by significant donor variability and suggest that donor microbiome characteristics may be associated with FMT response \cite{Moayyedi2015,Kump2018}.
 These results indicate that IBD may benefit from rational donor selection approach, and that donors with high abundances of butyrate-producing organisms may yield higher FMT response rates than randomly selected donors.
 
-Given the availability of microbiome data from completed FMT studies, we tested this hypothesis that IBD trials would benefit from a rational donor selection strategy based on the “absence of beneficial taxa” disease model.
+Given the availability of microbiome data from completed FMT studies, we tested this hypothesis that IBD trials would benefit from a rational donor selection strategy based on the ``absence of beneficial taxa'' disease model.
 We re-analyzed microbiome data from three completed IBD FMT trials which provided publicly available sequencing data for patient and donor samples \cite{Kump2018,Goyal2018,Jacob2017}.
 We selected butyrate-producers based on their genus-level taxonomy, using the genera identified in Vital et al. 2017 (see Methods, \cite{Vital2017}).
 Donors in the three studies exhibited a range of total abundances of butyrate-producing bacteria (Figure \ref{fig:ibd-butyrate}A).
@@ -122,6 +127,13 @@ We also found no association with response when matching donor abundances with t
 These results show that selecting donors based on the abundance of butyrate producers may not yield improved clinical trial outcomes in IBD, and illustrates the process by which clinicians could approach and validate a rational donor selection strategy based on individual taxa.
 More complex methods to identify butyrate producers (e.g. using phylogenetic-aware methods and/or metagenomics data) could be used in the next iteration to develop a donor selection strategy, if these data are available to clinicians.
 Another approach, discussed below, is to select donors based on functional community assays and direct measurement of butyrate production rather than microbial taxonomies alone.
+
+\begin{figure}
+    \begin{center}
+    \includegraphics[width=\textwidth]{fig2_ibd_butyrate.png}
+    \caption{Case study in IBD: select donors based on abundance of butyrate producers? (A) abundance of butyrate producers in each study's donor samples. (B) abundance of butyrate producers in donor samples, stratified by respective patient's response.}\label{fig:ibd-butyrate}
+    \end{center}
+\end{figure}
 
 \subsection{Community-level functionality}
 
@@ -139,21 +151,28 @@ To choose a donor, molecules which can serve as proxies for the metabolic output
 Like IBD, hepatic encephalopathy (HE) is an example where community functionality is likely more relevant to FMT outcome than specific taxa.
 A previous trial in HE \cite{Bajaj2017} rationally selected their single donor by maximizing the abundance of \textit{Lachnospiraceae} and \textit{Ruminococcaceae}, taxa which were identified based on cross-sectional microbiome data.
 The clinical trial was a success, but it remains unclear from this trial whether the donor's strains engrafted in the patients post-FMT and whether this played any role in the successful FMT responses.
-The exact mechanisms of action of these strains remains unknown, though both bacterial families are known short chain fatty acid producers (in particular butyrate) \cite{citation-needed}.
+The exact mechanisms of action of these strains remains unknown, though both bacterial families are known short chain fatty acid producers (in particular butyrate) \cite{Vital2017}.
 More recent studies have more directly implicated the production of short chain fatty acids and secondary bile acids as being important in liver cirrhosis and subsequent complications such as HE, suggesting that community-level functioning may be a more important driver of FMT response.
 Thus, HE may be a case in which function-based donor selection can be employed.
 
 To illustrate this process, we analyzed stool metabolomics data from 83 OpenBiome donors and used this data to rank them based on their estimated production of short chain fatty acids and secondary bile acids (Figure \ref{fig:bn10-liver}).
-As in the IBD case study, we found that donors exhibited a range of values for our metabolites of interest (Figure \ref{fig:bn10-liver}A).
-We ranked donors based on their amounts of the three measured short-chain fatty acids (butyrate, isovalerate, and propionate) and on their bile acid conversion rates, approximated as the ratio between the total amounts of primary and secondary bile acids (Figure \ref{fig:bn10-liver}B).
-With this process, we were able to identify four donors who were in the top 25\% of all donors for both metrics (Figure \ref{fig:bn10-liver}C).
+As in the IBD case study, we found that donors exhibited a range of values for our metabolites of interest (Figure \ref{fig:bn10-liver}A and C).
+We ranked donors based on their amounts of the three measured short-chain fatty acids (butyrate, isovalerate, and propionate) and on their bile acid conversion rates, approximated as the ratio between the total amounts of primary and secondary bile acids (Figure \ref{fig:bn10-liver}B and D).
+With this process, we were able to identify four donors who were in the top 25\% of all donors for both metrics (Figure \ref{fig:bn10-liver}E).
 In a real FMT trial, a clinician would then work with their stool bank to ensure that these donors were still active and/or had enough material to be used in the full trial.
 
 While measuring metabolites in stool as a proxy for community production will likely be an improvement over taxonomy-based approaches in most cases, these measurements are also complicated by potential host effects.
 For example, different hosts may absorb these molecules at different rates, and so measuring them in stool may not be an accurate reflection of each donor community's productive potential.
 Additionally, community function may depend on non-biologically relevant factors like the donor's diet and time that they provided their sample. As an example, bile acid production spikes after meals \cite{Hofmann1989}, so the amount of bile acids measured in a given stool sample may reflect the amount of time since the donor last ate rather than their actual microbial community's functional production of these molecules.
 If clinicians have access to sufficient resources, a better way to screen donors may be to perform ex-vivo assays, in which each donor sample is homogenized and provided with the substrates (e.g. fiber) needed to produce the desirable output (e.g. short-chain fatty acids like butyrate).
-In this way, the donor community function can be measured directly (citation needed for ex-vivo studies).
+In this way, the donor community function can be measured directly \cite{Wang1993,Chen2017}.
+
+\begin{figure}
+    \begin{center}
+    \includegraphics[width=\textwidth]{fig3_cirrhosis_metabolomics.png}
+    \caption{Case study in liver cirrhosis: selecting donors based on community function by mining stool metabolomics data. (A) Distribution of SCFAs in all donor stools. (B) Abundance of each SCFA per donor, ranked by average SCFA abundance. (C) Distribution of bile acids in all donors. Primary bile acids are in the left column, secondary bile acids are in the right column. Bile acids are colored according to pathways. (D) Bile acid conversion ratios in each donor, ranked by total secondary to primary bile acids. (E) The five donors in the top 25\% for both of these metrics, for example, could be used in a rationally-designed liver cirrhosis FMT trial.}\label{fig:bn10-liver}
+    \end{center}
+\end{figure}
 
 \subsubsection{Overactive function}
 
@@ -171,7 +190,7 @@ These relationships may have mechanistic explanations which are not directly mea
 For these more complex cases, models can be trained from existing datasets to learn the community signatures linked to the disease-associated phenotype. In some cases, it may be possible to develop computational models which directly predict the phenotype of interest.
 For example, Stein et al. developed a model to predict the induction of regulatory T-cells by microbial communities \cite{Stein2018}.
 In other cases with few known mechanistic models, machine learning algorithms can be trained on multiple cross-sectional datasets to identify complex signatures that reproducibly distinguish patients from healthy controls.
-These models can then be applied to score potential donors, and the donor with the “most healthy” score may be chosen for a trial.
+These models can then be applied to score potential donors, and the donor with the ``most healthy'' score may be chosen for a trial.
 
 \section{Little understanding of underlying disease model}
 
@@ -179,7 +198,7 @@ In some conditions, there may not be enough understanding of the underlying micr
 
 \subsection{Cycling healthy donors in adaptive trials}
 
-As donors change through the course of an adaptive trial, clinicians may elect to select their donors randomly or to more rationally cycle through donors (Olesen, Gurry, Alm 2017). “Differently healthy” donors may be selected, perhaps representing different underlying disease-associated models described above. Donors may also be selected to span the range of “healthy” microbiomes in a given population. For example, clinicians may pick a “median” health donor (i.e. one who is about as similar to all reference microbiomes), define a “healthy plane” and pick donors based on their distance to this plane (as in Halfvarson et al 2017), or simply based on the presence or abundance of certain consistently “core” health-associated bacteria (Shade and Handelsman 2012; Duvallet et al. 2017). In a similar vein, “healthy” donors can also be chosen based on their distance from disease-associated microbiomes, as opposed or in addition to similarity to health. Published case-control datasets can be used to identify donors with communities which are farthest away from the median or average diseased patient. These datasets can also be mined to identify taxa which are consistently disease-associated, and which should be minimized or perhaps even absent in the potential donor. Pairing rational donor selection with adaptive trial designs may eventually yield insight into the underlying model mediating the disease of interest if certain types of “healthy” donors consistently perform better at treating patients than others.
+As donors change through the course of an adaptive trial, clinicians may elect to select their donors randomly or to more rationally cycle through donors (Olesen, Gurry, Alm 2017). ``Differently healthy'' donors may be selected, perhaps representing different underlying disease-associated models described above. Donors may also be selected to span the range of ``healthy'' microbiomes in a given population. For example, clinicians may pick a ``median'' health donor (i.e. one who is about as similar to all reference microbiomes), define a ``healthy plane'' and pick donors based on their distance to this plane (as in Halfvarson et al 2017), or simply based on the presence or abundance of certain consistently ``core'' health-associated bacteria (Shade and Handelsman 2012; Duvallet et al. 2017). In a similar vein, ``healthy'' donors can also be chosen based on their distance from disease-associated microbiomes, as opposed or in addition to similarity to health. Published case-control datasets can be used to identify donors with communities which are farthest away from the median or average diseased patient. These datasets can also be mined to identify taxa which are consistently disease-associated, and which should be minimized or perhaps even absent in the potential donor. Pairing rational donor selection with adaptive trial designs may eventually yield insight into the underlying model mediating the disease of interest if certain types of ``healthy'' donors consistently perform better at treating patients than others.
 
 \subsection{Discovery-based retrospective analyses}
 
@@ -189,10 +208,10 @@ However, exploratory FMT trials tend to enroll few patients, limiting the potent
 
 We performed a simulation to determine the likelihood of a retrospective analysis to identify donor-derived bacteria associated with different patient responses to FMT.
 We performed this simulation for multiple FMT trial set-ups and outcomes (i.e. number of FMT responders and non-responders).
-We used existing microbiome datasets to model different effect sizes, where we use “effect size” to mean the number of bacteria which are differentially abundant in donor samples given to patients who did and did not respond to FMT.
+We used existing microbiome datasets to model different effect sizes, where we use ``effect size'' to mean the number of bacteria which are differentially abundant in donor samples given to patients who did and did not respond to FMT.
 We used case-control datasets to model the microbiome data and various effect sizes, with a large effect represented by an infectious diarrhea dataset \cite{Schubert2014}, a medium effect represented by colorectal cancer \cite{Baxter2016}, and a weak effect represented by obesity \cite{Goodrich2014}.
 For each of these datasets, we identified the top ten most differentially abundant bacteria in the overall population as the key mediating bacteria (see Methods).
-Next, we simulated different trials, varying the numbers of patients in the FMT arm and the FMT response rates (i.e. proportion of patients which were FMT responders, represented by sampling from the “case” patients, vs. non-responders, represented by sampling from the “control” patients, representing non-responders).
+Next, we simulated different trials, varying the numbers of patients in the FMT arm and the FMT response rates (i.e. proportion of patients which were FMT responders, represented by sampling from the ``case'' patients, vs. non-responders, represented by sampling from the ``control'' patients, representing non-responders).
 We subsampled patients according to these parameter settings, identified differentially abundant genera, and compared these to the top ten genera identified from the entire datasets (Figure \ref{fig:power-sim}).
 
 In cases where the microbial signature for FMT response is expected to be large (i.e. the difference in donor stools given to FMT responders vs. non-responders is as large as the effect of diarrhea effect on the microbiome), we found that small FMT trials would recover most of the top hits in most cases.
@@ -204,6 +223,14 @@ These results suggest that successful secondary analyses of microbiome data from
 For example, clinicians may consider pairing donor and patient samples or collecting longitudinal patient samples to increase power to make discoveries.
 They may also consider testing specific hypotheses developed before the trial, such as comparing the total abundance of butyrate producers between FMT responders and non-responders, or performing functional assays to measure specific metabolites thought to be associated with FMT response.
 On the other hand, researchers wishing to identify the key taxa to include in an FMT drug may consider pursuing clinical trials in which identifying these taxa is the primary endpoint, and power them accordingly.
+
+
+\begin{figure}
+    \begin{center}
+    \includegraphics[width=\textwidth]{fig4_power_simulation.png}
+    \caption{Power simulation results, showing how many of the 10 most ``truly'' differentially abundant genera would be recovered as significant under different FMT study designs. Each panel represents a different FMT response rate (i.e. percent of patients in the responder vs. non-responder group). The effect size (i.e. number of genera which are differentially abundant in FMT responders vs. non-responders) was simulated by using three different case-control microbiome datasets. A large effect size is modeled by the effect of diarrhea on the microbiome, medium by colorectal cancer, and small by obesity. The top 10 "true" differentially abundant genera were identified by calculating their signal-to-noise ratios in the full original dataset (i.e. mean difference divided by the standard deviation).}\label{fig:power-sim}
+    \end{center}
+\end{figure}
 
 \section{Discussion}
 
@@ -217,7 +244,7 @@ Paired with adaptive clinical trial designs, FMT trials with rationally-selected
 As clinical trial design methodologies for FMT trials become more developed, many additional questions will need to be addressed.
 Many of these key questions relate to the nuances involved in choosing healthy donors: what defines a ``healthy'' donor, and what should define one?
 These questions are critical because regardless of the underlying model, in all cases a healthy donor must be identified.
-However, as our understanding of the microbiome in societies around the world continues to increase, consensus on the exact structure of a “healthy” microbiome decreases.
+However, as our understanding of the microbiome in societies around the world continues to increase, consensus on the exact structure of a ``healthy'' microbiome decreases.
 Should donors be selected to reflect the patient populations, or simply be devoid of pathogens and source from as ``healthy'' of donors as possible?
 We know that Europeans and North Americans tend to have less \textit{Prevotella} than healthy Africans from across the continent in both urban and rural communities \cite{Yatsunenko2012,Ou2013,DeFilippo2010}.
 Thus, should a clinician carrying out an FMT trial in an African setting use local African cohort as their donor population in order to better match the expected ``healthy'' state of their participants?
@@ -240,5 +267,8 @@ Furthermore, by developing targeted hypotheses, post-trial analysis plans, and a
 As FMT expands far beyond rCDI and microbiome-based therapeutics are developed to target a range of disease, novel methods and approaches tailored to the unique challenges and opportunities presented by FMT will be critical to ensuring the advancement of translational microbiome science and beneficial impact on patient lives.
 
 
+
+\begin{singlespace}
 \bibliographystyle{unsrtnat}
 \bibliography{donor-selection/donor-selection-refs.bib}
+\end{singlespace}
