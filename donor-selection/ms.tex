@@ -266,8 +266,53 @@ By applying new approaches like rational donor selection and adaptive trial desi
 Furthermore, by developing targeted hypotheses, post-trial analysis plans, and associated sample collection schema alongside the core FMT trial design itself, the number of basic scientific discoveries that are made from each trial will significantly increase.
 As FMT expands far beyond rCDI and microbiome-based therapeutics are developed to target a range of disease, novel methods and approaches tailored to the unique challenges and opportunities presented by FMT will be critical to ensuring the advancement of translational microbiome science and beneficial impact on patient lives.
 
+\section{Methods}
 
-\section{Supplementary Figures}
+\subsection{Microbiome data processing}
+
+Raw fastq data files were downloaded from the European Nucleotide Archive using the following accession numbers: Jacob et al 2017, PRJNA388210; Goyal et al. 2018, PRJNA380944; and Kump et al. 2018, PRJEB11841.
+All data was processed using QIIME 2 (v. 2018.6.0, \cite{qiime2}).
+Briefly, data was imported into QIIME 2 as paired-end (Kump et al. 2018; Jacob et al. 2017) or single-end (Goyal et al. 2018) data, filtered based on sequence quality with \texttt{quality-filter q-score}, and denoised with deblur using \texttt{deblur denoise-16S} \cite{deblur}.
+Representative sequences were assigned taxonomy using \texttt{feature-classifier classify-sklearn} with the GreenGenes-trained Naive Bayes classifier provided by QIIME 2 (gg-13-8-99-nb-classifier.qza) \cite{feature-classifier}.
+All data was exported to tab-delimited format and analyzed in Python 2.7.6.
+
+\subsection{Quantifying abundance of butyrate producers}
+
+We identified butyrate producers at the genus-level based on the analysis performed in Vital et al. 2017 \cite{Vital2017}.
+These taxa were detected in >70\% of individuals in Vital et al. 2017, are known butyrate producers (with a majority of the analyzed representative genomes containing known butyrate production pathways), and accounted for the majority of the total butyrate pathway abundances in human metagenomics data.
+We removed \textit{E. ventriosum}, \textit{E. hallii}, and \textit{E. rectale} from our analyses as these species-level taxa do not comprise one genus with conserved butyrate production.
+
+\subsection{Stool metabolomics}
+
+Metabolomics data was generated as described in Poyet, Groussin, Gibbons et al. (in preparation) and downloaded after personal communication with the authors.
+For donors with multiple samples, we considered the mean metabolite abundances across all sampled time points.
+We identified three short chain fatty acids in the data (propionate, butyrate, and isovalerate) and the major primary (cholate and chenodeoxycholate) and secondary (deoxycholate and lithocholate) bile acids.
+Lithocholate was available for both C-18 negative and HILIC negative modes; we considered only the C-18 negative data to match the other bile acids.
+Bile acid conversion rates were calculated as in Kakiyama et al. 2013 \cite{Kakiyama2013}.
+Donors were ranked based on their average SCFA abundances and based on the total bile acid conversion ratio ( (lithocholate + deoxycholate) / (chenodeoxycholate + cholate) ).
+
+\subsection{Power simulation}
+
+We performed a simulation to determine the power of FMT trials to retrospectively find associations between donor bacterial abundances and FMT response.
+We used case-control gut microbiome datasets from MicrobiomeHD \cite{Duvallet2017} to model different effect sizes for FMT response.
+Here, we use ``effect size'' to mean the number of genera which are differentially abundant between patients who respond to FMT vs. patients who do not.
+Per the results in MicrobiomeHD, we used infectious diarrhea to model a large effect \cite{Schubert2014}, colorectal cancer to model a medium effect \cite{Baxter2016}, and obesity to model a small effect \cite{Goodrich2014}.
+We collapsed OTUs to genus-level as in \cite{Duvallet2017} and ranked genera according to their signal-to-noise ratio in each entire dataset, where the signal-to-noise was calculated as the difference in mean log abundance in cases and controls divided by the standard deviation of the log abundances across all samples.
+We considered the 10 genera with the largest absolute signal-to-noise ratios as our ``top hits'' in the main text.
+
+We modeled different FMT clinical trial designs and outcomes by varying the number of total patients in the trial and the percent of FMT responders (i.e. the number of patients we selected from the original ``case'' group relative to the original ``control'' patients, to model FMT responders and non-responders).
+For each of these designs, we subsampled the correct number of case samples to represent FMT responders and control samples to represent non-responders from the original datasets.
+We identified significantly differentially abundant genera with the \texttt{kruskalwallis} function from \texttt{scipy.stats.mstats} (scipy v. 1.1.0) as genera with q $<$ 0.05 after multiple hypothesis testing correction with the \texttt{multipletests} function (\texttt{method=`fdr\_bh'}) from the \texttt{statsmodels.sandbox.stats.multicomp} package (statsmodels v. 0.9.0).
+We then counted how many of the top genera identified through the signal-to-noise ranking were identified as significantly different as a proxy for the power to detect effects.
+
+\subsection{Code and data availability}
+
+Code to reproduce all of these analyses and figures can be found at \url{https://github.com/cduvallet/donor-selection/}.
+Data were downloaded from original sources as described above.
+
+\newpage
+\section{Supplementary Figure}
+
 \FloatBarrier
 \begin{figure}[h]
     \begin{center}
