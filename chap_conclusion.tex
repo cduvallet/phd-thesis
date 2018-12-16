@@ -4,58 +4,89 @@
 %% You can process specific files by typing their names in at the
 %% \files=
 %% prompt when you run the file main.tex through LaTeX.
+
 \chapter{Conclusions}
 
 \section{Limitations and extensions of reported work}
 
-In this thesis, I present three projects which overcome a variety of challenges to mine human microbiome data to extract clinical insights.
+In this thesis, I present multiple projects which overcome a variety of challenges to mine human microbiome data to extract clinical insights.
 In the first project, I overcome the difficulty of identifying consistent biomarkers across highly variable lung and stomach communities by instead looking at the relationships between aerodigestive body sites within individual patients.
 In the second project, I re-analyze gut microbiome datasets across many diseases and individual studies to identify consistent associations despite the technical challenges involved in extracting generalizable knowledge from the existing corpus of published studies.
-In the third project, I present a framework to categorize disease-specific insights gleaned from previously performed analyses and experiments and leverage them to improve fecal microbiota transplant clinical trials.
-Although performed in different contexts and with different goals in mind, these three computational projects share similar limitations.
+This work motivated our development of a method to correct for batch effects presented in the third project.
+In the fourth project, I present a framework to categorize disease-specific insights gleaned from previously performed analyses and experiments and leverage them to improve fecal microbiota transplant clinical trials.
+Finally, in the fifth project I present preliminary results proposing residential sewage as a source of valuable public health information.
+Although performed in different contexts and with different goals in mind, these computational projects share similar limitations.
+
+\subsection{Associations not causation}
 
 First, the findings in each project suggest associations but do not and cannot confirm causal relationships.
-In Chapter 2, although I demonstrate that the interpretation of the aspiration-associated perturbation is consistent across a variety of analyses and metrics, such associations would still need to be recapitulated and confirmed in an independent patient cohort before being further developed as a clinical diagnostic.
+In Chapter \ref{chap:aspiration}, although I demonstrate that the interpretation of the aspiration-associated perturbation is consistent across a variety of analyses and metrics, such associations would still need to be recapitulated and confirmed in an independent patient cohort before being further developed as a clinical diagnostic.
 Also, many more mechanistic experiments and longitudinal retrospective cohort analyses would need to be done to confirm their association with aspiration-related respiratory infections and discover mechanistic explanations.
-In Chapter 3, the consistent associations that I identify across many different gut microbiome studies and microbiome-related diseases can make no claim of causality: in all case-control microbiome datasets, it is not possible to determine whether the microbiome shifts are a cause of the disease or simply responding to the host's physiological state.
+In Chapter \ref{chap:meta-analysis}, the consistent associations that I identify across many different gut microbiome studies and microbiome-related diseases can make no claim of causality: in all case-control microbiome datasets, it is not possible to determine whether the microbiome shifts are a cause of the disease or simply responding to the host's physiological state.
 In fact, finding many non-specific disease- and health-associated bacteria across these datasets suggests that a large part of these associations are more likely to be responses to the host's general health status rather than specifically causal to any given disease.
 To truly find disease-associated bacteria, researchers need to identify consistent associations across multiple cohorts of their disease of interest and ensure that these associations are specific to that disease, and perhaps even isolate the strains of interest to test their causality in animal models.
-Finally, the conceptual framework that I present in Chapter 4 suggests one way to advance translational microbiome science but will need to be applied in many FMT trials before its impact on FMT trial successes can be confirmed.
+Finally, the conceptual framework that I present in Chapter \ref{chap:donor-selection} suggests one way to advance translational microbiome science but will need to be applied in many FMT trials before its impact on FMT trial successes can be confirmed.
 
-A second limitation comes from the fact that these projects are anchored in the analysis of 16S rRNA data, which is more accessible than many 'omics data types but comes with its own set of inherent limitations.
+\subsection{Data resolution limits insights and applicability}
+
+A second limitation comes from the actual data type analyzed in each project.
+For the most part, these projects are anchored in the analysis of 16S rRNA data, which is more accessible than many `omics data types but comes with its own set of inherent limitations.
 16S data provides a window into which bacteria are present in microbial communities but does not indicate what functions these bacteria are performing.
-Because disease-mediating effects will result from bacterial function, future work should strive to incorporate function into their studies, for example by analyzing metagenomics, metabolomics or transcriptomics data, or a combination of these data types.
-I hope that as datasets become more readily available,  someone will perform a similar cross-disease meta-analysis as in Chapter 3, but instead based on metagenomics data.
+Because disease-mediating effects in individuals will result from bacterial function, future work should strive to incorporate function into their studies, for example by analyzing metagenomics, metabolomics or transcriptomics data, or a combination of these data types.
+I hope that as datasets become more readily available,  someone will perform a similar cross-disease meta-analysis as in Chapter \ref{chap:meta-analysis}, but instead based on metagenomics data.
 I expect that a function-focused meta-analysis will find much more consistent and readily interpretable associations within studies of the same disease as well as across diseases.
+
+Additionally, pairing 16S analyses with functional data could ensure that the bacterial DNA detected reflect the actual bacterial communities living in that sample.
+For example, it is not known to what extent bacteria detected in human lung and stomach microbiomes are living and actively growing vs. simply a readout of DNA from dead cells.
+Determining which bacteria are active in a community will be important to interpret findings and clinical interpretations from analyses of the human lung and stomach microbiomes, like the one presented in Chapter \ref{chap:aspiration}.
+
 Another limitation of 16S data is that in most cases it cannot resolve bacteria at the strain level.
 Given that different strains of the same species have dramatically different clinical presentations, this is a crucial limitation in extracting clinically relevant associations from 16S microbiome data.
-Strain-level resolution will be especially important in evaluating rational donor selection methods, where engraftment of specific donor strains may be an important factor mediating patient responses to FMT.
+The meta-analysis presented in Chapter \ref{chap:meta-analysis} was performed at the genus level so that we could compare taxa from studies which sequenced different regions of the 16S gene.
+Genus-level analyses have much more limited biological interpretations than others performed at the species or strain-level.
+Even with the batch correction method developed in Chapter \ref{chap:perc-norm}, meta-analyses will continue to be limited by the comparability of bacterial features between studies.
+Finally, strain-level resolution will be especially important in evaluating rational donor selection methods, where engraftment of specific donor strains may be an important factor mediating patient responses to FMT.
+Extending the work presented in Chapter \ref{chap:24hr} for public health applications in infectious disease surveillance will also necessarily require strain-level resolution to be useful.
+
+%maybe something about limits of metabolomics data?
+
+\subsection{Small sample sizes limit discoveries}
 
 Finally, these studies are limited by their sample sizes.
-Although the aerodigestive cohort presented in Chapter 2 and the meta-analysis in Chapter 3 are the largest of their kind to date, the analyses that I could perform were still limited by insufficient sample sizes.
-In Chapter 2, I was unable to draw robust conclusions about the relationship between reflux and the aerodigestive microbiome because the number of patients with the respective samples and metadata was too small to sufficiently power my analysis.
+Although the aerodigestive cohort presented in Chapter \ref{chap:aspiration} and the meta-analysis in Chapter \ref{chap:meta-analysis} are the largest of their kind to date, the analyses that I could perform were still often limited by insufficient samples.
+In Chapter \ref{chap:aspiration}, I was unable to draw robust conclusions about the relationship between reflux and the aerodigestive microbiome because the number of patients with the respective samples and metadata was too small to sufficiently power my analysis.
 In fact, throughout this project I frequently found my analyses limited by the necessary confluence of samples and metadata.
 For example, I would have liked to analyze the combinatorial effects of proton pump inhibitors, aspiration, and reflux on the aerodigestive microbiome, but I simply did not have enough patients with the respective samples and metadata to perform any reasonably powered analyses.
-The meta-analysis presented in Chapter 3 was also limited by the number of datasets and diseases.
+
+The meta-analysis presented in Chapter \ref{chap:meta-analysis} was also limited by the number of datasets and diseases.
 Originally, I had hoped to compare disease-associated microbiome shifts in an unsupervised manner to identify patterns of shifts common to similar types of diseases.
 For example, I wondered if I could find a consistent group of bacteria associated with inflammation across multiple inflammatory diseases.
 However, I had a surprisingly difficult time finding datasets with publicly available raw data and associated patient-level clinical metadata, even given the large corpus of relevant published papers.
 Thus, I did not acquire a large enough variety of diseases and datasets to enable this broader categorization of diseases and perform statistically meaningful analyses on these groups of datasets.
-%to add: combining raw data with percentile normalization would be best, and in fact just in obesity we already see better results that contradict the meta-analysis
-Finally, one of the main conclusions of the framework presented in Chapter 4 is that the usual sample sizes in FMT studies will almost always limit the power of retrospective analyses to identify key bacteria.
-Because these studies are performed with human samples and sometimes require careful ethical justifications and considerable patient recruitment efforts, this challenge of small sample sizes is likely to remain an important limitation for future studies throughout the microbiome field.
+Future work could attempt these analyses on combined raw data, using the percentile-normalization method from Chapter \ref{chap:perc-norm} to correct for batch effects.
+However, such analysis will still be constrained by the number of studies which sequenced the same region of the 16S gene, since percentile-normalized data can only be combined across features (i.e. bacterial taxa) which are common across all datasets.
+
+One of the main conclusions of the framework presented in Chapter \ref{chap:donor-selection} is that the usual sample sizes in FMT studies will almost always limit the power of retrospective analyses to identify key bacteria.
+While a tempting response to this finding might be to expand the number of FMT patients in future clinical trials, such a solution is not practical for multiple logistical and ethical reasons.
+Unfortunately, because these studies are performed with human samples and sometimes require careful ethical justifications and considerable patient recruitment efforts, this challenge of small sample sizes is likely to remain an important limitation for future studies throughout the microbiome field.
+
+As a pilot study evaluating the potential for residential sewage as a platform for wastewater epidemiology, the work presented in Chapter \ref{chap:24hr} had a limited sample size by design.
+We performed this study to determine the feasibility of mining residential sewage for public health biomarkers, and powered it accordingly.
+While the dynamics of human-associated metabolites followed the expected diurnal pattern of human activity, any other patterns within this larger dynamic would need to be confirmed with larger studies.
+We also saw significant variability between different grab samples from the upstream site, suggesting that future studies should either aggregate sampling over a longer period of time or take enough replicates to achieve statistical confidence in any measured differences.
 
 \section{Re-analyzing existing datasets and data availability}
 
 A core theme that has emerged from my thesis work is that re-analyzing existing microbiome datasets can add substantial value to our field.
 One of my personal conclusions from the meta-analysis is that new cross-sectional gut microbiome studies should be regularly contextualized within the existing published body of work, almost as a mini meta-analysis of their own.
 Now that microbiome datasets are more readily available and bioinformatics tools to process and analyze them are becoming very accessible, I hope that researchers make it a habit to ask: are these associations replicated in independent patient cohorts? And: are they specific to my disease of interest or are they part of a non-specific response to health and disease?
+I hope that our batch correction method can help researchers answer these questions, and that more statistical and bioinformatics tools will be developed to make meta-analyses more accessible and powerful for future researchers.
 
 I also found the value-add of re-analyzing datasets especially relevant in microbiome research led by clinicians.
-For example, the original IBD FMT trials that I re-analyzed in Chapter 4 did not thoroughly investigate potential donor effects on patient response in their original studies.
+For example, the original IBD FMT trials that I re-analyzed in Chapter \ref{chap:donor-selection} did not thoroughly investigate potential donor effects on patient response in their original studies.
 This is expected in part because donor heterogeneity was not usually a primary research question of interest, and also because the trials were not powered for such analyses.
-However, now that multiple IBD FMT trials have been published with paired patient and donor microbiome sequencing data, hypotheses about what leads to improved patient response can be tested \textit{in silico} (as we did for butyrate producer abundance in Chapter 4).
-In Chapter 3, many of my datasets were pulled from studies led by clinical researchers who may not have had access to the bioinformatics and statistical expertise to fully interrogate disease associations within their datasets.
+However, now that multiple IBD FMT trials have been published with paired patient and donor microbiome sequencing data, hypotheses about what leads to improved patient response can be tested \textit{in silico} (as we did for butyrate producer abundance in Chapter \ref{chap:donor-selection}).
+In Chapter \ref{chap:meta-analysis}, many of my datasets were pulled from studies led by clinical researchers who may not have had access to the bioinformatics and statistical expertise to fully interrogate disease associations within their datasets.
 By making their data publicly available, their work continued to contribute new knowledge to the field.
 % maybe: Finally, re-analyzing published datasets adds value at little extra cost: recruiting patients, collecting samples, and generating data
 
@@ -63,8 +94,7 @@ Moving forward, I hope and expect that researchers continue to make their raw da
 Publicly available raw data allows researchers to ask and answer new questions, testing their hypotheses \textit{in silico} without the need for costly new studies.
 New studies can also be compared with existing work to determine which of their findings hold across different studies and which are specific to their specific study.
 However, using published data in new contexts comes with challenges.
-Batch effects, which result from different experimental and sequencing methods, can make it very difficult to compare data across different labs.
-As a follow-up to the meta-analysis, I contributed to a method to correct for batch effects in case-control studies \cite{gibbons-2018}, and I hope that batch-correction methods keep being developed for this data type.
+As described in Chapter \ref{chap:perc-norm}, batch effects resulting from different experimental and sequencing methods can make it very difficult to compare data across different labs.
 Another major challenge is data availability, and specifically clinical metadata like patient disease diagnosis.
 Through this work, I have come to realize that raw data without its associated metadata is in almost all cases useless.
 Given these challenges, standards for sharing data which respect patient privacy, clinicians' efforts for patient recruitment, and the needs of computational biologists will need to be agreed upon and upheld as a community.
@@ -73,20 +103,28 @@ Given these challenges, standards for sharing data which respect patient privacy
 
 Throughout this thesis, I also came to appreciate the unique contributions that come from close partnerships between clinicians and computational biologists.
 None of the projects in this thesis would have been possible without crucial contributions from our clinical counterparts.
-Chapter 2 was only possible because our clinical PI, Rachel Rosen, identified and framed the questions of interest in this cohort so that I could then translate them into computational analyses that could provide answers with our data.
+Chapter \ref{chap:aspiration} was only possible because our clinical PI, Rachel Rosen, identified and framed the questions of interest in this cohort.
+Then, I was able to translate her questions into computational analyses and provide preliminary answers with our data.
 Working together in this way, we discovered new science and found clinically exciting results.
-The meta-analysis in Chapter 3 was also significantly strengthened by the inclusion of datasets which were originally purely clinical investigations, and the framework presented in Chapter 4 was only possible because of our lab's strong ties with the clinical experts at OpenBiome.
+The meta-analysis in Chapter \ref{chap:meta-analysis} was also significantly strengthened by the inclusion of datasets which were originally purely clinical investigations, and the framework presented in Chapter \ref{chap:donor-selection} was only possible because of our lab's strong ties with the clinical experts at OpenBiome.
 I hope that the future of translational microbiome research establishes structures that encourage such close collaborations.
 Systems to share raw data should be designed with these collaborations in mind: the process to deposit data should be accessible to clinicians, patient information should be protected while also providing easy access to analyses that don't use the protected information, and the metadata should be curated well enough to enable straightforward analyses without much manual curation but also flexible enough to allow for the variety of study designs pursued by clinicians.
 
+I was also especially impressed by the unique power of collaborations between scientists and practitioners through my involvement in the work presented in Chapter \ref{chap:24hr}.
+That project was a result of coordination between multiple scientific disciplines as well as our city's public works and public health departments.
+The urban designers on our team incorporated our computational biology perspectives into a larger vision of the future of ``smart cities.''
+The public health officials we worked with helped us understand and address their practical needs, and also facilitated discussions with the community to ensure that we were being transparent and locally engaged.
+Finally, our conversations with public works employees like Herbie as we stood by open manholes during our sampling campaigns gave us important insights to contextualize our experimental results and were a unique addition to my PhD experience.
+
 \section{Finding knowledge in information}
 
-A turning point in my thesis came when I read Gene Glass's 1976 paper coining the term ``meta-analysis''"'' \cite{glass-1976}.
+A turning point in my thesis came when I read Gene Glass's 1976 paper coining the term ``meta-analysis'' \cite{glass-1976}.
 In it, Glass argues for the underappreciated importance of consolidating and synthesizing information into knowledge, prizing work that aims to find meaning and draw conclusions from disparate existing studies.
 This was a turning point in my thesis for two reasons.
 First, it was the moment I became truly proud of my work, especially the meta-analysis in Chapter 3: I realized that it was not just some sort of microbiome ``stamp collection'' endeavor that anyone with basic knowledge of computational tools could do, but was instead difficult and valuable work that I had uniquely contributed to.
-Second, reading Glass's words helped me recognize a uniting theme in all of my work: ``find[ing] the knowledge in the information.''
-I realized that in each project presented in this thesis, I had not just mined the data to find statistical associations, but rather to interpret associations and chase them all the way to their potential clinical implications.
+After reading this piece, my perspective on having a purely computational PhD changed: before, I sometimes felt that computational analyses were not quite as valuable as developing novel experimental methods or generating new data directly testing biological hypotheses, but now recognize that they are also invaluable work on their own merit.
+Second, reading Glass's words helped me recognize a uniting theme in all of my work: finding the ``knowledge in the information.''
+I realized that in each project presented in this thesis, I had not just mined the data to find statistical associations, but rather to interpret associations and chase them all the way to their potential clinical or public health implications.
 I hope that as we move forward in this exciting and vibrant field, microbiome researchers collectively become less satisfied with simply reporting new information, instead emphasizing and valuing efforts that synthesize existing knowledge and generate new insights that lead more directly to clinical impact.
 
 \begin{singlespace}
