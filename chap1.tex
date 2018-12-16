@@ -89,20 +89,23 @@ It also suggests approaches for improving retrospective analyses of the microbio
 
 \section{Mining the microbiome and metabolome of residential sewage for community-level public health surveillance}
 
-In Chapter \ref{chap:24hr}, I present preliminary work analyzing untargeted metabolomics and microbiome data of residential sewage for human health and activity markers with public health relevance.
-Wastewater epidemiology has long been proposed for many applications in population health, but has so far found only limited success in polio surveillance \cite{polio} and illicit drug consumption monitoring \cite{Subedi2014,Ort2014}.
+In Chapter \ref{chap:24hr}, I present preliminary analyses of untargeted metabolomics and microbiome data from residential sewage, identifying human health and activity markers with potential public health relevance.
+Wastewater epidemiology has long been proposed for many applications in population health, but its implementation has so far been limited to polio surveillance \cite{polio} and illicit drug consumption monitoring \cite{Subedi2014,Ort2014}.
 Standard wastewater epidemiology methods sample sewage at the wastewater treatment plant and perform targeted analyses to measure individual metabolites or viruses of interest.
 Sampling at the treatment plant can capture information about large urban populations, but does not provide spatially resolved information about individual communities within the city.
-This makes current wastewater epidemiology methods inappropriate for many public health applications, since a major goal of public health activities is to reduce disparities between populations by tailoring interventions to specific high-risk groups \cite{Ramaswami2018,Weeramanthri2018,Khoury2016}.
-Implementing wastewater epidemiology within communities could be used to evaluate the impact of neighborhood-level public health campaigns or policy changes.
-As one example, although it would take many years to measure the impact of a citywide sugar tax on obesity rates, biomarkers of human sugar consumption should quickly decrease upon the implementation of the tax in neighborhoods where it is expected to have a large impact.
+Targeted analyses can confidently identify and quantify specific molecules, but cannot discover new biomarkers.
+Because a major goal of public health is to reduce disparities between populations by identifying and tailoring interventions to high-risk groups \cite{Ramaswami2018,Weeramanthri2018,Khoury2016}, limited geographical resolution and measurable biomarkers makes standard wastewater epidemiology methods inappropriate for many public health applications.
+Despite these limitations, adapting wastewater epidemiology and implementing it within communities could be useful for evaluating the impact of public health policies or interventions.
+For example, biomarkers of human sugar consumption could be measured to directly and quickly evaluate the neighborhood-level public health impact of a citywide sugar tax, rather than requiring years to see its impact reflected in changing obesity rates.
 
 In this chapter, we present a platform to implement wastewater epidemiology within cities that mines the metabolome and microbiome of residential sewage to find biomarkers with potential public health relevance.
-This project is the culmination of a large collaboration between computational biologists, urban designers, engineers, city workers, and public health officials, and it is presented in its entirety in Chapter \ref{chap:24hr}.
-My contribution to this work was identifying and confirming many human biomarkers in the untargeted metabolomics data.
-By comparing the masses and fragmentation spectra of our metabolite features with databases and published work, I identified over 20 glucuronide compounds which are direct markers of human excretion and were abundant in our residential sewage samples but rarely detected at downstream sites.
-In collaboration with our mass spectrometry specialist, we confirmed multiple urinary and fecal metabolites and showed that these reflected expected human activity patterns over the course of a 24-hour hourly sampling.
+This project is the culmination of a large collaboration between computational biologists, urban designers, engineers, city workers, and public health officials, and is presented in its entirety in Chapter \ref{chap:24hr}.
+My contribution to this work was identifying and confirming the human biomarkers from the untargeted metabolomics data.
+By comparing the masses and fragmentation spectra of our metabolite features with databases and published work, I identified over 20 glucuronide compounds.
+These molecules are direct markers of human excretion and were abundant in our residential sewage samples but rarely detected at our downstream sampling site.
+In collaboration with our mass spectrometry specialist, I also confirmed multiple urinary and fecal metabolites and showed that their abundances reflected expected human activity patterns over the course of a 24-hour sampling.
 Further putative matches between our metabolomics features and a large database of human metabolites \cite{hmdb} suggests that this work could be extended to identify many different types of biomarkers reflecting human health, diet, and lifestyle.
+Together, this work shows that residential sewage contains more human-derived chemical and biological information than downstream samples, and suggests that upstream wastewater epidemiology could be developed into a new tool to measure community-level health.
 
 \begin{singlespace}
 \bibliography{chap1}
