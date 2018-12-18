@@ -19,7 +19,7 @@ Much of the emerging research has been driven in part by the increasing accessib
 However, identifying clinically-relevant associations from microbiome studies remains challenging \cite{knights-2011-predictivevalue}.
 Microbiome datasets are high-dimensional, with hundreds to thousands of bacterial species measured in usually only tens to hundreds of patient samples.
 Microbial communities are also highly variable across people, making it more difficult to identify individual bacterial biomarkers that can consistently distinguish health and disease across many different patients.
-Finally, microbiome datasets provide a window into associations but not causal relationships, and researchers must perform follow-up mechanistic studies or clinical trials to confirm the clinical relevance of any identified associations.
+Finally, microbiome datasets provide a window into associations but not causal relationships, and researchers must perform mechanistic studies or clinical trials to confirm the clinical relevance of any identified associations.
 In this thesis, I present unique analyses of microbiome data which overcome some of these challenges and which illustrate a variety of approaches for extracting useful clinical insights from mining microbiome data.
 Together, the following chapters aim to move findings from the individual microbiome data analyses beyond statistical significance and toward clinical meaningfulness.
 
@@ -31,10 +31,10 @@ Additionally, patients with impaired swallow function are at higher risk for res
 Finally, clinical interventions to treat respiratory symptoms in patients with impaired swallow focus on preventing material transfer from the stomach into the lungs, for example via anti-reflux medication or fundoplication surgery \cite{goldin-2006-fundo,lee-2008-fundo}.
 However, the clinical utility of these interventions in pediatric populations is not fully established, and the extent to which the gastric vs. mouth microbiome mediates respiratory complications is not known.
 
-In this study, I analyzed a set of aerodigestive microbiome samples collected from over 200 patients at Boston Children's Hospital.
+In this study, I analyze a set of lung, stomach, and oropharyngeal microbiome samples collected from over 200 pediatric patients at Boston Children's Hospital.
 I first show that lung and stomach microbiomes are highly variable across people and driven primarily by person rather than body site, complicating the search for a reliable microbial biomarker of aspiration across patients.
-I overcome this challenge by leveraging the fact that we have multiple samples per patient, comparing instead the within-patient \textit{relationships} between microbial communities in the aerodigestive tract of patients with and without aspiration.
-Using this approach, I show that aspiration shifts lung microbial communities toward the oropharyngeal but not the stomach microbiome, suggesting that the mouth is likely an important source of lung microbiome changes in these patients.
+I overcome this challenge by leveraging the fact that we have multiple samples per patient, comparing instead the within-patient \textit{relationships} between aerodigestive microbial communities in patients with vs. without aspiration.
+Using this approach, I show that aspiration shifts lung microbial communities toward the oropharyngeal but not the stomach microbiome, suggesting that the mouth is likely an important source of lung microbiome perturbations in these patients.
 Thus, approaches for treating aspiration-related respiratory symptoms should target microbial transfer from the mouth into the lungs in addition to focusing on the gastric-lung axis, as most current interventions do.
 This study also illustrates the power of multi-site within-patient sampling to overcome variability across people to identify clinically meaningful microbiome-based biomarkers.
 
@@ -45,43 +45,43 @@ Although the human gut microbiome has been extensively studied in many diseases,
 In other fields like medicine or psychology, consensus is usually achieved through meta-analyses of published literature \cite{glass-1976}.
 However, comparing published results across microbiome studies is not straightforward.
 The field lacks standard data processing and analysis methods, making many reported results impossible or inappropriate to compare directly between studies.
-For example, different studies often use incompatible bioinformatics or statistical methods: they may compare bacteria at different taxonomic levels and use different bioinformatics workflows, and they may identify significant associations through univariate statistical tests or machine learning models, results from which can not be readily compared \cite{edd-singh,crc-baxter,crc-zeller,ob-zupancic}.
+For example, different studies often use incompatible bioinformatics or statistical methods: they may compare bacteria at different taxonomic levels or use different bioinformatics workflows, and they may identify significant associations through univariate statistical tests or machine learning models, results from which can not be readily compared \cite{edd-singh,crc-baxter,crc-zeller,ob-zupancic}.
 Additionally, studies led by clinicians often ask very different questions of the data than studies led by microbial ecologists, and so the reported results are not necessarily representative of the comprehensive information contained in the full dataset \cite{asd-son,ra-scher,nash-wong}.
-This issue is especially relevant in this field, where non-invasive sample collection and open-source bioinformatics software suites have made microbiome research accessible to a broad range of scientists and clinicians.
+This issue is especially relevant in this field, where non-invasive sample collection and open-source bioinformatics software suites have made microbiome research accessible to a broad range of scientists and clinicians \cite{qiime2}.
 
 In this chapter, I perform a meta-analysis of gut microbiome studies which overcomes many of these challenges by reprocessing and reanalyzing raw data with standard methods.
-Even though specific bacterial associations vary across studies of the same disease, I identify patterns of general microbiome shifts which are consistent  and which suggest different approaches for developing microbiome-based therapeutics.
+Even though specific bacterial associations vary across studies of the same disease, I identify patterns of general microbiome shifts which are consistent  and which each suggest different approaches for developing microbiome-based therapeutics.
 When looking across multiple diseases, I find a set of bacteria which are non-specifically associated with health and disease, perhaps forming a shared or core response to general health and disease status.
 These results highlight the importance of contextualizing results from individual studies within the existing body of work, and also hints at the possibility of developing broadly beneficial targeted probiotic and antibiotic therapies.
 
 \section{Enabling more powerful meta-analyses by developing a batch correction method for microbiome data}
 
 Motivated and enabled by the work presented in Chapter \ref{chap:meta-analysis}, I present a method to correct for batch effects in case-control microbiome studies in Chapter \ref{chap:perc-norm}.
-Traditionally, meta-analyses compile published p-values and effect sizes and determine their consistency, significance, and magnitude across studies to glean an overall understanding of true effects \cite{glass-1976}.
+Traditionally, meta-analyses compile published p-values and effect sizes and apply statistical methods to determine their consistency, significance, and magnitude across studies in order to glean an overall understanding of true effects \cite{glass-1976}.
 However, this is challenging to do in the microbiome research field for reasons described above and in Chapter \ref{chap:meta-analysis}.
 A more powerful way to synthesize findings across studies is to combine the raw data and re-perform analyses on this expanded sample size.
 However, analyzing raw data combined from multiple studies is not appropriate without first correcting for batch effects.
 In microbiome data, batch effects result from biological and technical variation between studies and although statistical methods to correct for these have been developed for other `omics data types, few are applicable for microbiome data \cite{gibbons-2018}.
 
-In this chapter, we describe a method to correct for batch effects in microbiome data.
+In this chapter, we describe a method to correct for batch effects in case-control microbiome studies.
 Briefly, the method converts the abundances of taxa in case samples to percentiles of their respective distributions in the control samples within each study, in essence considering control samples as the null.
-Assuming that control patients should represent biologically similar groups, this allows for pooling of percentile-normalized data across studies.
-We show that this non-parametric method successfully removes batch effects in case-control studies, enabling more powerful analyses on combined microbiome data and reducing the number of false positives from individual analyses.
-My main contributions to this joint work were processing the datasets used to develop and test the method and implementing the method into a popular microbiome software suite, QIIME 2 \cite{qiime2}, expanding its reach and accessibility.
+Assuming that control patients represent biologically similar groups, this allows for pooling of percentile-normalized data across studies.
+We show that this non-parametric method successfully removes batch effects in case-control studies, enables more powerful analyses on combined microbiome data, and reduces the number of false positives from considering studies individually.
+My main contributions to this joint work were processing the datasets used to develop and test the method and implementing the method into an open-source microbiome software suite, expanding its reach and accessibility \cite{qiime2}.
 
 \section{Translating microbiome research through rationally designed fecal microbiota transplant clinical trials}
 
 In Chapter \ref{chap:donor-selection}, I present a framework for rationally selecting donors in fecal microbiota transplant (FMT) clinical trials.
 In recurrent \textit{Clostridium difficile} infection (rCDI), FMTs have proven themselves as a remarkably effective clinical treatment, generating excitement about the clinical potential of FMTs in other diseases \cite{quraishi-2017-rcdifmt,bafeta-2017-fmt}.
 Clinical trials in non-rCDI diseases can be used to identify promising conditions in which the microbiome may have a causal role to play.
-However, although there is little donor-dependent variability in FMT efficacy in rCDI, it is becoming apparent that in many other non-rCDI conditions, donor heterogeneity likely plays a role in patient response \cite{moayyedi-2015,olesen-2018-superstool}.
+However, although there is little donor-dependent variability in FMT efficacy in rCDI, it is becoming apparent that in many other conditions, donor heterogeneity likely plays a role in patient response \cite{moayyedi-2015,olesen-2018-superstool}.
 Thus, as FMT trials expand to new indications, many trials may fail not because the indication was not amenable to improvement by FMT but rather because an ineffective donor was chosen.
 As a consequence, excitement and support for FMT research will be dampened, slowing progress toward finding clinical applications of microbiome-based therapies.
 
 In this chapter, I present an approach for selecting donors in FMT trials to increase the likelihood that these trials will succeed.
-In this proposed framework, a clinician applies her existing knowledge and hypotheses for how her indication of interest is being mediated by the microbiome to drive the donor selection process.
-I present four types of disease models to describe underlying processes mediating microbiome-related diseases: acute dysbiosis, mediation by individual taxa, missing or overactive community function, and complex host-microbiome interactions.
-I suggest associated donor selection strategies for each of these disease models, and provide case studies illustrating the process of selecting donors rationally.
+In this proposed framework, a clinician applies her existing knowledge and hypotheses for how her indication of interest is being mediated by the microbiome in order to drive the donor selection process.
+I present four types of disease models to describe underlying processes mediating microbiome-related diseases: acute dysbiosis, mediation by individual taxa, mediation by overall community function, and complex host-microbiome interactions.
+I suggest associated donor selection strategies for each of these disease models, and provide case studies illustrating the process of rational donor selection in practice.
 Finally, I perform a power simulation which finds that most FMT trials are unlikely to be powered enough to identify the key donor bacteria mediating patient responses to FMT.
 Thus, to successfully make discoveries from completed trials, clinicians should perform hypothesis-driven retrospective analyses and plan for these during the clinical trial design process, for example by collecting paired donor and patient and/or longitudinal samples.
 This framework encourages clinicians to leverage their clinical experience, existing microbiome research and published datasets, and the increasing availability of screened donor stools to more efficiently translate microbiome research into clinical impact.
@@ -94,16 +94,16 @@ Wastewater epidemiology has long been proposed for many applications in populati
 Standard wastewater epidemiology methods sample sewage at the wastewater treatment plant and perform targeted analyses to measure individual metabolites or viruses of interest.
 Sampling at the treatment plant can capture information about large urban populations, but does not provide spatially resolved information about individual communities within the city.
 Targeted analyses can confidently identify and quantify specific molecules, but cannot discover new biomarkers.
-Because a major goal of public health is to reduce disparities between populations by identifying and tailoring interventions to high-risk groups \cite{Ramaswami2018,Weeramanthri2018,Khoury2016}, limited geographical resolution and measurable biomarkers makes standard wastewater epidemiology methods inappropriate for many public health applications.
+Because a major goal of public health is to reduce disparities between populations by identifying and tailoring interventions to high-risk groups \cite{Ramaswami2018,Weeramanthri2018,Khoury2016}, limited geographical resolution and small sets of measurable biomarkers makes standard wastewater epidemiology methods inappropriate for many public health applications.
 Despite these limitations, adapting wastewater epidemiology and implementing it within communities could be useful for evaluating the impact of public health policies or interventions.
-For example, rather than waiting years to see how a citywide sugar tax affects obesity rates, biomarkers of human sugar consumption could be measured before and after the policy roll-out to directly and quickly evaluate its impact on sugar consumption.
+For example, rather than waiting years to see how a citywide sugar tax affects obesity rates, biomarkers of human sugar consumption could be measured before and after the policy roll-out to directly and quickly evaluate its impact on sugar consumption in multiple neighborhoods.
 
 In this chapter, we present a platform to implement wastewater epidemiology within cities that mines the metabolome and microbiome of residential sewage to find biomarkers with potential public health relevance.
 This project is the culmination of a large collaboration between computational biologists, urban designers, engineers, city workers, and public health officials, and is presented in its entirety in Chapter \ref{chap:24hr}.
 My contribution to this work was identifying and confirming the human biomarkers from the untargeted metabolomics data.
 By comparing the masses and fragmentation spectra of our metabolite features with databases and published work, I identified over 20 glucuronide compounds.
 These molecules are direct markers of human excretion and were abundant in our residential sewage samples but rarely detected at our downstream sampling site.
-In collaboration with our mass spectrometry specialist, I also confirmed multiple urinary and fecal metabolites and showed that their abundances reflected expected human activity patterns over the course of a 24-hour sampling.
+In collaboration with a mass spectrometry specialist, I also confirmed multiple urinary and fecal metabolites and showed that their abundances reflected expected human activity patterns over the course of a 24-hour sampling.
 Further putative matches between our metabolomics features and a large database of human metabolites \cite{hmdb} suggests that this work could be extended to identify many different types of biomarkers reflecting human health, diet, and lifestyle.
 Together, this work shows that residential sewage contains more human-derived chemical and biological information than downstream samples, and suggests that upstream wastewater epidemiology could be developed into a new tool to measure community-level health.
 
