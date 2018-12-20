@@ -153,7 +153,7 @@ We repeated this process twenty times to generate a set of p-value distributions
 We found that the fraction of p-values $leq$ 0.05 can be as high as ~70\% for the non-normalized data (Fig. \ref{percnorm:fig4}).
 This result matches with our finding that 681 out of the 1,021 OTUs in this dataset differed significantly across Baxter and Zeller controls (q $\leq$ 0.05).
 Each normalization technique drastically reduced the number of false positives, but percentile-normalization gave the best results (Fig. \ref{percnorm:fig4}).
-When low-abundance OTUs were included in the analysis, ComBat and limma showed highly skewed p-value distributions, giving rise to a larger number of false positives than the non-normalized data (Fig. \ref{percnorm:figs1}).
+When low-abundance OTUs were included in the analysis, ComBat and limma showed highly skewed p-value distributions, giving rise to a larger number of false positives than the non-normalized data (Fig. \ref{percnorm:figS1}).
 
 \begin{figure}[h]
 \begin{center}
@@ -297,7 +297,7 @@ Additionally, when control populations from different batches were compared to o
 Our percentile-normalization approach was much more effective than limma and ComBat in controlling false positives (Fig. \ref{percnorm:fig4}), especially in the presence of low-abundance taxa (Fig. \ref{percnorm:figS1}).
 
 Because pooling datasets increases statistical power, it is tempting to pool these data even in the absence of suitable batch-correction methods.
-Consequently, pooling non-normalized data from different batches has been common practice in the microbiome field \cite{27,29,35,47--55}.
+Consequently, pooling non-normalized data from different batches has been common practice in the microbiome field \cite{27,29,35,47,48,49,50,51,52,53,54,55}.
 In this paper, we demonstrate why this practice is highly inadvisable.
 Pooling batch-corrected data from multiple studies allowed us to detect significant differences that were not found within a given study (Figs. \ref{percnorm:fig5} and \ref{percnorm:fig7}), while removing associations that were weak or inconsistent across studies (Fig. \ref{percnorm:fig6} and \ref{percnorm:figS3}).
 Percentile-normalized results often identified significant differences between cases and controls that were missed by other normalization methods (Table \ref{percnorm:tab1}).
