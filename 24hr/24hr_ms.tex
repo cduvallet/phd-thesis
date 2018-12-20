@@ -1,3 +1,4 @@
+
 \section*{Abstract}
 
 Wastewater-based epidemiology has long been proposed as a tool for population health monitoring, with applications ranging from infectious disease surveillance to drug consumption estimation. To date, however, there are few examples of wastewater epidemiology being implemented in practice. Here, we propose a novel platform that adapts existing wastewater-based epidemiology approaches for community-level public health surveillance. We integrate sewage network and population information to identify a sampling manhole representative of a residential community and show that the wastewater sampled at this upstream manhole contains more human-derived bacteria and metabolites than downstream wastewater treatment plant samples, which are the usual sampling locations in wastewater epidemiology. Our method to perform untargeted metabolomics on raw sewage allows for the identification of multiple glucuronide compounds, which are indicative of direct human excretion and typically too unstable to be detected in wastewater. We show that these compounds are absent in downstream samples, but abundant in our residential sewage samples. Next, we perform an hourly 24-hour sampling campaign to identify human and environmental components of the sewage metabolome and microbiome based on diurnal variations. We confirm urinary and fecal metabolites and find that their dynamics reflect human behavior but differ from each other. Finally, we propose that mining untargeted data derived from residential sewage opens additional possibilities for identifying biomarkers with direct public health or policy relevance and show preliminary results from the metabolomics data. Together, these results suggest a novel approach for implementing wastewater epidemiology in urban settings that provides a new source of community-level health data and which could be developed into a citywide public health observatory.
@@ -60,35 +61,35 @@ Because residential sewage may reflect a wide range of human behaviors, it could
 
 \begin{figure}[h]
 \begin{center}
-    \includegraphics{fig1_catchment_selection.png}
+    \includegraphics[width=\textwidth]{{24hr/figures/fig1_catchment_selection.png}}
     \caption{Definition and identification of residential catchments. (A). Integrating data from sewage network and flow, manhole locations, land usage, and demographic data allows for the selction of carefully curated residential manholes. (B) Upstream residential catchment vs. downstream catchment.}\label{24hr:fig1}
 \end{center}
 \end{figure}
 
 \begin{figure}[h]
 \begin{center}
-    \includegraphics{fig2_upstream_downstream.png}
+    \includegraphics[width=\textwidth]{{24hr/figures/fig2_upstream_downstream.png}}
     \caption{Upstream samples find more human-derived metabolites and bacteria. (A) Abundance of metabolite features in upstream vs. downstream sample (left) and volcano plot showing fold change vs. p-value (right). (B) Residential sewage sample (``Sewer'') contains more human-associated bacteria than downstream sample (``WWTP''). (C) Abundance of various confirmed human-associated metabolites in upstream vs. downstream sample.}\label{24hr:fig2}
 \end{center}
 \end{figure}
 
 \begin{figure}[h]
 \begin{center}
-    \includegraphics{fig3_diurnal_dynamics.png}
-    \caption{Human and environmental compartments reflect human diurnal dynamics. (A) Sampling campaign and schematic of expected human activity. (B) \textit{Top}: average flow rate in residential manhole. \textit{Bottom}: total ion count of M1 and M2 metabolite clusters. (C) Number of human-associated metabolites confirmed in M1 vs. M2 clusters. (D) \textit{Top}: average flow rate in residential manhole. \textit{Top middle}: Relative abundance of two OTU clusters, O1 and O2. \textit{Bottom middle}: Phylum-level taxonomic composition of bacterial cluster O1. \textit{Bottom}: Phylum-level taxonomic composition of bacterial cluster O2.}\label{24hr:fig3}
+    \includegraphics[width=\textwidth]{{24hr/figures/fig3_diurnal_dynamics.png}}
+    \caption{Human and environmental compartments reflect human diurnal dynamics. (A) Sampling campaign and schematic of expected human activity. (B) \textit{Top}: average flow rate in residential manhole. \textit{Bottom}: total ion count of M1 and M2 metabolite clusters. (C) Number of human-associated metabolites confirmed in M1 vs. M2 clusters. (D) \textit{From top}: Average flow rate in residential manhole; relative abundance of two OTU clusters, O1 and O2; phylum-level taxonomic composition of bacterial cluster O1; phylum-level taxonomic composition of bacterial cluster O2.}\label{24hr:fig3}
 \end{center}
 \end{figure}
 
 \begin{figure}[h]
 \begin{center}
-    \includegraphics{fig4_urine_fecal_markers.png}
+    \includegraphics[width=\textwidth]{{24hr/figures/fig4_urine_fecal_markers.png}}
     \caption{Confirmed urinary and fecal biomarkers reflect human activity and behavior. (Top left) Average flow rate in residential manhole. (Bottom left) Total ion count of alpha-phenylacetylglutamine (PAG), a confirmed human urinary marker. (Top right) Total ion count of confirmed bile acids, human fecal markers. (Bottom right) Total ion count of urobilinogen, a confirmed human fecal marker. }\label{24hr:fig4}
 \end{center}
 \end{figure}
 
 \begin{figure}[h]
 \begin{center}
-    \includegraphics{fig5_mining_big_data.png}
+    \includegraphics[width=\textwidth]{{24hr/figures/fig5_mining_big_data.png}}
     \caption{Mining untargeted data suggests identification of human health, behavioral, and lifestyle biomarkers. Heatmap of metabolite feature abundance over 24-hour samplings, with putatively identified metabolites labeled. Metabolites labeled with opaque circles were confirmed with analytical standards or MS2 matching. Labels with transparent circles were identified via mass-matching neutral mass with HMDB metabolites.}\label{24hr:fig5}
 \end{center}
 \end{figure}
