@@ -62,14 +62,14 @@ For genus-level analyses, OTU tables and metadata were acquired from the Microbi
 Raw data were downloaded from the original studies and processed through our in-house 16S-processing pipeline (\url{https://github.com/thomasgurry/amplicon_sequencing_pipeline}) as described previously \cite{17}.
 Each study's OTU table was converted to relative abundance by dividing each sample by its total number of reads and collapsed to genus level by summing all OTUs with the same genus-level annotation.
 
-To plot data in ordination space, Bray-Curtis distances were calculated from relative abundance data using Scikit-learn (\texttt{sklearn.metrics.pairwise.pairwise\_distances}; \texttt{metric='braycurtis'}) \cite{39}.
-Non-metric multidimensional scaling (NMDS) coordinates were calculated for two axes based on Bray-Curtis distances using Scikit-learn (\texttt{sklearn.manifold.MDS; n\_components=2, metric=False, max\_iter=500, eps=1e-12, dissimilarity='precomputed'}).
+To plot data in ordination space, Bray-Curtis distances were calculated from relative abundance data using Scikit-learn (\texttt{sklearn.metrics.pairwise.pairwise\_distances}; \texttt{metric=`braycurtis'}) \cite{39}.
+Non-metric multidimensional scaling (NMDS) coordinates were calculated for two axes based on Bray-Curtis distances using Scikit-learn (\texttt{sklearn.manifold.MDS; n\_components=2, metric=False, max\_iter=500, eps=1e-12, dissimilarity=`precomputed'}).
 
 \subsection{Percentile Normalization}
 
 In this procedure, control feature distributions are percentile-normalized against themselves (resulting in a uniform distribution between 0 and 100) and case feature distributions are converted into percentiles of their equivalent control features.
 Treating our controls as null-hypotheses is motivated by the idea that healthy patients should be treated as similar across datasets, even though we understand that they will differ due to biological as well as technical batch effects.
-Relative abundance distributions were converted to percentiles using the SciPy v 0.19.0 \cite{40} \texttt{stats.percentileofscore} method (\texttt{kind='mean'}).
+Relative abundance distributions were converted to percentiles using the SciPy v 0.19.0 \cite{40} \texttt{stats.percentileofscore} method (\texttt{kind=`mean'}).
 In order to avoid rank pile-ups due to the presence of many zeros, we replaced zeros with pseudo relative abundances drawn from a uniform distribution between 0.0 and $10^{-9}$ (i.e. a set of random values smaller than the lowest possible relative abundance in any dataset).
 Due to the zero-replacement step, p-values can shift slightly upon re-analysis with a different random draw, which can lead to the loss or gain of significance for features very near the significance threshold.
 Within each study, control distributions for each individual OTU or genus were converted into percentiles of themselves and case distributions were converted into percentiles of their corresponding control distribution.
@@ -97,7 +97,7 @@ In order to calculate statistics across studies, normalized case and control sam
 Hereafter, combining datasets is referred to as `pooling.'
 P-values were multiple-test corrected using the Benjamini-Hochberg False Discovery Rate (FDR) procedure, as implemented in StatsModels v 0.8.0 (\texttt{statsmodels.sandbox.stats.multicomp.multipletests}) \cite{41}.
 Differences in overall community structure were assessed using the Permutational Multivariate Analysis of Variance (PERMANOVA) test in R's vegan package \cite{42} as implemented in scikit-bio (\texttt{skbio.stats.distance.permanova}).
-Fisher's and Stouffer's methods for combining p-values were performed using SciPy v0.19.0 (\texttt{cipy.stats.combine\_pvalues; method='fisher' or method='stouffer'}).
+Fisher's and Stouffer's methods for combining p-values were performed using SciPy v0.19.0 (\texttt{cipy.stats.combine\_pvalues; method=`fisher' or method=`stouffer'}).
 For Stouffer's method, weights for each study were calculated as the square root of the number of cases plus the number of controls.
 OTUs/genera with significant responses in opposing directions across studies were excluded from Fisher and Stouffer analyses.
 
@@ -150,7 +150,7 @@ Although we do see several significant CRC-associated OTUs in the full dataset (
 We ran a second \textit{in silico} experiment to determine whether the false-positive rate was impacted by our different batch-correction methods.
 We randomly selected 40 samples from the Baxter healthy controls as artificial `controls' and 40 samples from the Zeller healthy controls as artificial `cases' for each data type (i.e. non-normalized, percentile-normalized, limma-corrected, and ComBat-corrected) and calculated significant OTU-level differences between these groups.
 We repeated this process twenty times to generate a set of p-value distributions.
-We found that the fraction of p-values $leq$ 0.05 can be as high as ~70\% for the non-normalized data (Fig. \ref{percnorm:fig4}).
+We found that the fraction of p-values $\leq$ 0.05 can be as high as ~70\% for the non-normalized data (Fig. \ref{percnorm:fig4}).
 This result matches with our finding that 681 out of the 1,021 OTUs in this dataset differed significantly across Baxter and Zeller controls (q $\leq$ 0.05).
 Each normalization technique drastically reduced the number of false positives, but percentile-normalization gave the best results (Fig. \ref{percnorm:fig4}).
 When low-abundance OTUs were included in the analysis, ComBat and limma showed highly skewed p-value distributions, giving rise to a larger number of false positives than the non-normalized data (Fig. \ref{percnorm:figS1}).
@@ -158,18 +158,18 @@ When low-abundance OTUs were included in the analysis, ComBat and limma showed h
 \begin{figure}[h]
 \begin{center}
     \includegraphics[width=\textwidth]{Fig4.png}
-    \caption{False positive rates are reduced by batch-correction methods. Random sets of 40 Baxter controls and random sets of 40 Zeller controls were selected for null case-control comparisons (20 iterations). Smaller points show the fraction of p-values $leq$ 0.05 within a given iteration, while larger dots show the average value across all 20 iterations. Within each category, smaller points are randomly jittered along the x-axis for better visualization. The fraction of p-values $leq$ 0.05 is highly inflated for non-normalized data (red dashed line shows the null-expectation for p-values). Only abundant OTUs (detected in at least a third of case or control samples) were included in this analysis.}\label{percnorm:fig4}
+    \caption{False positive rates are reduced by batch-correction methods. Random sets of 40 Baxter controls and random sets of 40 Zeller controls were selected for null case-control comparisons (20 iterations). Smaller points show the fraction of p-values $\leq$ 0.05 within a given iteration, while larger dots show the average value across all 20 iterations. Within each category, smaller points are randomly jittered along the x-axis for better visualization. The fraction of p-values $\leq$ 0.05 is highly inflated for non-normalized data (red dashed line shows the null-expectation for p-values). Only abundant OTUs (detected in at least a third of case or control samples) were included in this analysis.}\label{percnorm:fig4}
 \end{center}
 \end{figure}
 
 We next assessed the performance each cross-study analysis method by comparing OTU-level results across two independent CRC datasets.
-In the Baxter study, there were 172 healthy (control) samples and 120 CRC (case) samples, with 14 OTUs (from Fusobacterium, Coprococcus, Butyricicoccus, Gemmiger, Faecalibacterium, Roseburia, Parvimonas, Haemophilus, Porphyromonas, Peptostreptococcus, Streptophyta, Bacteroides and Clostridium XIVa genera) showing significant differences in abundance between cases and controls (FDR q $leq$ 0.05).
-For Zeller, there were 71 control and 40 case samples, with 18 OTUs (from Butyricicoccus, Butyricimonas, Fusobacterium, Closridium XIVa, Streptococcus, Parabacteroides, Alistipes, Anaerostipes, Parvimonas, Peptostreptococcus, Blautia, Dialister, and Bacteroides genera) that differed significantly across cases and controls (FDR q $leq$ 0.05).
+In the Baxter study, there were 172 healthy (control) samples and 120 CRC (case) samples, with 14 OTUs (from Fusobacterium, Coprococcus, Butyricicoccus, Gemmiger, Faecalibacterium, Roseburia, Parvimonas, Haemophilus, Porphyromonas, Peptostreptococcus, Streptophyta, Bacteroides and Clostridium XIVa genera) showing significant differences in abundance between cases and controls (FDR q $\leq$ 0.05).
+For Zeller, there were 71 control and 40 case samples, with 18 OTUs (from Butyricicoccus, Butyricimonas, Fusobacterium, Closridium XIVa, Streptococcus, Parabacteroides, Alistipes, Anaerostipes, Parvimonas, Peptostreptococcus, Blautia, Dialister, and Bacteroides genera) that differed significantly across cases and controls (FDR q $\leq$ 0.05).
 
 In the absence of batch effects, pooling data across datasets of the same disease should increase sensitivity to detect significant cross-study associations.
 We pooled percentile-normalized, limma-corrected, and ComBat-corrected data, respectively, across Baxter and Zeller studies to look for OTUs that differed significantly across cases and controls.
 These pooled results were then compared to classic methods for combining p-values from each dataset's individual results (above).
-For the percentile-normalized data, we found 39 OTUs that differed significantly between cases and controls (FDR q $leq$ 0.05), 21 of which overlapped with the within-study results.
+For the percentile-normalized data, we found 39 OTUs that differed significantly between cases and controls (FDR q $\leq$ 0.05), 21 of which overlapped with the within-study results.
 The pooled limma-corrected and ComBat-corrected data resulted in 37 and 36 significant OTUs, respectively.
 35 of the OTUs identified as significant by ComBat were also significant in the limma results.
 30 of the limma results and 29 of the ComBat results were also significant in the percentile-normalization results, respectively.
@@ -186,7 +186,7 @@ The associations identified in Figure \ref{percnorm:fig5} appear to be biologica
 \begin{figure}[h]
 \begin{center}
     \includegraphics[width=\textwidth]{Fig5_v2.png}
-    \caption{OTUs significant across CRC studies, but not within a given study. Pooling data provides greater statistical power to detect subtle, yet consistent differences in OTU abundances across sample groups. 18 OTUs are labeled by their most resolved taxonomic annotation. Each OTU in this plot was not found to be significant within either Baxter or Zeller studies, but became significant after pooling the percentile-normalized datasets (q $leq$ 0.05).}\label{percnorm:fig5}
+    \caption{OTUs significant across CRC studies, but not within a given study. Pooling data provides greater statistical power to detect subtle, yet consistent differences in OTU abundances across sample groups. 18 OTUs are labeled by their most resolved taxonomic annotation. Each OTU in this plot was not found to be significant within either Baxter or Zeller studies, but became significant after pooling the percentile-normalized datasets (q $\leq$ 0.05).}\label{percnorm:fig5}
 \end{center}
 \end{figure}
 
@@ -251,7 +251,7 @@ Thus, percentile-normalization increases the statistical power to detect differe
 	\bottomrule
 \end{tabular}
 \captionsetup{font=footnotesize,labelfont=footnotesize}
-\caption{Normalization methods impact the number of significant genus-level associations between cases and controls across multiple diseases. Numbers of genera that differ significantly between cases and controls for five diseases. In the `disease' column, CDI = Clostridium difficile induced diarrhea, CD = Crohn's Disease, UC = Ulcerative Colitis, CRC = Colorectal Cancer, and OB = obesity. `N =' shows the number of studies included in each meta-analysis. The method column indicates how the data were processed prior to running significance tests (percentile-normalized, Fisher's method for combining p-values, Stouffer's method for combining p-values, ComBat-corrected, or limma-corrected). The significance threshold used was q $leq$ 0.05 (FDR). The `pooled' column shows the total number of genera that were found to be significantly different across pooled studies for a given disease. The `within' column shows the total number of unique (non-redundant) genera that were identified as significantly different within each study (U = union), the number of genera that were significant in all individual studies (I = intersection), and the number of significant genera that were consistently significant in at least two studies (2N; 2N == I for CDI).}\label{percnorm:tab1}
+\caption{Normalization methods impact the number of significant genus-level associations between cases and controls across multiple diseases. Numbers of genera that differ significantly between cases and controls for five diseases. In the `disease' column, CDI = Clostridium difficile induced diarrhea, CD = Crohn's Disease, UC = Ulcerative Colitis, CRC = Colorectal Cancer, and OB = obesity. `N =' shows the number of studies included in each meta-analysis. The method column indicates how the data were processed prior to running significance tests (percentile-normalized, Fisher's method for combining p-values, Stouffer's method for combining p-values, ComBat-corrected, or limma-corrected). The significance threshold used was q $\leq$ 0.05 (FDR). The `pooled' column shows the total number of genera that were found to be significantly different across pooled studies for a given disease. The `within' column shows the total number of unique (non-redundant) genera that were identified as significantly different within each study (U = union), the number of genera that were significant in all individual studies (I = intersection), and the number of significant genera that were consistently significant in at least two studies (2N; 2N == I for CDI).}\label{percnorm:tab1}
 \end{center}
 \end{table}
 
@@ -332,7 +332,7 @@ We thank Sean Kearney and members of the Alm and Irizarry labs for helpful feedb
 \begin{figure}[h]
 \begin{center}
     \includegraphics[width=\textwidth]{FigS1.png}
-    \caption{False positive rates are reduced by percentile-normalization, but not by ComBat or limma, in the presence of low-abundance OTUs. Random sets of 40 Baxter controls and random sets of 40 Zeller controls were selected for null case-control comparisons (20 iterations). Smaller points show the fraction of p-values ≤ 0.05 within a given iteration, while larger dots show the average value across all 20 iterations. Within each category, smaller points are randomly jittered along the x-axis for better visualization. The fraction of p-values ≤ 0.05 is highly inflated for all methods except percentile-normalization (red dashed line shows the null-expectation for p-values). All OTUs were included in this analysis (i.e. no abundance filter prior to running tests). ComBat and limma show highly skewed p-value distributions when including low-abundance OTUs.}\label{percnorm:figS1}
+    \caption{False positive rates are reduced by percentile-normalization, but not by ComBat or limma, in the presence of low-abundance OTUs. Random sets of 40 Baxter controls and random sets of 40 Zeller controls were selected for null case-control comparisons (20 iterations). Smaller points show the fraction of p-values $\leq$ 0.05 within a given iteration, while larger dots show the average value across all 20 iterations. Within each category, smaller points are randomly jittered along the x-axis for better visualization. The fraction of p-values $\leq$ 0.05 is highly inflated for all methods except percentile-normalization (red dashed line shows the null-expectation for p-values). All OTUs were included in this analysis (i.e. no abundance filter prior to running tests). ComBat and limma show highly skewed p-value distributions when including low-abundance OTUs.}\label{percnorm:figS1}
 \end{center}
 \end{figure}
 
