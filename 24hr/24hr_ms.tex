@@ -57,6 +57,50 @@ Despite these challenges, sampling from upstream residential catchments has the 
 
 Because residential sewage may reflect a wide range of human behaviors, it could also be used for a wide range of policy applications. For example, analyzing the amounts of un-glucuronidated prescription opioids or antibiotics could be used to evaluate the effectiveness of drug take-back programs. Additionally, bacterial or chemical biomarkers of nutrition intake and diet could be used to study food deserts and the impact of programs increasing the availability of fresh foods in certain neighborhoods. Finally, marijuana metabolites and plant strains could be measured in sewage to measure the impact of cannabis legalization roll-outs across different counties or states.
 
+\section{Materials and Methods}
+
+\subsection{Selection of Residential Catchment sampling site}
+
+The sampling site was identified by cross-referencing Cambridge's wastewater network maps, which contained the layout of pipes and manholes, as well as flow direction, with demographic and land use data. We selected a location where the upstream catchment fulfilled three major requirements: 1) a land use of over 80\% residential so that we avoid transient populations and can characterize the demographics of the catchment population accurately, 2) a total catchment population $>$5,000 people to provide an anonymous reading of the community, and 3) the wastewater travel time from the furthest point in the catchment is $<$60 minutes to preserve the integrity of the sample.
+
+\subsection{Wastewater collection and processing}
+
+Grab wastewater samples (500 mL) were taken every hour from 10 AM on April 8th 2015 to 10 AM on April 9th 2015 (25 samples total). Samples were collected from the selected manhole with a commercial peristaltic pump (Global Water) sampling at a rate of 100 mL/min. 200 mL of collected sewage were filtered through 10-$\mu$m PTFE membrane filters. 150 ml of the outflow were filtered through 0.2-$\mu$m PTFE membrane filters. 100 ml of the final outflow were acidified with concentrated HCl (Optima grade, Fisher Scientific) to pH 3.0 and frozen at -80 degrees Celsius until metabolomics analysis. PTFE membrane filters were kept in RNAlater at -80 degrees Celsius until DNA extraction. The lab filtration system consisted of a Masterflex peristaltic pump (Pall), Masterflex PharMed BPT Tubing (Cole-Palmer), 47 mm PFA filter holders (Cole-Palmer) and 47mm PTFE Omnipore filter membranes (Millipore). Both the tubing and filter holders were previously cleaned with HCl (10\% v/v) and ultrapure deionized water.
+
+\subsection{DNA extraction and amplicon based Illumina sequencing of 16S rRNA genes}
+
+0.2-$\mu$m filter membranes were thawed in ice. RNAlater was removed and filters were washed with phosphate-buffered saline (PBS) buffer twice. DNA was extracted from each filter with Power Water extraction kit (MO BIO Laboratories Inc.) according to manufacturer's instructions. The only modification was that DNA from up to three filters from the same sample was pooled into the same DNA-binding column. Paired-end Illumina sequencing libraries were constructed using a two-step PCR approach targeting 16S rRNA genes previously described \cite{Preheim2013}. All paired-end libraries were multiplexed into one lane and sequenced with paired end 300 bases on each end on the Illumina MiSeq platform at the MIT Biomicro Center.
+
+\subsection{Processing of 16S rRNA gene sequencing data}
+
+Raw data was processed with an in-house 16S processing pipeline (\url{https://github.com/thomasgurry/amplicon_sequencing_pipeline}). To assign OTUs, we clustered OTUs at 99\% similarity using USEARCH \cite{edgar-usearch-2010} and assigned taxonomy to the resulting OTUs with the RDP classifier \cite{wang2007naive} and a confidence cutoff of 0.5. For each dataset, we removed samples with fewer than 100 reads and OTUs with fewer than 10 reads. We calculated the relative abundance of each OTU by dividing its value by the total reads per sample. We then collapsed OTUs by their RDP assignment up to genus level by summing their respective relative abundances.
+
+\subsection{Untargeted metabolomics analytical methods}
+
+Acetonitrile and deuterated biotin were added to the 0.2 $\mu$m-filtrate (acetonitrile final concentration was 5\%, deuterated biotin was 0.05 $\mu$g ml$^{-1}$). The resulting solution was analyzed using liquid chromatography (LC) coupled via electrospray ionization (negative ion mode) to a linear ion trap-7T Fourier-transform ion cyclotron resonance hybrid mass spectrometer (Thermo Scientific, FT-ICR MS; LTQ FT Ultra). Chromatographic separation was performed using a Synergi Fusion C18 reversed phase column (2.1 x 150mm, 4$\mu$m, Phenomenex). Samples were eluted at 0.25 mL/min with the following gradient: an initial hold at 95\% A (0.1\% formic acid in water) : 5\% B (0.1\% formic acid in acetonitrile) for 2 minutes, ramp to 65\% B from 2 to 20 minutes, ramp to 100\% B from 20 to 25 min, and hold at 100\% B until 32.5 minutes. The column was re-equilibrated for 7 min between samples with solvent A.  The injected sample volume was 20 $\mu$L. Full MS data were collected in the FT-ICR cell from m/z 100-1000 at 100,000 resolving power (defined at 400 m/z). In parallel to the FT acquisition, MS/MS scans of the four most intense ions were collected at nominal mass resolution in the ion trap (LTQ). Samples were analyzed in random order with a pooled sampled run every six samples in order to assess instrument variability.
+
+\subsection{Untargeted metabolomics raw data processing}
+
+Raw XCaliber files were converted to mzML files with MSConvert (\texttt{threshold} = 1000 for the negative ion mode files) (\url{http://proteowizard.sourceforge.net/tools.shtml}). Peaks were picked using the function \texttt{xcmsSet} from the R package \texttt{xcms}, with the following parameters (negative mode): \texttt{method = `centWave'}, \texttt{ppm = 2}, \texttt{snthresh = 10}, \texttt{prefilter = (5, 1000)}, \texttt{mzCenterFun = `wMean'}, \texttt{integrate = 2}, \texttt{peakwidth = (20, 60)}, \texttt{noise = 1000}, and \texttt{mzdiff = -0.005} \cite{Smith2006}. To align retention times, we used the \texttt{retcor.obiwarp} function with the following parameters: \texttt{plottype = `deviation'}, \texttt{profStep = 0.1}, \texttt{distFunc = `cor'}, \texttt{gapInit = 0.3}, and \texttt{gapExtend = 0.4}. To group peaks from different samples we used the \texttt{group.density} function with the following parameters: \texttt{minfrac = 0}, \texttt{minsamp = 1}, \texttt{bw = 30}, and \texttt{mzwid = 0.001}. To integrate areas of missing peaks, we used the \texttt{fillPeaks} function with \texttt{method = `chrom'}.
+
+\subsection{Mass matching}
+
+The first step in identifying metabolites was comparing the exact mass values with masses of metabolites present in METLIN \cite{Tautenhahn2012}. We searched METLIN for 397 of the most abundant features from the data and putatively identified 126 of these based on m/z matches (ppm error $\leq$ 2). We also programmatically mapped all metabolite m/z values to the Human Metabolome Database (HMDB) database \cite{Wishart2013}, \url{https://github.com/cduvallet/match_hmdb}). Untargeted m/z values were first converted to their expected neutral mass, assuming H$^{+}$ or Cl$^{-}$ ions, and then scanned against the neutral masses of all HMDB compounds, with an error tolerance of 1 ppm. All HMDB compounds within the error tolerance were returned. When an m/z had multiple HMDB hits, the feature was named with the common chemical taxonomic classification. The HMDB database was downloaded in May 2016.
+
+\subsection{Glucuronides annotation through MS2 match}
+
+We attempted to confirm all putative glucuronides (from m/z hits through METLIN and HMDB searching) via matching of MS/MS data. MS/MS spectra were extracted from individual mzML files (via MZMine \cite{Pluskal2010}) and matched to predicted in silico fragmentation patterns from MetFrag \cite{Wolf2010}. We considered a glucuronide to be confirmed if the expected glucuronide was among the top MetFrag hits and the observed fragments included peaks corresponding to the un-glucuronidated compound, diagnostic glucuronide derivatives (m/z = 113, 157, 175), or other diagnostic peaks (parent compound minus a CO$_{2}$ and/or OH).
+
+\subsection{Metabolite standards confirmation}
+
+We were able to confirm the putative identifications of several of the metabolites in Table 2 (`standard') at the most confident level using authentic standards analyzed with the LC-MS method described here. Each standard was analyzed individually in pure solvent as well as spiked into the 1 pm and 2 am samples. The expected m/z and retention time for each standard was determined from the standard-only runs and confirmed by identifying the corresponding m/z and retention time in the spike-in samples.
+
+\section{Acknowledgements}
+
+We thank The Cambridge Department of Public Works, in particular Jim Wilcox, and Sam Lipson from the Cambridge Public Health Department for all their support in selecting, accessing and manning manholes along our team.
+We are indebted to all researchers from the Alm Lab, Senseable City Lab, and Runstadler Lab who volunteered their time to help us collect and process sewage non-stop through one day. We thank the generous sponsorship of the Kuwait Foundation for Advancement of Sciences.
+
+
 \section{Figures}
 
 \begin{figure}[h]
