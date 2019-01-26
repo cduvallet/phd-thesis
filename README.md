@@ -5,19 +5,18 @@ This repo contains my MIT PhD thesis.
 Author: Claire Duvallet - ([homepage](https://cduvallet.github.io/))    
 Defense date: January 11, 2019
 
-The final submitted version of my thesis is in [duvallet_thesis_final.pdf](./duvallet_thesis_final.pdf).
+The final submitted version of my thesis is [duvallet_thesis_final.pdf](./duvallet_thesis_final.pdf).
 
-A pdf of my defense slides is in [presentation/2019-01-11.defense.pdf](presentation/2019-01-11.defense.pdf).
+A pdf of my defense slides is [presentation/2019-01-11.defense.pdf](presentation/2019-01-11.defense.pdf).
 
 # MIT Thesis Template
 
-I forked this from Scott W Olesen's MIT Thesis Template repo.
+I forked this from Scott W Olesen's [MIT Thesis Template repo](https://github.com/swo/mit-thesis).
 
-(Note: this repo is not the actual forked one, because GitHub Large File Storage does not allow you to push LFS objects to a public fork unless you have write access to the root directory, which I don't (because it's Scott's)
-The original forked repo is [here](https://github.com/cduvallet/mit-thesis/).).
+Note: this repo is not the actual forked one, because GitHub Large File Storage does not allow you to push LFS objects to a public fork unless you have write access to the root directory, which I don't (because it's Scott's)
+I deleted the original forked repo to prevent any confusion (for me).
 
-Check out Scott's [README](https://github.com/swo/mit-thesis) for more
-information on this template.
+You should check out Scott's [README](https://github.com/swo/mit-thesis) for more information on this template.
 
 He got this template from [here](http://web.mit.edu/thesis/tex), modified some of the files, removing comments and rewriting the readme.
 I made a few additional modifications, separating the acknowledgments into their own file and adding a few additional commands to the Makefile (e.g. to make the document without appendices, and to make just the intro and conclusion text).
