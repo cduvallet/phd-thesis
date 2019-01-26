@@ -1,59 +1,70 @@
-# MIT Thesis template
+# MIT Thesis
 
-Scott W Olesen - ([homepage](http://www.scottolesen.com))
+This repo contains my MIT PhD thesis.
 
-This is the source code for my PhD thesis. It's designed for an MIT Course 20 thesis.
-It might be adaptable for other departments.
+Author: Claire Duvallet - ([homepage](https://cduvallet.github.io/))
+Date: January 11, 2019
 
-## Where this stuff came from
-I got this template from [here](http://web.mit.edu/thesis/tex). I modified some of the files,
-removing comments and rewriting the readme.
+# MIT Thesis Template
+
+I forked this from Scott W Olesen's MIT Thesis Template repo.
+
+Check out his [README](https://github.com/swo/mit-thesis) for more
+information on this template.
+
+He got this template from [here](http://web.mit.edu/thesis/tex), modified some of the files, removing comments and rewriting the readme.
+I made a few additional modifications, separating the acknowledgments into their own file and adding a few additional commands to the Makefile (e.g. to make the document without appendices, and to make just the intro and conclusion text).
 
 ## The files here and what they do
 
-### Overview
-I typeset my thesis by writing some information directly in LaTeX, which is in the `.tex` files.
-I also wholesale included some `.pdf` files (in the three subfolders) because they were either
-typeset in other LaTeX documents (and I didn't want to transfer them) or they were typeset in
-Word (and I wasn't interested in manually transcribing and correcting them).
-
-When you put everything together, it should come out like the `expected-output.pdf`, which is
-the thesis I submitted to MIT.
+Unlike Scott, I did not include any pdf files wholesale (because all of my papers were amenable to being included directly as `.tex` files).
+Check out Scott's repo for examples on how to include `.pdf` files wholesale.
 
 ### The front matter
+
 This is where the template really shines. It's confusing how to typeset
 all those pages.
 
-- The abstract of the thesis, in plain text, goes into `abstract.tex`. It's wise to keep another copy of this file that has no linebreaks, because you'll be asked to cut-and-paste the abstract a few times during the submission process.
+- The abstract of the thesis, in plain text, goes into `abstract.tex`.
 - `contents.tex` says how the Table of Contents should be typeset. If you want a list of figures or something like that, it will also go in here.
 - `cover.tex` contains a lot of information: the title of the thesis, your name, etc.
-- `main.tex` is where you can include packages, change the formatting of the thesis, and specify what files (i.e., the chapters, see below) will go into the document.
+- `main.tex` is where you include packages, change the formatting of the thesis, and specify what files (i.e., the chapters, see below) will go into the document.
+
+If your chapters contain packages that aren't already in `main.tex`, you'll need to put them in here.
 
 ### The main body
+
 The main body of the thesis goes in the `.tex` files. I put each chapter
 into its own file:
 
 - Chapter 1 in `chap1.tex`
-- Chapter 2 in `chap2.tex`
-- Appendix A in `appa.tex`
+- Chapter 2 in `chap_aspiration.tex`
+- Appendix A in `app_aspiration.tex`
 
 and so forth.
 
-### Including pdfs
-You'll see that my middle chapters have many pages but a short LaTeX file: most of their
-content comes from pdfs that are included using the `\includepdf` command. I had to fiddle
-with the `scale=` option to make sure they the pages fit the library's margin requirements
-and I changed the `pagecommand=` option to make sure that the monolithic, continuous
-numbering was present on all pages.
+These main chapter `.tex` files are included in `main.tex` (with `\include{}` commands).
+These `.tex` files only contain the basic info about the chapter, like title and author, and any other text that shows up on the first page of each chapter.
 
-The pdfs I included are in the subfolders `texmex`, `lake`, and `fmt`.
+The majority of each chapter's content is stored in separate folders corresponding to each (e.g. `aspiration`, `meta-analysis`, etc.).
+These contain the `.tex` files I previously prepared for submitting these papers, and each folder has its own sub-folder containing all the figures.
+Each of these also has its own `.bib` file with references.
+
+The main chapter `.tex` files (the ones that start with `chap_`) specify the graphicspath to use.
+The content of the chapter is incorporated into the chapter with the `\input{}` function.
+
+### Including pdfs
+
+I didn't do this, but Scott did in [his thesis](https://github.com/swo/mit-thesis#including-pdfs).
 
 ### Including images
+
 The pdfs I included were mostly the manuscript files from submitting the papers, which means
 that the figures were kept separate. I therefore put the figures and their captions directly
 into the LaTeX chapter files. Those figures are mostly in the subfolders mentioned above.
 
 ### Bibliography
+
 The bibliography information is in `main.bib`, which is a
 [BibTex](https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management) file.
 All the citations that you will reference in the TeX files go in there.
@@ -62,9 +73,9 @@ The file `biblio.tex` contains the information about how to typeset
 the bibliography. It is the last "chapter" in the thesis.
 
 ### The other stuff
+
 The style files `lgrind.sty` and `mitthesis.cls` help make the magic of the template happen.
 I didn't mess with these.
-
 
 ## How to use this
 
@@ -75,4 +86,5 @@ I didn't mess with these.
 5. Consider putting it under version control, e.g., with [git](https://git-scm.com/).
 
 ## Help!
-You can email `thesis@mit.edu`.
+
+You can email `thesis@mit.edu`. (Note that this email goes to Scott and not me).
