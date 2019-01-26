@@ -2,14 +2,21 @@
 
 This repo contains my MIT PhD thesis.
 
-Author: Claire Duvallet - ([homepage](https://cduvallet.github.io/))
-Date: January 11, 2019
+Author: Claire Duvallet - ([homepage](https://cduvallet.github.io/))    
+Defense date: January 11, 2019
+
+The final submitted version of my thesis is in [duvallet_thesis_final.pdf](./duvallet_thesis_final.pdf).
+
+A pdf of my defense slides is in [presentation/2019-01-11.defense.pdf](presentation/2019-01-11.defense.pdf).
 
 # MIT Thesis Template
 
 I forked this from Scott W Olesen's MIT Thesis Template repo.
 
-Check out his [README](https://github.com/swo/mit-thesis) for more
+(Note: this repo is not the actual forked one, because GitHub Large File Storage does not allow you to push LFS objects to a public fork unless you have write access to the root directory, which I don't (because it's Scott's)
+The original forked repo is [here](https://github.com/cduvallet/mit-thesis/).).
+
+Check out Scott's [README](https://github.com/swo/mit-thesis) for more
 information on this template.
 
 He got this template from [here](http://web.mit.edu/thesis/tex), modified some of the files, removing comments and rewriting the readme.
